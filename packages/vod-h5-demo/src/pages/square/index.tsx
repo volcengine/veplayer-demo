@@ -1,12 +1,12 @@
 import { NavBar, Tabs, Grid } from 'antd-mobile';
-import useAxios from 'axios-hooks';
-import { API_PATH } from '../../api';
+// import useAxios from 'axios-hooks';
+// import { API_PATH } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import DramaCard from '../../components/drama_card';
 
 import style from './index.module.less';
 
-import playData from '../../model';
+// import playData from '../../model';
 
 const tabs = [
   {
@@ -141,7 +141,13 @@ function Square() {
       <Grid className={style.content} columns={3} gap={8}>
         {list.map(item => (
           <Grid.Item>
-            <DramaCard {...item} />
+            <DramaCard
+              dramaId={item.dramaId}
+              dramaTitle={item.dramaTitle}
+              coverUrl={item.coverUrl}
+              totalEpisodeNumber={item.totalEpisodeNumber}
+              latestEpisodeNumber={item.latestEpisodeNumber}
+            />
           </Grid.Item>
         ))}
       </Grid>

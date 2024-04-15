@@ -12,20 +12,20 @@ import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
 import SelectBtn from './components/select-btn';
-import useUrlState from '@ahooksjs/use-url-state';
+// import useUrlState from '@ahooksjs/use-url-state';
 import type { IVideoData } from '../../interface';
-import useAxios from 'axios-hooks';
-import { API_PATH } from '../../api';
-
-import playData from '../../model';
+// import useAxios from 'axios-hooks';
+// import { API_PATH } from '../../api';
+//
+// import playData from '../../model';
 
 import 'swiper/less';
 import style from './index.module.less';
 import '@volcengine/veplayer/index.min.css';
 
 function Theater() {
-  const [urlState, setUrlState] = useUrlState();
-  const dramaId = urlState.id;
+  // const [urlState, setUrlState] = useUrlState();
+  // const dramaId = urlState.id;
   // const [{ data, loading }, getVideos] = useAxios(
   //   {
   //     url: API_PATH.GetDramaEpisodeWithPlayAuthToken,

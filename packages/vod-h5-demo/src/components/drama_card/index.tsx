@@ -7,7 +7,7 @@ import { Viewer } from '@volcengine/imagex-react';
 import style from './index.module.less';
 
 interface IDramaCardProps {
-  dramaId: number;
+  dramaId: string;
   dramaTitle: string;
   coverUrl: string;
   totalEpisodeNumber: number;
@@ -35,9 +35,7 @@ const DramaCard: React.FC<IDramaCardProps> = ({
             layout="fixed"
             placeholder="skeleton"
             src={coverUrl}
-            loader={({ src, width, quality, format }) =>
-              `//bytevod-drama-cover1.byte-test.com/${src}~tplv-vod-obj.${format}`
-            }
+            loader={({ src, format }) => `//bytevod-drama-cover1.byte-test.com/${src}~tplv-vod-obj.${format}`}
           />
           <div className={style.play_count}>
             <PlayIcon />

@@ -3,7 +3,7 @@ import LikeIcon from '../../../../assets/svg/like.svg?react';
 import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '../../../../assets/svg/fav.svg?react';
 import FavActiveIcon from '../../../../assets/svg/fav-active.svg?react';
-import DIcon from '../../../../assets/svg/d.svg?react';
+// import DIcon from '../../../../assets/svg/d.svg?react';
 import { IVideoData } from '../../../../interface';
 
 import style from './index.module.less';
@@ -19,12 +19,12 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) 
   const coverUrl = data.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
-  const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
-  const latestEpisodeNumber = data.episodeDetail?.dramaInfo?.latestEpisodeNumber;
+  // const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
+  // const latestEpisodeNumber = data.episodeDetail?.dramaInfo?.latestEpisodeNumber;
   const [isLike, setIsLike] = useState<boolean>(true);
   const [isFav, setIsFav] = useState<boolean>(false);
 
-  const bottomText = `观看完整短剧 · 全${totalEpisodeNumber}集`;
+  // const bottomText = `观看完整短剧 · 全${totalEpisodeNumber}集`;
 
   return (
     <div className={style.wrapper}>

@@ -22,6 +22,9 @@ export default defineConfig({
     __API_BASE_URL__: JSON.stringify('http://vod-sdk-playground-test.byted.org'),
     __AuthorId__: JSON.stringify('frank_drama_test_5'),
   },
+  build: {
+    outDir: path.resolve(__dirname, 'output'),
+  },
   css: {
     modules: {
       localsConvention: 'camelCase',
