@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/stylelintrc.json",
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recess-order",
+    "stylelint-prettier/recommended"
+  ],
+  "plugins": [
+    "stylelint-prettier",
+    "stylelint-less",
+    "stylelint-order"
+  ],
+  "rules": {
+    "selector-class-pattern": null,
+    "function-no-unknown": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["global"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+.main {
+  position: relative;
+  width: 100%;
+  background-color: #fff;
+
+  .head {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #fff;
+  }
+
+  .content {
+    padding: 16px;
+  }
+}
+
+:global {
+  .adm-tabs-header {
+    color: rgb(22 24 35 / 60%);
+    border-bottom: none;
+
+    --active-line-color: #161823;
+    --active-title-color: #161823;
+  }
+
+  .adm-tabs-tab-active {
+    --active-title-color: #161823;
+  }
+}

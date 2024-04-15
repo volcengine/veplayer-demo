@@ -1,0 +1,11 @@
+{
+  "iosSimulator": {
+    "device": [
+      "iPhone 13 (iOS-15-0)"
+    ],
+    "schema": ""
+  },
+  "context": {
+    "app": "DOUYIN"
+  }
+}

@@ -1,0 +1,134 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+  }
+
+  .poster-hide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+  }
+
+  .poster-show {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .right {
+    position: absolute;
+    right: calc(14px + env(safe-area-inset-right));
+    right: calc(14px + constant(safe-area-inset-right));
+    bottom: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .btn-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      color: #fff;
+      text-align: center;
+
+      .icon {
+        width: 36px;
+        height: 36px;
+      }
+
+      .num {
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        color: #fff;
+        text-align: center;
+        text-shadow:
+          0 0 4px rgb(0 0 0 / 20%),
+          0 1px 1px rgb(0 0 0 / 15%);
+      }
+    }
+  }
+
+  .bottom {
+    position: absolute;
+    right: 100px;
+    bottom: 2px;
+    left: calc(12px + env(safe-area-inset-left));
+    left: calc(12px + constant(safe-area-inset-left));
+
+    .title {
+      margin-bottom: 5px;
+      font-size: 17px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      color: #fff;
+    }
+
+    .des {
+      width: 100%;
+      margin-bottom: 12px;
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      color: #fff;
+    }
+
+    .info {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 48px;
+      padding: 0 12px;
+      line-height: 48px;
+      background: rgb(41 41 41 / 34%);
+      border-radius: 8px;
+
+      .text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 48px;
+        color: #fff;
+        text-align: left;
+
+        .icon {
+          width: 16px;
+          height: 16px;
+          margin-right: 4px;
+        }
+      }
+
+      .btn {
+        height: 28px;
+        padding: 0 12px;
+        margin-left: 38px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 28px;
+        color: #fff;
+        text-align: center;
+        text-shadow: 0 1px 1px rgb(0 0 0 / 15%);
+        background: rgb(255 255 255 / 15%);
+        backdrop-filter: blur(17px);
+        border-radius: 6px;
+      }
+    }
+  }
+}

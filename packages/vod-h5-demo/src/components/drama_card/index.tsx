@@ -1,0 +1,58 @@
+import React, { useCallback } from 'react';
+import { Ellipsis } from 'antd-mobile';
+import { useNavigate } from 'react-router-dom';
+import PlayIcon from '../../assets/svg/play.svg?react';
+import { Viewer } from '@volcengine/imagex-react';
+
+import style from './index.module.less';
+
+interface IDramaCardProps {
+  dramaId: number;
+  dramaTitle: string;
+  coverUrl: string;
+  totalEpisodeNumber: number;
+  latestEpisodeNumber: number;
+}
+
+const DramaCard: React.FC<IDramaCardProps> = ({
+  dramaId,
+  coverUrl,
+  dramaTitle,
+  totalEpisodeNumber,
+  latestEpisodeNumber,
+}) => {
+  const navigate = useNavigate();
+  const desText =
+    latestEpisodeNumber === totalEpisodeNumber ? `全${totalEpisodeNumber}集` : `更新至${latestEpisodeNumber}集`;
+  const handleClick = useCallback(() => navigate(`/playlet/theater/?id=${dramaId}`), [dramaId, navigate]);
+  return (
+    <div className={style.card} onClick={handleClick}>
+      <div className={style.content}>
+        <div className={style.main}>
+          {/*<img src={coverUrl} alt="" />*/}
+          <Viewer
+            className={style.img}
+            layout="fixed"
+            placeholder="skeleton"
+            src={coverUrl}
+            loader={({ src, width, quality, format }) =>
+              `//bytevod-drama-cover1.byte-test.com/${src}~tplv-vod-obj.${format}`
+            }
+          />
+          <div className={style.play_count}>
+            <PlayIcon />
+            <span>29.3w</span>
+          </div>
+        </div>
+        <div className={style.foot}>
+          <div className={style.title}>
+            <Ellipsis content={dramaTitle} />
+          </div>
+          <div className={style.des}>{desText}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default DramaCard;
