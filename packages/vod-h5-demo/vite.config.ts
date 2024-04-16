@@ -9,13 +9,7 @@ import svgr from 'vite-plugin-svgr';
 export default defineConfig({
   plugins: [react(), svgr()],
   resolve: {
-    alias: [
-      {
-        find: '@',
-        replacement: path.resolve(__dirname, 'src'),
-      },
-      { find: /^~/, replacement: '' },
-    ],
+    alias: { '@': path.resolve(__dirname, 'src') },
     extensions: ['.ts', '.tsx', '.js'],
   },
   define: {
@@ -27,6 +21,7 @@ export default defineConfig({
   },
   css: {
     modules: {
+      generateScopedName: '[local]-[hash:8]',
       localsConvention: 'camelCase',
     },
     postcss: {

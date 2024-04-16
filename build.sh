@@ -10,7 +10,6 @@ node -v
 npm -v
 npm i -g pnpm@7.16
 pnpm -v
-pnpm i --frozen-lockfile
+pnpm install
 cd packages/vod-h5-demo
-pnpm i
 pnpm build
