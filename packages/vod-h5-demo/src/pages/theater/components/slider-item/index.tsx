@@ -21,7 +21,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) 
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
   // const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
   // const latestEpisodeNumber = data.episodeDetail?.dramaInfo?.latestEpisodeNumber;
-  const [isLike, setIsLike] = useState<boolean>(true);
+  const [isLike, setIsLike] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(false);
 
   // const bottomText = `观看完整短剧 · 全${totalEpisodeNumber}集`;

@@ -5,6 +5,8 @@ import postCssPxToRem from 'postcss-pxtorem';
 import autoprefixer from 'autoprefixer';
 import svgr from 'vite-plugin-svgr';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), svgr()],
@@ -13,11 +15,32 @@ export default defineConfig({
     extensions: ['.ts', '.tsx', '.js'],
   },
   define: {
-    __API_BASE_URL__: JSON.stringify('http://vod-sdk-playground-test.byted.org'),
+    __API_BASE_URL__: isProd
+      ? JSON.stringify('http://vod-sdk-playground-test.byted.org')
+      : JSON.stringify('/proxy-api'),
     __AuthorId__: JSON.stringify('frank_drama_test_5'),
+    __PLAY_DOMAIN__: isProd
+      ? JSON.stringify('https://volcengineapi-boe-stable.byted.org')
+      : JSON.stringify('100.81.56.85:5173/video-api/'),
   },
   build: {
     outDir: path.resolve(__dirname, 'output'),
+  },
+  server: {
+    port: 5173,
+    // https: true,
+    proxy: {
+      '^/proxy-api/.*': {
+        target: 'http://vod-sdk-playground-test.byted.org',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/proxy-api/, ''),
+      },
+      '^/video-api/.*': {
+        target: 'https://volcengineapi-boe-stable.byted.org',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/video-api/, ''),
+      },
+    },
   },
   css: {
     modules: {

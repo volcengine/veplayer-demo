@@ -5,10 +5,23 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,
   maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>火山引擎 VePlayer H5 Demo</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+  <script>
+    window.onload = function() {
+      scroll();
+    }
+
+    function scroll() {
+      if(document.documentElement.scrollHeight <= document.documentElement.clientHeight) {
+        bodyTag = document.getElementsByTagName('body')[0];
+        bodyTag.style.height = document.documentElement.clientWidth / screen.width * screen.height + 'px';
+      }
+    }
+  </script>
   </body>
 </html>

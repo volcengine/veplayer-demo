@@ -1,97 +1,87 @@
-.wrap {
+.main {
   position: relative;
+  z-index: 1;
   width: 100%;
-  height: 100vh;
-  background-color: #000;
+  height: calc(100% - 80px - constant(safe-area-inset-bottom));
+  height: calc(100% - 80px - env(safe-area-inset-bottom));
 
-  .head {
-    position: absolute;
-    z-index: 200;
-    color: #fff;
+  @media screen and (width >= 960px) {
+    & {
+      height: calc(100% - 80px);
+    }
   }
 
-  .main {
+  .swiper-container {
     position: relative;
-    z-index: 1;
-    width: 100%;
-    height: calc(100% - 180px - constant(safe-area-inset-bottom));
-    height: calc(100% - 180px - env(safe-area-inset-bottom));
-
-    .swiper-container {
-      position: relative;
-      z-index: 4;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      //position: fixed;
-      //inset: 0;
-      //z-index: 1;
-
-      .my-swiper {
-        width: 100%;
-        height: 100%;
-      }
-    }
-
-    .veplayer-container {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      opacity: 1;
-    }
-  }
-
-  .unmute {
-    position: absolute;
-    top: 0;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    z-index: 4;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 
-    .unmute-btn {
-      box-sizing: border-box;
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: center;
-      width: 140px;
-      height: 48px;
-      padding: 13.5px 10px;
-      background: rgb(58 58 58 / 50%);
-      backdrop-filter: blur(5px);
-      border-radius: 25px;
-
-      .unmute-icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 2px;
-      }
-
-      span {
-        font-size: 15px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: normal;
-        color: var(--Text-ConstTextInverse, #fff);
-        text-align: center;
-      }
-    }
-
-    .unmute-bt:active {
-      background-color: rgb(58 58 58 / 50%);
+    .my-swiper {
+      width: 100%;
+      height: 100%;
     }
   }
 
-  :global {
-    .xgplayer-unmute {
-      display: none;
+  .veplayer-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 1;
+  }
+}
+
+.unmute {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  .unmute-btn {
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 48px;
+    padding: 13.5px 10px;
+    background: rgb(58 58 58 / 50%);
+    backdrop-filter: blur(5px);
+    border-radius: 25px;
+
+    .unmute-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
     }
+
+    span {
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      color: var(--Text-ConstTextInverse, #fff);
+      text-align: center;
+    }
+  }
+
+  .unmute-bt:active {
+    background-color: rgb(58 58 58 / 50%);
+  }
+}
+
+:global {
+  .xgplayer-unmute {
+    display: none;
   }
 }
 
