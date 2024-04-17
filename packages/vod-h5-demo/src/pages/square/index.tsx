@@ -4,8 +4,12 @@ import { API_PATH } from '../../api';
 import { useNavigate } from 'react-router-dom';
 import DramaCard from '../../components/drama_card';
 import { IDramaInfo } from '../../interface';
+import { hasScrollbar } from '../../utils'
 
 import style from './index.module.less';
+import { useEffect } from 'react';
+import { useUpdate } from '../theater/hooks';
+
 
 const tabs = [
   {
@@ -32,10 +36,19 @@ function Square() {
     { manual: false },
   );
 
-  const list: IDramaInfo[] = data?.result || [];
+  const list: IDramaInfo[] = [...(data?.result || []), ...(data?.result || [])];
 
   const navigate = useNavigate();
   const back = () => navigate('/');
+  const update = useUpdate();
+
+  const showFoot = hasScrollbar();
+
+  useEffect(() => {
+    update()
+  }, [showFoot]);
+
+
   return (
     <div className={style.main}>
       <NavBar className={style.head} onBack={back}>
@@ -58,6 +71,13 @@ function Square() {
           </Grid.Item>
         ))}
       </Grid>
+      {
+        showFoot && (
+          <div className={style.foot}>
+            已展示全部资源
+          </div>
+        )
+      }
     </div>
   );
 }

@@ -37,3 +37,7 @@ export function getImageXURL(url: string) {
 }
 
 export const os = getOS();
+
+export function hasScrollbar() {
+  return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
+}
