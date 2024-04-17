@@ -33,10 +33,10 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
   const sdkRef = useRef<VePlayer>();
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isTouching, setTouching] = useState(false);
-  const [isFirstSlide, setFirstSlide] = useState(true);
-  const [showUnmuteBtn, setShowUnmuteBtn] = useState(false);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isTouching, setTouching] = useState<boolean>(false);
+  const [isFirstSlide, setFirstSlide] = useState<boolean>(true);
+  const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
   const current: IVideoDataWithModel = list?.[activeIndex];
@@ -128,6 +128,16 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
     }
   };
 
+  const onEnded = () => {
+    if(activeIndex === list.length -1) {
+      Toast.show({
+        content: '看完了！'
+      })
+    } else {
+      setActiveIndex(activeIndex + 1);
+    }
+  }
+
   const initPlayer = () => {
     if (!sdkRef.current && containerRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
@@ -185,6 +195,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
       console.log('playerSdk', options, playerSdk);
       playerSdk.once(Events.PLAY, showUnmute);
       playerSdk.once(Events.AUTOPLAY_PREVENTED, showUnmute);
+      playerSdk.on(Events.PLAY, () => setTouching(false));
+      playerSdk.on(Events.ENDED, onEnded);
       sdkRef.current = playerSdk;
     }
   };
@@ -242,11 +254,20 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
               direction="vertical"
               preventClicksPropagation={false}
               onSlideChange={onSlideChange}
-              onTouchEnd={() => setTouching(false)}
-              onTouchMove={() => setTouching(true)}
+              onSliderFirstMove={() => {
+                setTouching(true)
+                console.log('fm')
+              }}
+              onSliderMove={() => console.log('move')}
+              onSlideChangeTransitionEnd={() =>{
+                console.log('et')
+                setTouching(false)
+              } }
               allowSlideNext={activeIndex !== list.length - 1}
               allowSlidePrev={activeIndex !== 0}
             >
+              {/*onTouchEnd={() => setTouching(false)}*/}
+              {/*onTouchMove={() => setTouching(true)}*/}
               {list.map((item: any, i: number) => {
                 return (
                   <SwiperSlide key={item.id}>
