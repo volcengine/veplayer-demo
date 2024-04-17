@@ -221,6 +221,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
     onChange(activeIndex);
   }, [activeIndex, onChange]);
 
+  useEffect(() => {
+    if(isTouching) {
+      sdkRef?.current?.player.pause()
+    } else {
+      sdkRef?.current?.player.play()
+    }
+  }, [isTouching]);
+
   const handleClick = (function () {
     let times = 0;
     const timeout = 300;
@@ -258,10 +266,13 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
                 setTouching(true)
                 console.log('fm')
               }}
-              onSliderMove={() => console.log('move')}
+              onTransitionEnd={() =>{
+                console.log('onTransitionEnd')
+                setTouching(false)
+              } }
               onSlideChangeTransitionEnd={() =>{
                 console.log('et')
-                setTouching(false)
+                // setTouching(false)
               } }
               allowSlideNext={activeIndex !== list.length - 1}
               allowSlidePrev={activeIndex !== 0}
