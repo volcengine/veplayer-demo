@@ -161,6 +161,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
           // 播放完成部分进度条底色
           playedColor: '#ffffff',
         },
+        sdkErrorPlugin: {
+          isNeedRefreshButton: false,
+        },
         ignores: [
           'moreButtonPlugin',
           'enter',

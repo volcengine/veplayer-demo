@@ -16,7 +16,7 @@ interface ISliderItemProps {
   index: number;
 }
 
-const imageSizes= [120, 200, 300, 400];
+const imageSizes= [600, 750, 800, 960];
 
 const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) => {
   const coverUrl = data.coverUrl;
