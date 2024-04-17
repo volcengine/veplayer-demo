@@ -160,18 +160,18 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
           'time',
           'pip',
           'playbackrate',
-          // 'sdkDefinitionPlugin',
+          'sdkDefinitionPlugin',
         ],
         codec: 'h264',
         start: {
           disableAnimate: true,
           isShowPause: true,
         },
-        videoFillMode: 'fillHeight',
+        videoFillMode: 'fillWidth',
         poster: {
           poster,
           hideCanplay: true,
-          fillMode: 'contain',
+          fillMode: 'fixWidth',
         },
         vodLogOpts: {
           vtype: 'MP4',
