@@ -7,6 +7,7 @@ import FavActiveIcon from '../../../../assets/svg/fav-active.svg?react';
 import { IVideoData } from '../../../../interface';
 
 import style from './index.module.less';
+// import { Viewer } from '@volcengine/imagex-react';
 
 interface ISliderItemProps {
   isTouching: boolean;
@@ -14,6 +15,8 @@ interface ISliderItemProps {
   data: IVideoData;
   index: number;
 }
+
+const imageSizes= [120, 200, 300, 400];
 
 const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) => {
   const coverUrl = data.coverUrl;
@@ -28,6 +31,19 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) 
 
   return (
     <div className={style.wrapper}>
+      {/*<Viewer*/}
+      {/*  className={isActive && !isTouching ? style.posterHide : style.posterShow}*/}
+      {/*  layout="fill"*/}
+      {/*  placeholder="skeleton"*/}
+      {/*  src={coverUrl}*/}
+      {/*  imageSizes={imageSizes}*/}
+      {/*  loader={({ src, format, width }) => {*/}
+      {/*    const path = src.split('/');*/}
+      {/*    const finalPath = path.splice(1).join('/')*/}
+      {/*    return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`}*/}
+      {/*  }*/}
+      {/*/>*/}
+
       <img src={coverUrl} className={isActive && !isTouching ? style.posterHide : style.posterShow} alt="poster" />
       <div className={style.right} onClick={e => e.stopPropagation()}>
         <div
@@ -52,7 +68,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) 
           <div className={style.num}>66.3w</div>
         </div>
       </div>
-      <div className={style.bottom}>
+      <div className={style.bottom} onClick={(e) => e.stopPropagation()}>
         <div className={style.title}>{dramaTitle}</div>
         <div className={style.des}>{episodeDesc}</div>
       </div>

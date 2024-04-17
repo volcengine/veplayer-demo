@@ -1,3 +1,5 @@
+import { IVideoModel } from '../interface';
+
 function getOS() {
   if (typeof navigator === 'undefined') {
     return {};
@@ -18,6 +20,15 @@ function getOS() {
     isPc,
     isFireFox,
   };
+}
+
+
+export function parseModel (videoModel: string): void | IVideoModel {
+  try {
+    return JSON.parse(videoModel);
+  } catch (err) {
+    console.warn('parse videoModel error: ', err);
+  }
 }
 
 export const os = getOS();

@@ -1,22 +1,25 @@
-import { useState } from 'react';
-import { NavBar, SpinLoading } from 'antd-mobile';
+import { useState, useRef, useEffect } from 'react';
+import { NavBar, Toast } from 'antd-mobile';
+import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
 import { useNavigate } from 'react-router-dom';
 import useUrlState from '@ahooksjs/use-url-state';
-import type { IVideoData } from '../../interface';
+import type { IVideoDataWithModel } from '../../interface';
 import useAxios from 'axios-hooks';
 import { API_PATH } from '../../api';
 import VideoSwiper from './components/video-swiper';
+import { parseModel } from '../../utils'
 
-import 'swiper/less';
 import style from './index.module.less';
+import 'swiper/less';
 import '@volcengine/veplayer/index.min.css';
 
 function Theater() {
   const [urlState] = useUrlState();
+  const toastRef = useRef<ToastHandler>();
   const dramaId = urlState.id;
   const [{ data, loading }] = useAxios(
     {
-      url: API_PATH.GetDramaEpisodeWithPlayAuthToken,
+      url: API_PATH.GetDramaEpisodeWithVideoModel,
       method: 'POST',
       data: {
         authorId: __AuthorId__,
@@ -27,21 +30,31 @@ function Theater() {
     },
     { manual: false },
   );
+
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
-  const list: IVideoData[] = data?.result || [];
-  const current: IVideoData = list?.[activeIndex];
+  const list: IVideoDataWithModel[] = (data?.result || []).map(item => ({...item,videoModel: parseModel(item.videoModel)}))
+  const current: IVideoDataWithModel = list?.[activeIndex];
   const episodeNumber = current?.episodeDetail?.episodeNumber;
+
+  useEffect(() => {
+    if (current) {
+      toastRef?.current?.close()
+    } else {
+      toastRef.current = Toast.show({
+        icon: 'loading',
+        content: '加载中…',
+        duration: 0
+      })
+    }
+  }, [current]);
+
+  console.log('list:', list)
 
   const back = () => navigate('/playlet/square/');
   return loading ? (
     <div className={style.loadingMask}>
-      <div className={style.loadingBtn}>
-        <div className={style.loadingIcon}>
-          <SpinLoading style={{ '--size': '20px' }} />
-        </div>
-        <div className={style.loadingText}>加载中</div>
-      </div>
+
     </div>
   ) : (
     <div className={style.wrap}>

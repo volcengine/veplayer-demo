@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
 import VePlayer, { Events } from '@volcengine/veplayer';
 import type { IPlayerConfig } from '@volcengine/veplayer';
-import type { IVideoData } from '../../../../interface';
-import { Popup } from 'antd-mobile';
+import type { IVideoData, IVideoDataWithModel } from '../../../../interface';
+import { Popup, Toast } from 'antd-mobile';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
 // import { useDoubleClick } from './hooks';
@@ -22,11 +22,8 @@ import 'swiper/less';
 import style from './index.module.less';
 import '@volcengine/veplayer/index.min.css';
 
-const isProd = process.env.NODE_ENV === 'production';
-// const isProd = true;
-
 interface IVideoSwiperProps {
-  list: IVideoData[];
+  list: IVideoDataWithModel[];
   onChange: (v: number) => any;
 }
 
@@ -42,7 +39,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
   const [showUnmuteBtn, setShowUnmuteBtn] = useState(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
-  const current: IVideoData = list?.[activeIndex];
+  const current: IVideoDataWithModel = list?.[activeIndex];
 
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
@@ -108,31 +105,36 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
   const playNext = (index: number) => {
     if (sdkRef.current && index !== activeIndex) {
       const next = list?.[index];
-      const { playAuthToken = '', coverUrl } = next;
-      console.log('xxx');
+      const playInfoList = next?.videoModel?.PlayInfoList || [];
+      const url = playInfoList?.[0]?.MainPlayUrl;
+      const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
+      if (!url) {
+        console.warn('')
+        Toast.show({
+          icon: 'fail',
+          content: '数据异常',
+        })
+        return;
+      }
       setActiveIndex(index);
       sdkRef.current?.player.pause();
-      sdkRef.current?.getPlugin('poster')?.update(coverUrl);
+      sdkRef.current?.getPlugin('poster')?.update(poster);
       sdkRef.current.playNext({
         autoplay: true,
-        getVideoByToken: {
-          playDomain: __PLAY_DOMAIN__,
-          playAuthToken,
-          defaultDefinition: '480p',
-        },
-      });
+        url,
+      }).then(() => {
+        sdkRef.current?.player.play();
+      })
     }
   };
 
   const initPlayer = () => {
-    if (!sdkRef.current && containerRef.current && current?.playAuthToken) {
-      const { playAuthToken, coverUrl } = current || {};
+    if (!sdkRef.current && containerRef.current && current) {
+      const playInfoList = current?.videoModel?.PlayInfoList || [];
+      const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
+      const url = playInfoList?.[0]?.MainPlayUrl;
       const options: IPlayerConfig = {
-        getVideoByToken: {
-          playDomain: __PLAY_DOMAIN__,
-          playAuthToken,
-          defaultDefinition: '480p',
-        },
+        url,
         el: containerRef.current,
         mobile: {
           gradient: 'none',
@@ -167,7 +169,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
         },
         videoFillMode: 'fillHeight',
         poster: {
-          poster: coverUrl,
+          poster,
           hideCanplay: true,
           fillMode: 'contain',
         },
