@@ -41,7 +41,7 @@ const DramaCard: React.FC<IDramaCardProps> = ({
             imageSizes={imageSizes}
             loader={({ src, format, width }) => {
               const path = src.split('/');
-              const finalPath = path.splice(1).join('/')
+              const finalPath = path.splice(1).join('/');
               return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`}
             }
           />

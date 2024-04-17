@@ -31,4 +31,9 @@ export function parseModel (videoModel: string): void | IVideoModel {
   }
 }
 
+
+export function getImageXURL(url: string) {
+
+}
+
 export const os = getOS();
