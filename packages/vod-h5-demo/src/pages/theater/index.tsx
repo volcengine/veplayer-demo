@@ -7,7 +7,7 @@ import type { IVideoDataWithModel } from '../../interface';
 import useAxios from 'axios-hooks';
 import { API_PATH } from '../../api';
 import VideoSwiper from './components/video-swiper';
-import { parseModel } from '../../utils'
+import { parseModel } from '../../utils';
 
 import style from './index.module.less';
 import 'swiper/less';
@@ -33,29 +33,31 @@ function Theater() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
-  const list: IVideoDataWithModel[] = (data?.result || []).map(item => ({...item,videoModel: parseModel(item.videoModel)}))
+  // TODO DramaEpisodeWithVideoModel
+  const list: IVideoDataWithModel[] = (data?.result || []).map((item: any) => ({
+    ...item,
+    videoModel: parseModel(item.videoModel),
+  }));
   const current: IVideoDataWithModel = list?.[activeIndex];
   const episodeNumber = current?.episodeDetail?.episodeNumber;
 
   useEffect(() => {
     if (current) {
-      toastRef?.current?.close()
+      toastRef?.current?.close();
     } else {
       toastRef.current = Toast.show({
         icon: 'loading',
         content: '加载中…',
-        duration: 0
-      })
+        duration: 0,
+      });
     }
   }, [current]);
 
-  console.log('list:', list)
+  console.log('list:', list);
 
   const back = () => navigate('/playlet/square/');
   return loading ? (
-    <div className={style.loadingMask}>
-
-    </div>
+    <div className={style.loadingMask}></div>
   ) : (
     <div className={style.wrap}>
       <NavBar className={style.head} left={episodeNumber ? `第${episodeNumber}集` : ''} onBack={back} />

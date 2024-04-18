@@ -6,13 +6,12 @@ import { API_PATH } from '../../api';
 import { Swiper, SwiperSlide, SwiperRef, SwiperClass } from 'swiper/react';
 import DramaCard from '../../components/drama_card';
 import { IDramaInfo } from '../../interface';
-import { hasScrollbar } from '../../utils'
-import Recommend from '../../components/recommend'
+import { hasScrollbar } from '../../utils';
+import Recommend from '../../components/recommend';
 
 import style from './index.module.less';
 import { useEffect } from 'react';
 import { useUpdate } from '../theater/hooks';
-
 
 const TheaterKey = 'square';
 const RecommendKey = 'recommend';
@@ -44,8 +43,8 @@ function Square() {
 
   const list: IDramaInfo[] = [...(data?.result || []), ...(data?.result || [])];
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isSliderMoving, setIsSliderMoving] = useState(false)
-  const swiperRef = useRef<SwiperRef>();
+  const [isSliderMoving, setIsSliderMoving] = useState(false);
+  const swiperRef = useRef<SwiperRef>(null);
 
   const navigate = useNavigate();
   const back = () => navigate('/');
@@ -54,45 +53,40 @@ function Square() {
   const showFoot = hasScrollbar();
 
   useEffect(() => {
-    update()
+    update();
   }, [showFoot]);
 
   const isRecommendActive = activeIndex === 1;
 
-  const onSwiperChange = useCallback (
-    (swiper: SwiperClass) => {
-      setActiveIndex(swiper.activeIndex)
-      console.warn('>>>sliderchange', swiper.activeIndex)
-    }, []
-  )
-
-
-  const onTabClick =(key) => {
-    console.log('tttt',key)
-  }
+  const onSwiperChange = useCallback((swiper: SwiperClass) => {
+    setActiveIndex(swiper.activeIndex);
+    console.warn('>>>sliderchange', swiper.activeIndex);
+  }, []);
 
   return (
     <div className={`${style.main} ${isRecommendActive ? style.recommendActive : style.recommendInactive}`}>
       <NavBar className={style.head} onBack={back}>
-        <Tabs activeKey={tabs[activeIndex].key}   onChange={(key) => {
-          const index = tabs.findIndex((item) => item.key === key);
-          setActiveIndex(index)
-          swiperRef.current?.swiper.slideTo(index)
-        }}>
+        <Tabs
+          activeKey={tabs[activeIndex].key}
+          onChange={key => {
+            const index = tabs.findIndex(item => item.key === key);
+            setActiveIndex(index);
+            swiperRef.current?.swiper.slideTo(index);
+          }}
+        >
           {tabs.map(item => (
-            <Tabs.Tab title={item.title} key={item.key} onClick={()=> onTabClick(item.key)} />
+            <Tabs.Tab title={item.title} key={item.key} />
           ))}
         </Tabs>
       </NavBar>
       <Swiper
         ref={swiperRef}
-        defaultIndex={activeIndex}
         onActiveIndexChange={onSwiperChange}
         onSliderMove={() => setIsSliderMoving(true)}
-        onTransitionEnd={() =>{
-          console.log('onTransitionEnd')
-          setIsSliderMoving(false)
-        } }
+        onTransitionEnd={() => {
+          console.log('onTransitionEnd');
+          setIsSliderMoving(false);
+        }}
       >
         <SwiperSlide>
           <div>
@@ -109,16 +103,10 @@ function Square() {
                 </Grid.Item>
               ))}
             </Grid>
-            {
-              showFoot && (
-                <div className={style.foot}>
-                  已展示全部资源
-                </div>
-              )
-            }
+            {showFoot && <div className={style.foot}>已展示全部资源</div>}
           </div>
         </SwiperSlide>
-        <SwiperSlide style={{height: '100vh'}}>
+        <SwiperSlide style={{ height: '100vh' }}>
           <div className={style.recommend}>
             <Recommend isRecommend isRecommendActive={isRecommendActive} isSliderMoving={isSliderMoving} />
           </div>
