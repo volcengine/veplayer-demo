@@ -90,7 +90,7 @@ function Square() {
       >
         <SwiperSlide>
           <div>
-            <Grid className={style.content} columns={3} gap={8}>
+            <Grid className={style.content} columns={3} gap={[8, 16]}>
               {list.map(item => (
                 <Grid.Item>
                   <DramaCard
