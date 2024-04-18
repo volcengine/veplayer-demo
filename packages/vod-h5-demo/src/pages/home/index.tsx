@@ -1,18 +1,14 @@
 import style from './index.module.less';
 import { featureList } from '../../page.tsx';
 import SceneCard from '../../components/scene_card';
-// import BgImg from '../../assets/img/bg.png';
+import BgImg from '../../assets/img/bg.png';
 // import FbgImg from '../../assets/img/fbg.png';
 
 function Home() {
   return (
     <>
       <div className={style.main}>
-        <img
-          className={style.bg}
-          src="https://p6-addone-sign.byteimg.com/tos-cn-i-hhc0kcolqq/79f33e163e7749519dd8b0506d6d46fc.png~tplv-hhc0kcolqq-image.image?x-expires=2000452732&x-signature=hchC4bcYRGRLYFhoBf%2Fl7H0mqnE%3D"
-          alt="bg"
-        />
+        <img className={style.bg} src={BgImg} alt="bg" />
         <div className={style.content}>
           <div className={style.title}>
             <div className={style.title_main}>视频点播</div>

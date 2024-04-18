@@ -14,7 +14,7 @@ interface IDramaCardProps {
   latestEpisodeNumber: number;
 }
 
-const imageSizes= [120, 200, 300, 400];
+const imageSizes = [120, 200, 300, 400];
 
 const DramaCard: React.FC<IDramaCardProps> = ({
   dramaId,
@@ -32,7 +32,6 @@ const DramaCard: React.FC<IDramaCardProps> = ({
     <div className={style.card} onClick={handleClick}>
       <div className={style.content}>
         <div className={style.main}>
-          {/*<img src={coverUrl} alt="" />*/}
           <Viewer
             className={style.img}
             layout="responsive"
@@ -44,9 +43,10 @@ const DramaCard: React.FC<IDramaCardProps> = ({
             loader={({ src, format, width }) => {
               const path = src.split('/');
               const finalPath = path.splice(1).join('/');
-              return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`}
-            }
-          />
+              return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`;
+            }}
+          ></Viewer>
+          <div className={style.mask} />
           <div className={style.play_count}>
             <PlayIcon />
             <span>29.3w</span>

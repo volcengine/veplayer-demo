@@ -1,5 +1,8 @@
 import React from 'react';
-import ActiveIcon from '@/assets/svg/active.svg?react';
+import Lottie from 'lottie-react';
+import flowAnim from '../../../../assets/lottie/flow.json';
+// import ActiveIcon from '@/assets/svg/active.svg?react';
+
 import style from './index.module.less';
 
 interface ISelectBtnProps {
@@ -12,7 +15,7 @@ const SelectBtn: React.FC<ISelectBtnProps> = ({ isActive, index, onClick }) => {
   return (
     <div className={`${style.btn} ${isActive ? style.active : ''}`} onClick={onClick}>
       {index + 1}
-      {isActive && <ActiveIcon className={style.icon} />}
+      {isActive && <Lottie className={style.icon} animationData={flowAnim} loop={true} />}
     </div>
   );
 };

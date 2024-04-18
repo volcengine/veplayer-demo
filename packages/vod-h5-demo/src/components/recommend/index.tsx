@@ -16,9 +16,17 @@ interface IRecommend {
   isRecommend: boolean;
   isRecommendActive: boolean;
   isSliderMoving: boolean;
+  onProgressDrag: () => void;
+  onProgressDragend: () => void;
 }
 
-const Recommend: React.FC<IRecommend> = ({ isRecommend, isRecommendActive, isSliderMoving }) => {
+const Recommend: React.FC<IRecommend> = ({
+  isRecommend,
+  isRecommendActive,
+  isSliderMoving,
+  onProgressDrag,
+  onProgressDragend,
+}) => {
   const [urlState] = useUrlState();
   const toastRef = useRef<ToastHandler>();
   const dramaId = urlState.id;
@@ -39,10 +47,15 @@ const Recommend: React.FC<IRecommend> = ({ isRecommend, isRecommendActive, isSli
 
   const [activeIndex, setActiveIndex] = useState(0);
   // TODO EpisodeFeedStreamWithVideoModel
-  const list: IVideoDataWithModel[] = (data?.result || []).map((item: any) => ({
-    ...item,
-    videoModel: parseModel(item.videoModel),
-  }));
+  const list: IVideoDataWithModel[] = (data?.result || [])
+    .map(
+      (item: any) =>
+        ({
+          ...item,
+          videoModel: parseModel(item.videoModel),
+        }) as IVideoDataWithModel,
+    )
+    .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl);
   const current: IVideoDataWithModel = list?.[activeIndex];
 
   useEffect(() => {
@@ -73,6 +86,8 @@ const Recommend: React.FC<IRecommend> = ({ isRecommend, isRecommendActive, isSli
         list={list}
         isSliderMoving={isSliderMoving}
         onChange={setActiveIndex}
+        onProgressDrag={onProgressDrag}
+        onProgressDragend={onProgressDragend}
       />
     </div>
   );

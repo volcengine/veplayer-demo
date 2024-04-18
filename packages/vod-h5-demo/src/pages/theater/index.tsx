@@ -17,7 +17,8 @@ function Theater() {
   const [urlState] = useUrlState();
   const toastRef = useRef<ToastHandler>();
   const dramaId = urlState.id;
-  const startTime = urlState.start || 0;
+  const startTime = urlState.startTime || 0;
+  console.log('theater', urlState, startTime);
   const [{ data, loading }] = useAxios(
     {
       url: API_PATH.GetDramaEpisodeWithVideoModel,
@@ -55,7 +56,16 @@ function Theater() {
     }
   }, [current]);
 
-  console.log('list:', list);
+  useEffect(() => {
+    const scrollFn = () => {
+      console.log('sss');
+      window.scrollTo({ left: 0, top: 0 });
+    };
+    window.addEventListener('scrollend', scrollFn);
+    return () => {
+      window.removeEventListener('scrollend', scrollFn);
+    };
+  }, []);
 
   const back = () => navigate('/playlet/square/');
   return loading ? (

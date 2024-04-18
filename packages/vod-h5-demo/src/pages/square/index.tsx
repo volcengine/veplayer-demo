@@ -44,6 +44,8 @@ function Square() {
   const list: IDramaInfo[] = [...(data?.result || []), ...(data?.result || [])];
   const [activeIndex, setActiveIndex] = useState(0);
   const [isSliderMoving, setIsSliderMoving] = useState(false);
+  const [isProgressDragging, setProgressDragging] = useState(false);
+
   const swiperRef = useRef<SwiperRef>(null);
 
   const navigate = useNavigate();
@@ -60,7 +62,9 @@ function Square() {
 
   const onSwiperChange = useCallback((swiper: SwiperClass) => {
     setActiveIndex(swiper.activeIndex);
-    console.warn('>>>sliderchange', swiper.activeIndex);
+    if (swiper.activeIndex === 1) {
+      window.scrollTo({ left: 0, top: 0 });
+    }
   }, []);
 
   return (
@@ -83,8 +87,9 @@ function Square() {
         ref={swiperRef}
         onActiveIndexChange={onSwiperChange}
         onSliderMove={() => setIsSliderMoving(true)}
+        allowSlideNext={activeIndex !== 1}
+        allowSlidePrev={activeIndex !== 0 && activeIndex === 1 && !isProgressDragging}
         onTransitionEnd={() => {
-          console.log('onTransitionEnd');
           setIsSliderMoving(false);
         }}
       >
@@ -108,7 +113,13 @@ function Square() {
         </SwiperSlide>
         <SwiperSlide style={{ height: '100vh' }}>
           <div className={style.recommend}>
-            <Recommend isRecommend={true} isRecommendActive={isRecommendActive} isSliderMoving={isSliderMoving} />
+            <Recommend
+              isRecommend={true}
+              isRecommendActive={isRecommendActive}
+              isSliderMoving={isSliderMoving}
+              onProgressDrag={() => setProgressDragging(true)}
+              onProgressDragend={() => setProgressDragging(false)}
+            />
           </div>
         </SwiperSlide>
       </Swiper>

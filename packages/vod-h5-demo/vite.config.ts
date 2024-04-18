@@ -4,14 +4,28 @@ import path from 'path';
 import postCssPxToRem from 'postcss-pxtorem';
 import autoprefixer from 'autoprefixer';
 import svgr from 'vite-plugin-svgr';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), svgr()],
+  plugins: [
+    react(),
+    svgr(),
+    // basicSsl({
+    //   /** name of certification */
+    //   name: 'test',
+    //   /** custom trust domains */
+    //   domains: ['*.custom.com'],
+    //   /** custom certification directory */
+    //   certDir: '/Users/bytedance/tool/cert/vite-cert',
+    // }),
+  ],
   resolve: {
-    alias: { '@': path.resolve(__dirname, 'src') },
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
     extensions: ['.ts', '.tsx', '.js'],
   },
   define: {

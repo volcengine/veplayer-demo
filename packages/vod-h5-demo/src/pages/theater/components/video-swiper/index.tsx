@@ -23,6 +23,8 @@ interface IVideoSwiperProps {
   isSliderMoving?: boolean;
   startTime?: number;
   onChange: (v: number) => any;
+  onProgressDrag?: () => void;
+  onProgressDragend?: () => void;
 }
 
 const VideoSwiper: React.FC<IVideoSwiperProps> = ({
@@ -32,6 +34,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   isSliderMoving,
   startTime = 0,
   onChange,
+  onProgressDrag,
+  onProgressDragend,
 }) => {
   const swiperRef = useRef<SwiperClass>();
   const wrapRef = useRef<HTMLElement>();
@@ -39,7 +43,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isTouching, setTouching] = useState<boolean>(false);
+  // const [isTouching, setTouching] = useState<boolean>(false);
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
@@ -68,14 +72,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     if (sdkRef.current?.player) {
       const player = sdkRef.current?.player;
       player.muted = false;
+      player.play();
       setShowUnmuteBtn(false);
     }
   }
 
   const onSlideChange = (swiper: SwiperClass) => {
-    console.log('tttt', isTouching, swiper.activeIndex, activeIndex);
-    if (swiper.activeIndex !== activeIndex) {
-      playNext(swiper.activeIndex);
+    if (swiper.realIndex !== activeIndex) {
+      playNext(swiper.realIndex);
     }
   };
 
@@ -90,7 +94,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       const url = playInfoList?.[0]?.MainPlayUrl;
       const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
       if (!url) {
-        console.warn('');
         Toast.show({
           icon: 'fail',
           content: '数据异常',
@@ -126,31 +129,17 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
       const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
-      console.log('playInfoList', playInfoList);
       const url = playInfoList?.[0]?.MainPlayUrl;
       const options = {
         url,
-        // el: containerRef.current,
         id: 'veplayer-container',
         startTime,
         autoplay: !isRecommend,
         enableDegradeMuteAutoplay: true,
-        controls: {
-          mode: 'bottom',
-        },
-        mobile: {
-          gradient: 'none',
-          darkness: false,
-          disableGesture: isRecommend,
-          isTouchingSeek: !isRecommend,
-        },
-        commonStyle: {
-          // 播放完成部分进度条底色
-          playedColor: '#ffffff',
-        },
-        sdkErrorPlugin: {
-          isNeedRefreshButton: false,
-        },
+        closeVideoClick: false,
+        closeVideoDblclick: true,
+        videoFillMode: 'fillWidth',
+        codec: 'h264',
         ignores: [
           'moreButtonPlugin',
           'enter',
@@ -162,12 +151,26 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           'playbackrate',
           'sdkDefinitionPlugin',
         ],
-        codec: 'h264',
+        commonStyle: {
+          // 播放完成部分进度条底色
+          playedColor: '#ffffff',
+        },
+        controls: {
+          mode: 'bottom',
+        },
+        mobile: {
+          gradient: 'none',
+          darkness: false,
+          disableGesture: isRecommend,
+          isTouchingSeek: !isRecommend,
+        },
+        sdkErrorPlugin: {
+          isNeedRefreshButton: false,
+        },
         start: {
           disableAnimate: true,
           isShowPause: true,
         },
-        videoFillMode: 'fillWidth',
         poster: {
           poster,
           hideCanplay: true,
@@ -184,12 +187,31 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       const playerSdk = new VePlayer(options as IPlayerConfig);
       window.playerSdk = playerSdk;
       playerSdk.once(Events.COMPLETE, () => {
-        console.log('playerSdk', options, playerSdk);
+        const player = playerSdk.player;
+        if (isRecommend) {
+          // 通过插件实例调用
+          player.getPlugin('progress').useHooks('dragstart', () => {
+            /**
+             * 如果返回false，则不执行默认逻辑
+             * 如果返回true，则执行默认行为seek操作
+             * */
+            onProgressDrag && onProgressDrag();
+            return true;
+          });
+          player.getPlugin('progress').useHooks('drag', () => {
+            onProgressDrag && onProgressDrag();
+            return true;
+          });
+          player.getPlugin('progress').useHooks('dragend', () => {
+            onProgressDragend && onProgressDragend();
+            return true;
+          });
+        }
       });
       playerSdk.once(Events.PLAY, showUnmute);
       playerSdk.once(Events.AUTOPLAY_PREVENTED, showUnmute);
-      playerSdk.on(Events.PLAY, () => setTouching(false));
       playerSdk.on(Events.ENDED, onEnded);
+
       sdkRef.current = playerSdk;
     }
   };
@@ -219,16 +241,16 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     }
   }, [activeIndex, onChange]);
 
-  useEffect(() => {
-    if (isTouching) {
-      sdkRef?.current?.player.pause();
-    } else {
-      if (!isSliderMoving) {
-        console.warn('>>>> swiper touch play');
-        sdkRef?.current?.player.play();
-      }
-    }
-  }, [isTouching]);
+  // useEffect(() => {
+  //   if (isTouching) {
+  //     sdkRef?.current?.player.pause();
+  //   } else {
+  //     if (!isSliderMoving) {
+  //       console.warn('>>>> swiper touch play');
+  //       sdkRef?.current?.player.play();
+  //     }
+  //   }
+  // }, [isTouching]);
 
   useEffect(() => {
     if (isRecommend) {
@@ -275,21 +297,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
               direction="vertical"
               onSwiper={swiper => (swiperRef.current = swiper)}
               onActiveIndexChange={onSlideChange}
-              onSliderFirstMove={() => {
-                if (activeIndex === 0 || activeIndex === list.length - 1) {
-                  return;
-                }
-                setTouching(true);
-                console.log('fm');
-              }}
-              onTransitionEnd={() => {
-                console.log('onTransitionEnd');
-                setTouching(false);
-              }}
-              onSlideChangeTransitionEnd={() => {
-                console.log('et');
-                // setTouching(false)
-              }}
               allowSlideNext={activeIndex !== list.length - 1}
               allowSlidePrev={activeIndex !== 0}
             >
@@ -301,7 +308,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
                         key={item.id}
                         data={item}
                         index={i}
-                        isTouching={isTouching}
                         isActive={isActive}
                         isRecommend={isRecommend}
                         getCurrentTime={getCurrentTime}

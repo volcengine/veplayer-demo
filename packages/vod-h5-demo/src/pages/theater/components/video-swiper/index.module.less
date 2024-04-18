@@ -2,8 +2,8 @@
   position: fixed;
   z-index: 1;
   width: 100%;
-  height: calc(100% - 80px - constant(safe-area-inset-bottom));
-  height: calc(100% - 80px - env(safe-area-inset-bottom));
+  height: calc(100% - 70px - constant(safe-area-inset-bottom));
+  height: calc(100% - 70px - env(safe-area-inset-bottom));
 
   @media screen and (width >= 960px) {
     & {
@@ -14,18 +14,20 @@
 
 .recommend-main {
   position: fixed;
-  top: 0;
   z-index: 1;
   width: 100%;
-  height: calc(100% - 20px - constant(safe-area-inset-bottom));
-  height: calc(100% - 20px - env(safe-area-inset-bottom));
+  top: 0;
+  //bottom: calc(20px + constant(safe-area-inset-bottom));
+  //bottom: calc(20px + env(safe-area-inset-bottom));
+  height: calc(100% - 120px - constant(safe-area-inset-bottom));
+  height: calc(100% - 120px - env(safe-area-inset-bottom));
+
 
   @media screen and (width >= 960px) {
     & {
       height: calc(100% - 80px);
     }
   }
-
 }
 
 .swiper-container {
@@ -50,20 +52,16 @@
   //pointer-events: none;
   opacity: 1;
 
-  //:global {
-  //  xg-mask {
-  //    display: none;
-  //  }
-  //}
-
   :global {
     .xgplayer-unmute {
       display: none;
     }
 
     .xgplayer .xg-pos {
-      left: 18px;
-      right: 10px;
+      left: calc(18px + constant(safe-area-inset-left));
+      left: calc(18px + env(safe-area-inset-left));
+      right: calc(18px + constant(safe-area-inset-left));
+      right: calc(18px + env(safe-area-inset-left));
     }
   }
 }
@@ -114,14 +112,11 @@
   }
 }
 
-
-
 .foot {
   position: relative;
   margin: auto;
   bottom: -10px;
   z-index: 100;
-
 
   .foot-content {
     display: flex;
@@ -222,56 +217,13 @@
   width: 100%;
   height: 100vh;
   background-color: #000;
+}
 
-  .loading-btn {
-    position: relative;
-    width: 97px;
-    height: 76px;
-    background: var(--ConstBG-ToastDefault, #393b44);
-    border-radius: 12px;
+:global {
+  .xgplayer-unmute {
+    display: none;
   }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  .loading-container {
-    width: 60px;
-  }
-
-  .loading-icon {
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    display: block;
-    width: 20px;
-    height: 20px;
-    transform: translateX(-50%);
-
-    svg {
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .loading-text {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    width: 60px;
-    height: 20px;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: rgb(255 255 255 / 90%);
-    text-align: center;
-    transform: translateX(-50%);
+  .xgplayer-unmute {
+    display: none !important;
   }
 }

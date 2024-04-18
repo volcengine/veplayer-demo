@@ -11,7 +11,6 @@ import { Viewer } from '@volcengine/imagex-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ISliderItemProps extends PropsWithChildren {
-  isTouching: boolean;
   isActive: boolean;
   data: IVideoData;
   index: number;
@@ -37,7 +36,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
     const dramaId = data?.episodeDetail?.dramaInfo?.dramaId;
     const startTime = getCurrentTime();
     if (dramaId) {
-      navigate(`/playlet/theater/?id=${dramaId}$startTime=${startTime}`);
+      navigate(`/playlet/theater/?id=${dramaId}&startTime=${startTime}`);
     }
   };
 
