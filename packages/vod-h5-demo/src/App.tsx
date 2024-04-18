@@ -2,13 +2,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/home';
 import { featRoutes } from './page.tsx';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />,
-  },
-  ...featRoutes,
-]);
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Home />,
+    },
+    ...featRoutes,
+  ],
+  { basename: '/veplayer-h5' },
+);
 
 function App() {
   return <RouterProvider router={router} />;
