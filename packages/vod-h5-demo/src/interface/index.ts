@@ -26,7 +26,7 @@ export interface IVideoDataWithToken extends IVideoData {
 }
 
 export interface IVideoDataWithModel extends IVideoData {
-  videoModel: IVideoModel
+  videoModel: IVideoModel;
 }
 
 export interface IPlayInfoListItem {
@@ -35,9 +35,9 @@ export interface IPlayInfoListItem {
   Codec: 'h264' | 'h265';
   Definition: string;
   Duration: number;
-  FileId:string;
+  FileId: string;
   FileType: string;
-  Format:string;
+  Format: string;
   Height: number;
   MainPlayUrl: string;
   Quality: string;

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useState, MouseEvent } from 'react';
 import LikeIcon from '../../../../assets/svg/like.svg?react';
 import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
@@ -16,30 +16,30 @@ interface ISliderItemProps extends PropsWithChildren {
   data: IVideoData;
   index: number;
   isRecommend?: boolean;
+  getCurrentTime: () => number;
 }
 
-const imageSizes= [600, 750, 800, 960];
+const imageSizes = [600, 750, 800, 960];
 
-const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, index, isRecommend, children }) => {
+const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecommend, getCurrentTime, children }) => {
   const coverUrl = data.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
   const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
-  const latestEpisodeNumber = data.episodeDetail?.dramaInfo?.latestEpisodeNumber;
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const bottomText = `观看完整短剧·全${totalEpisodeNumber}集`;
 
-
-  const onBottomBtnClick = (e) => {
+  const onBottomBtnClick = (e: MouseEvent) => {
     e.stopPropagation();
     const dramaId = data?.episodeDetail?.dramaInfo?.dramaId;
+    const startTime = getCurrentTime();
     if (dramaId) {
-      navigate(`/playlet/theater/?id=${dramaId}`)
+      navigate(`/playlet/theater/?id=${dramaId}$startTime=${startTime}`);
     }
-  }
+  };
 
   return (
     <div className={style.wrapper}>
@@ -51,11 +51,11 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, in
           objectPosition="center"
           src={coverUrl}
           imageSizes={imageSizes}
-          loader={({ src, format, width, extra }) => {
+          loader={({ src, format, width }) => {
             const path = src.split('/');
-            const finalPath = path.splice(1).join('/')
-            return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`}
-          }
+            const finalPath = path.splice(1).join('/');
+            return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`;
+          }}
         />
       </div>
       <div id={`swiper-video-container-${index}`} className={style.videoContainer}>
@@ -84,24 +84,23 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, in
           <div className={style.num}>66.3w</div>
         </div>
       </div>
-      <div className={style.bottom} onClick={(e) => e.stopPropagation()}>
+      <div className={style.bottom} onClick={e => e.stopPropagation()}>
         <div className={style.title}>{dramaTitle}</div>
         <div className={style.des}>{episodeDesc}</div>
-        {
-          isRecommend &&
+        {isRecommend && (
           <div className={style.info}>
             <div className={style.text}>
               <DIcon className={style.icon} />
               <div>{bottomText}</div>
             </div>
-            <div onClick={onBottomBtnClick} className={style.btn}>连续看</div>
+            <div onClick={onBottomBtnClick} className={style.btn}>
+              连续看
+            </div>
           </div>
-        }
+        )}
       </div>
     </div>
   );
 };
-
-
 
 export default SliderItem;
