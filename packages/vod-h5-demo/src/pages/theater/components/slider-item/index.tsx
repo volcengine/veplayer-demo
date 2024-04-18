@@ -3,31 +3,43 @@ import LikeIcon from '../../../../assets/svg/like.svg?react';
 import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
 import FavActiveIcon from '../../../../assets/svg/fav-active.svg?react';
-// import DIcon from '../../../../assets/svg/d.svg?react';
+import DIcon from '../../../../assets/svg/d.svg?react';
 import { IVideoData } from '../../../../interface';
 
 import style from './index.module.less';
 import { Viewer } from '@volcengine/imagex-react';
+import { useNavigate } from 'react-router-dom';
 
 interface ISliderItemProps extends PropsWithChildren {
   isTouching: boolean;
   isActive: boolean;
   data: IVideoData;
   index: number;
+  isRecommend?: boolean;
 }
 
 const imageSizes= [600, 750, 800, 960];
 
-const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, index, children }) => {
+const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, index, isRecommend, children }) => {
   const coverUrl = data.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
-  // const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
-  // const latestEpisodeNumber = data.episodeDetail?.dramaInfo?.latestEpisodeNumber;
+  const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
+  const latestEpisodeNumber = data.episodeDetail?.dramaInfo?.latestEpisodeNumber;
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(false);
 
-  // const bottomText = `观看完整短剧 · 全${totalEpisodeNumber}集`;
+  const navigate = useNavigate();
+  const bottomText = `观看完整短剧·全${totalEpisodeNumber}集`;
+
+
+  const onBottomBtnClick = (e) => {
+    e.stopPropagation();
+    const dramaId = data?.episodeDetail?.dramaInfo?.dramaId;
+    if (dramaId) {
+      navigate(`/playlet/theater/?id=${dramaId}`)
+    }
+  }
 
   return (
     <div className={style.wrapper}>
@@ -75,17 +87,21 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, in
       <div className={style.bottom} onClick={(e) => e.stopPropagation()}>
         <div className={style.title}>{dramaTitle}</div>
         <div className={style.des}>{episodeDesc}</div>
+        {
+          isRecommend &&
+          <div className={style.info}>
+            <div className={style.text}>
+              <DIcon className={style.icon} />
+              <div>{bottomText}</div>
+            </div>
+            <div onClick={onBottomBtnClick} className={style.btn}>连续看</div>
+          </div>
+        }
       </div>
     </div>
   );
 };
 
-// <div className={style.info}>
-//   <div className={style.text}>
-//     <DIcon className={style.icon} />
-//     <div>{bottomText}</div>
-//   </div>
-//   <div className={style.btn}>连续看</div>
-// </div>
+
 
 export default SliderItem;

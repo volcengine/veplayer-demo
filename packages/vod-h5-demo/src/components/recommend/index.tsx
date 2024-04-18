@@ -1,0 +1,70 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { Toast } from 'antd-mobile';
+import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
+import { useNavigate } from 'react-router-dom';
+import useUrlState from '@ahooksjs/use-url-state';
+import type { IVideoDataWithModel } from '../../interface';
+import useAxios from 'axios-hooks';
+import { API_PATH } from '../../api';
+import VideoSwiper from '../../pages/theater/components/video-swiper';
+import { parseModel } from '../../utils'
+
+import style from './index.module.less';
+import 'swiper/less';
+import '@volcengine/veplayer/index.min.css';
+
+interface IRecommend {
+  isRecommend: boolean;
+  isRecommendActive: boolean;
+  isSliderMoving: boolean;
+}
+
+const Recommend: React.FC<IRecommend> = ({isRecommend, isRecommendActive, isSliderMoving}) => {
+  const [urlState] = useUrlState();
+  const toastRef = useRef<ToastHandler>();
+  const dramaId = urlState.id;
+  const [{ data, loading }] = useAxios(
+    {
+      url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
+      method: 'POST',
+      data: {
+        authorId: __AuthorId__,
+        dramaId,
+        offset: 0,
+        pageSize: 50,
+      },
+    },
+    { manual: false },
+  );
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const list: IVideoDataWithModel[] = (data?.result || []).map(item => ({...item,videoModel: parseModel(item.videoModel)}))
+  const current: IVideoDataWithModel = list?.[activeIndex];
+
+  useEffect(() => {
+    if (isRecommend) {
+      return
+    }
+    if (current) {
+      toastRef?.current?.close()
+    } else {
+      toastRef.current = Toast.show({
+        icon: 'loading',
+        content: '加载中…',
+        duration: 0
+      })
+    }
+  }, [current, isRecommend]);
+
+  console.log('recommend list:', list)
+
+  return loading ? (
+    <div className={style.loadingMask}></div>
+  ) : (
+    <div className={style.wrap}>
+      <VideoSwiper isRecommendActive={isRecommendActive} isRecommend={isRecommend} list={list} isSliderMoving={isSliderMoving} onChange={setActiveIndex} />
+    </div>
+  );
+}
+
+export default Recommend;

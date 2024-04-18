@@ -1,23 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { NavBar, SpinLoading } from 'antd-mobile';
-import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
 import VePlayer, { Events } from '@volcengine/veplayer';
 import type { IPlayerConfig } from '@volcengine/veplayer';
-import type { IVideoData, IVideoDataWithModel } from '../../../../interface';
+import type { IVideoDataWithModel } from '../../../../interface';
 import { Popup, Toast } from 'antd-mobile';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
-// import { useDoubleClick } from './hooks';
 import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
-import LoadingIcon from '@/assets/svg/loading.svg?react';
-import useUrlState from '@ahooksjs/use-url-state';
-import useAxios from 'axios-hooks';
-import { API_PATH } from '../../api';
 
 import 'swiper/less';
 import style from './index.module.less';
@@ -25,20 +17,25 @@ import '@volcengine/veplayer/index.min.css';
 
 interface IVideoSwiperProps {
   list: IVideoDataWithModel[];
+  isRecommend?: boolean;
+  isRecommendActive?: boolean;
+  isSliderMoving?: boolean;
   onChange: (v: number) => any;
 }
 
-const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
+const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecommendActive,isSliderMoving,  onChange }) => {
   const refSwiper = useRef<SwiperClass>();
   const wrapRef = useRef<HTMLElement>(null);
   const sdkRef = useRef<VePlayer>();
   const containerRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<number>(null);
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isTouching, setTouching] = useState<boolean>(false);
   const [isFirstSlide, setFirstSlide] = useState<boolean>(true);
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
+
 
   const current: IVideoDataWithModel = list?.[activeIndex];
 
@@ -118,9 +115,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
         return;
       }
       setActiveIndex(index);
-      sdkRef.current?.player.pause();
+      sdkRef.current?.player?.pause();
       sdkRef.current?.getPlugin('poster')?.update(poster);
-      sdkRef.current.playNext({
+      sdkRef.current?.playNext({
         autoplay: true,
         url,
       }).then(() => {
@@ -151,13 +148,15 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
         mobile: {
           gradient: 'none',
         },
-        autoplay: true,
+        autoplay: !isRecommend,
         loop: true,
         enableDegradeMuteAutoplay: true,
-        // closeVideoClick: true,
-        // closeVideoDblclick: true,
         controls: {
           mode: 'bottom',
+        },
+        mobile: {
+          disableGesture: isRecommend,
+          isTouchingSeek: !isRecommend,
         },
         commonStyle: {
           // 播放完成部分进度条底色
@@ -177,6 +176,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
           'playbackrate',
           'sdkDefinitionPlugin',
         ],
+
         codec: 'h264',
         start: {
           disableAnimate: true,
@@ -238,9 +238,33 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
     if(isTouching) {
       sdkRef?.current?.player.pause()
     } else {
-      sdkRef?.current?.player.play()
+      if(!isSliderMoving) {
+        console.warn('>>>> swiper touch play')
+        sdkRef?.current?.player.play()
+      }
     }
   }, [isTouching]);
+
+  useEffect(() => {
+    if(isRecommend) {
+      console.log('>>> isSliderMoving:',isSliderMoving, 'isRecommendActive:', isRecommendActive, 'isRecommend: ', isRecommend)
+      if (isRecommendActive) {
+        if(isSliderMoving) {
+          console.warn('>>>pause')
+          sdkRef.current?.player?.pause()
+        } else {
+          console.warn('>>> play')
+          sdkRef.current?.player?.play();
+        }
+      } else {
+        timerRef.current && clearTimeout(timerRef.current)
+          timerRef.current = null
+          console.warn('>>>pause')
+          sdkRef.current?.player?.pause()
+
+      }
+    }
+  }, [isRecommend, isRecommendActive, isSliderMoving]);
 
   const handleClick = (function () {
     let times = 0;
@@ -260,9 +284,11 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
     };
   })();
 
+  console.warn('>>>', isRecommend)
+
   return (
     <>
-      <div className={style.main}>
+      <div className={isRecommend ? style.recommendMain : style.main}>
         <div
           className={style.swiperContainer}
           onClick={handleClick}
@@ -297,7 +323,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
                 return (
                   <SwiperSlide key={item.id}>
                     {({ isActive }) => (
-                      <SliderItem key={item.id} data={item} index={i} isTouching={isTouching} isActive={isActive} >
+                      <SliderItem key={item.id} data={item} index={i} isTouching={isTouching} isActive={isActive} isRecommend={isRecommend} >
                         <div className={style.veplayerContainer}>
                           <div ref={containerRef} id='veplayer-container'></div>
                         </div>
@@ -317,15 +343,18 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
             </div>
           </div>
         )}
-        <div className={style.foot} onClick={() => setSelectVisible(!selectVisible)}>
-          <div className={style.footContent}>
-            <SelectIcon className={style.selectIcon} />
-            <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
-            <UpArrowIcon className={style.selectArrow} />
-          </div>
-        </div>
+        {
+          !isRecommend && (
+            <div className={style.foot} onClick={() => setSelectVisible(!selectVisible)}>
+              <div className={style.footContent}>
+                <SelectIcon className={style.selectIcon} />
+                <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
+                <UpArrowIcon className={style.selectArrow} />
+              </div>
+            </div>
+          )
+        }
       </div>
-
       <Popup
         visible={selectVisible}
         onMaskClick={() => {

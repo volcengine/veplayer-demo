@@ -5,14 +5,14 @@
   background-color: #fff;
 
   .head {
-    position: sticky;
+    position: fixed;
     top: 0;
+    width: 100%;
     z-index: 999;
-    background-color: #fff;
   }
 
   .content {
-    padding: 16px;
+    padding: 60px 16px;
   }
 
   .foot {
@@ -24,18 +24,52 @@
     line-height: normal;
     padding: 36px 0 28px;
   }
-}
 
-:global {
-  .adm-tabs-header {
-    color: rgb(22 24 35 / 60%);
-    border-bottom: none;
-
-    --active-line-color: #161823;
-    --active-title-color: #161823;
-  }
-
-  .adm-tabs-tab-active {
-    --active-title-color: #161823;
+  .recommend {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    //bottom: 0;
   }
 }
+
+.recommend-active {
+  background-color: transparent;
+  color: #ffffff;
+  :global {
+    .adm-tabs-header {
+      color: rgba(255, 255, 255, 0.6);
+      border-bottom: none;
+
+      --active-line-color: #fff;
+      --active-title-color: #fff;
+    }
+
+    .adm-tabs-tab-active {
+      --active-title-color: #fff;
+    }
+  }
+
+}
+
+.recommend-inactive {
+  background-color: #fff;
+  color: #000000;
+
+  :global {
+    .adm-tabs-header {
+      color: rgb(22 24 35 / 60%);
+      border-bottom: none;
+
+      --active-line-color: #161823;
+      --active-title-color: #161823;
+    }
+
+    .adm-tabs-tab-active {
+      --active-title-color: #161823;
+    }
+  }
+}
+
+
