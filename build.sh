@@ -2,6 +2,7 @@
 
 set -e
 rm -rf node_modules
+rm -rf output
 rm -rf packages/vod-h5-demo/dist
 rm -rf packages/vod-h5-demo/output
 rm -rf packages/vod-h5-demo/node_modules
@@ -15,9 +16,10 @@ npm i -g pnpm@7.16
 pnpm -v
 pnpm install
 # vod-h5-demo build
-cd packages/vod-h5-demo
-pnpm build
-
+#cd packages/vod-h5-demo
+pnpm -r build
+#cd ../../
 mkdir output
+mkdir output/vod-h5-demo
 
-cp -r dist/. output
+cp -r packages/vod-h5-demo/output/* output/vod-h5-demo/
