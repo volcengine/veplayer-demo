@@ -22,8 +22,7 @@ function getOS() {
   };
 }
 
-
-export function parseModel (videoModel: string): void | IVideoModel {
+export function parseModel(videoModel: string): void | IVideoModel {
   try {
     return JSON.parse(videoModel);
   } catch (err) {
@@ -31,9 +30,9 @@ export function parseModel (videoModel: string): void | IVideoModel {
   }
 }
 
-
 export function getImageXURL(url: string) {
-
+  // TODO getImageXURL 方法实现
+  console.log(url);
 }
 
 export const os = getOS();

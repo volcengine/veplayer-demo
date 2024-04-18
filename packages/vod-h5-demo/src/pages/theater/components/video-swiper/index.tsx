@@ -23,7 +23,13 @@ interface IVideoSwiperProps {
   onChange: (v: number) => any;
 }
 
-const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecommendActive,isSliderMoving,  onChange }) => {
+const VideoSwiper: React.FC<IVideoSwiperProps> = ({
+  list,
+  isRecommend,
+  isRecommendActive,
+  isSliderMoving,
+  onChange,
+}) => {
   const refSwiper = useRef<SwiperClass>();
   const wrapRef = useRef<HTMLElement>(null);
   const sdkRef = useRef<VePlayer>();
@@ -36,12 +42,12 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
-
   const current: IVideoDataWithModel = list?.[activeIndex];
 
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
 
+  // @ts-expect-error TODO check pauseOrPlay use or not
   function pauseOrPlay() {
     if (sdkRef.current?.player) {
       const player = sdkRef.current.player;
@@ -107,34 +113,36 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
       const url = playInfoList?.[0]?.MainPlayUrl;
       const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
       if (!url) {
-        console.warn('')
+        console.warn('');
         Toast.show({
           icon: 'fail',
           content: '数据异常',
-        })
+        });
         return;
       }
       setActiveIndex(index);
       sdkRef.current?.player?.pause();
       sdkRef.current?.getPlugin('poster')?.update(poster);
-      sdkRef.current?.playNext({
-        autoplay: true,
-        url,
-      }).then(() => {
-        sdkRef.current?.player.play();
-      })
+      sdkRef.current
+        ?.playNext({
+          autoplay: true,
+          url,
+        })
+        .then(() => {
+          sdkRef.current?.player.play();
+        });
     }
   };
 
   const onEnded = () => {
-    if(activeIndex === list.length -1) {
+    if (activeIndex === list.length - 1) {
       Toast.show({
-        content: '看完了！'
-      })
+        content: '看完了！',
+      });
     } else {
       setActiveIndex(activeIndex + 1);
     }
-  }
+  };
 
   const initPlayer = () => {
     if (!sdkRef.current && current) {
@@ -145,9 +153,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
         url,
         // el: containerRef.current,
         id: 'veplayer-container',
-        mobile: {
-          gradient: 'none',
-        },
         autoplay: !isRecommend,
         loop: true,
         enableDegradeMuteAutoplay: true,
@@ -155,6 +160,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
           mode: 'bottom',
         },
         mobile: {
+          gradient: 'none',
           disableGesture: isRecommend,
           isTouchingSeek: !isRecommend,
         },
@@ -235,33 +241,38 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
   }, [activeIndex, onChange]);
 
   useEffect(() => {
-    if(isTouching) {
-      sdkRef?.current?.player.pause()
+    if (isTouching) {
+      sdkRef?.current?.player.pause();
     } else {
-      if(!isSliderMoving) {
-        console.warn('>>>> swiper touch play')
-        sdkRef?.current?.player.play()
+      if (!isSliderMoving) {
+        console.warn('>>>> swiper touch play');
+        sdkRef?.current?.player.play();
       }
     }
   }, [isTouching]);
 
   useEffect(() => {
-    if(isRecommend) {
-      console.log('>>> isSliderMoving:',isSliderMoving, 'isRecommendActive:', isRecommendActive, 'isRecommend: ', isRecommend)
+    if (isRecommend) {
+      console.log(
+        '>>> isSliderMoving:',
+        isSliderMoving,
+        'isRecommendActive:',
+        isRecommendActive,
+        'isRecommend: ',
+        isRecommend,
+      );
       if (isRecommendActive) {
-        if(isSliderMoving) {
-          console.warn('>>>pause')
-          sdkRef.current?.player?.pause()
+        if (isSliderMoving) {
+          console.warn('>>>pause');
+          sdkRef.current?.player?.pause();
         } else {
-          console.warn('>>> play')
+          console.warn('>>> play');
           sdkRef.current?.player?.play();
         }
       } else {
-        timerRef.current && clearTimeout(timerRef.current)
-          timerRef.current = null
-          console.warn('>>>pause')
-          sdkRef.current?.player?.pause()
-
+        timerRef.current && clearTimeout(timerRef.current);
+        console.warn('>>>pause');
+        sdkRef.current?.player?.pause();
       }
     }
   }, [isRecommend, isRecommendActive, isSliderMoving]);
@@ -284,7 +295,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
     };
   })();
 
-  console.warn('>>>', isRecommend)
+  console.warn('>>>', isRecommend);
 
   return (
     <>
@@ -302,18 +313,18 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
               // preventClicksPropagation={false}
               onSlideChange={onSlideChange}
               onSliderFirstMove={() => {
-                if(activeIndex === 0 || activeIndex === list.length - 1) {
-                  return
+                if (activeIndex === 0 || activeIndex === list.length - 1) {
+                  return;
                 }
-                setTouching(true)
-                console.log('fm')
+                setTouching(true);
+                console.log('fm');
               }}
-              onTransitionEnd={() =>{
-                console.log('onTransitionEnd')
-                setTouching(false)
-              } }
-              onSlideChangeTransitionEnd={() =>{
-                console.log('et')
+              onTransitionEnd={() => {
+                console.log('onTransitionEnd');
+                setTouching(false);
+              }}
+              onSlideChangeTransitionEnd={() => {
+                console.log('et');
                 // setTouching(false)
               }}
               allowSlideNext={activeIndex !== list.length - 1}
@@ -323,9 +334,16 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
                 return (
                   <SwiperSlide key={item.id}>
                     {({ isActive }) => (
-                      <SliderItem key={item.id} data={item} index={i} isTouching={isTouching} isActive={isActive} isRecommend={isRecommend} >
+                      <SliderItem
+                        key={item.id}
+                        data={item}
+                        index={i}
+                        isTouching={isTouching}
+                        isActive={isActive}
+                        isRecommend={isRecommend}
+                      >
                         <div className={style.veplayerContainer}>
-                          <div ref={containerRef} id='veplayer-container'></div>
+                          <div ref={containerRef} id="veplayer-container"></div>
                         </div>
                       </SliderItem>
                     )}
@@ -343,17 +361,15 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
             </div>
           </div>
         )}
-        {
-          !isRecommend && (
-            <div className={style.foot} onClick={() => setSelectVisible(!selectVisible)}>
-              <div className={style.footContent}>
-                <SelectIcon className={style.selectIcon} />
-                <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
-                <UpArrowIcon className={style.selectArrow} />
-              </div>
+        {!isRecommend && (
+          <div className={style.foot} onClick={() => setSelectVisible(!selectVisible)}>
+            <div className={style.footContent}>
+              <SelectIcon className={style.selectIcon} />
+              <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
+              <UpArrowIcon className={style.selectArrow} />
             </div>
-          )
-        }
+          </div>
+        )}
       </div>
       <Popup
         visible={selectVisible}
