@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import type { RefObject } from 'react';
 
 interface IDoubleClickParams {
@@ -50,4 +50,10 @@ export const useDoubleClick = ({
       clickRef.removeEventListener('click', handleClick, false);
     };
   });
+};
+
+export const useUpdate = () => {
+  const [, setState] = useState({});
+
+  return useCallback(() => setState({}), []);
 };

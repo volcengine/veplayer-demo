@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import LikeIcon from '../../../../assets/svg/like.svg?react';
 import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
@@ -9,7 +9,7 @@ import { IVideoData } from '../../../../interface';
 import style from './index.module.less';
 import { Viewer } from '@volcengine/imagex-react';
 
-interface ISliderItemProps {
+interface ISliderItemProps extends PropsWithChildren {
   isTouching: boolean;
   isActive: boolean;
   data: IVideoData;
@@ -18,7 +18,7 @@ interface ISliderItemProps {
 
 const imageSizes= [600, 750, 800, 960];
 
-const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) => {
+const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, index, children }) => {
   const coverUrl = data.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
@@ -31,7 +31,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) 
 
   return (
     <div className={style.wrapper}>
-      <div className={`${style.poster} ${isActive && !isTouching ? style.posterHide : style.posterShow}`}>
+      <div className={`${style.poster} ${isActive ? style.posterHide : style.posterShow}`}>
         <Viewer
           layout="fill"
           placeholder="skeleton"
@@ -45,6 +45,9 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data }) 
             return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`}
           }
         />
+      </div>
+      <div id={`swiper-video-container-${index}`} className={style.videoContainer}>
+        {children}
       </div>
       <div className={style.right} onClick={e => e.stopPropagation()}>
         <div

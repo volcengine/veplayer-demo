@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { NavBar, SpinLoading } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
@@ -139,21 +140,22 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
   }
 
   const initPlayer = () => {
-    if (!sdkRef.current && containerRef.current && current) {
+    if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
       const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
       const url = playInfoList?.[0]?.MainPlayUrl;
       const options: IPlayerConfig = {
         url,
-        el: containerRef.current,
+        // el: containerRef.current,
+        id: 'veplayer-container',
         mobile: {
           gradient: 'none',
         },
         autoplay: true,
         loop: true,
         enableDegradeMuteAutoplay: true,
-        closeVideoClick: false,
-        closeVideoDblclick: true,
+        // closeVideoClick: true,
+        // closeVideoDblclick: true,
         controls: {
           mode: 'bottom',
         },
@@ -195,7 +197,10 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
       };
 
       const playerSdk = new VePlayer(options as IPlayerConfig);
-      console.log('playerSdk', options, playerSdk);
+      window.playerSdk = playerSdk;
+      playerSdk.once(Events.COMPLETE, () => {
+        console.log('playerSdk', options, playerSdk);
+      });
       playerSdk.once(Events.PLAY, showUnmute);
       playerSdk.once(Events.AUTOPLAY_PREVENTED, showUnmute);
       playerSdk.on(Events.PLAY, () => setTouching(false));
@@ -208,7 +213,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
   useEffect(() => {
     setTimeout(() => {
       initPlayer();
-    });
+    }, 100);
   }, [current]);
 
   // 组件卸载时销毁播放器
@@ -222,6 +227,11 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
 
   useEffect(() => {
     onChange(activeIndex);
+    const playerContainer = sdkRef.current?.playerContainer;
+    const insertParentNode = document.getElementById(`swiper-video-container-${activeIndex}`);
+    if (playerContainer) {
+      insertParentNode?.insertBefore(playerContainer, null);
+    }
   }, [activeIndex, onChange]);
 
   useEffect(() => {
@@ -240,7 +250,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
       if (times === 1) {
         setTimeout(function () {
           if (times === 1) {
-            pauseOrPlay();
+            // pauseOrPlay();
           } else {
             // playerRef.current?.likeRef.current.handleLike();
           }
@@ -263,9 +273,12 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
               className={style.mySwiper}
               onSwiper={swiper => (refSwiper.current = swiper)}
               direction="vertical"
-              preventClicksPropagation={false}
+              // preventClicksPropagation={false}
               onSlideChange={onSlideChange}
               onSliderFirstMove={() => {
+                if(activeIndex === 0 || activeIndex === list.length - 1) {
+                  return
+                }
                 setTouching(true)
                 console.log('fm')
               }}
@@ -276,26 +289,25 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
               onSlideChangeTransitionEnd={() =>{
                 console.log('et')
                 // setTouching(false)
-              } }
+              }}
               allowSlideNext={activeIndex !== list.length - 1}
               allowSlidePrev={activeIndex !== 0}
             >
-              {/*onTouchEnd={() => setTouching(false)}*/}
-              {/*onTouchMove={() => setTouching(true)}*/}
               {list.map((item: any, i: number) => {
                 return (
                   <SwiperSlide key={item.id}>
                     {({ isActive }) => (
-                      <SliderItem key={item.id} data={item} index={i} isTouching={isTouching} isActive={isActive} />
+                      <SliderItem key={item.id} data={item} index={i} isTouching={isTouching} isActive={isActive} >
+                        <div className={style.veplayerContainer}>
+                          <div ref={containerRef} id='veplayer-container'></div>
+                        </div>
+                      </SliderItem>
                     )}
                   </SwiperSlide>
                 );
               })}
             </Swiper>
           )}
-        </div>
-        <div className={style.veplayerContainer}>
-          <div ref={containerRef}></div>
         </div>
         {showUnmuteBtn && (
           <div className={style.unmute} onClick={onUnmuteClick}>
@@ -306,9 +318,11 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, onChange }) => {
           </div>
         )}
         <div className={style.foot} onClick={() => setSelectVisible(!selectVisible)}>
-          <SelectIcon className={style.selectIcon} />
-          <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
-          <UpArrowIcon className={style.selectArrow} />
+          <div className={style.footContent}>
+            <SelectIcon className={style.selectIcon} />
+            <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
+            <UpArrowIcon className={style.selectArrow} />
+          </div>
         </div>
       </div>
 
