@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, MouseEvent } from 'react';
+import React, { PropsWithChildren, useState, MouseEvent, useRef, useEffect } from 'react';
 import LikeIcon from '../../../../assets/svg/like.svg?react';
 import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
@@ -30,6 +30,14 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
 
   const navigate = useNavigate();
   const bottomText = `观看完整短剧·全${totalEpisodeNumber}集`;
+
+  const favNumRef = useRef('');
+  const likeNumRef = useRef('');
+
+  useEffect(() => {
+    favNumRef.current = (Math.random() * 50 + 50).toFixed(1);
+    likeNumRef.current = (Math.random() * 50 + 10).toFixed(1);
+  }, []);
 
   const onBottomBtnClick = (e: MouseEvent) => {
     e.stopPropagation();
@@ -70,7 +78,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
           }}
         >
           {isLike ? <LikeActiveIcon className={style.icon} /> : <LikeIcon className={style.icon} />}
-          <div className={style.num}>10.2w</div>
+          <div className={style.num}>{`${likeNumRef.current}w`}</div>
         </div>
         <div
           className={style.btnItem}
@@ -80,7 +88,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
           }}
         >
           {isFav ? <FavActiveIcon className={style.icon} /> : <FavIcon className={style.icon} />}
-          <div className={style.num}>66.3w</div>
+          <div className={style.num}>{`${favNumRef.current}w`}</div>
         </div>
       </div>
       <div className={style.bottom} onClick={e => e.stopPropagation()}>

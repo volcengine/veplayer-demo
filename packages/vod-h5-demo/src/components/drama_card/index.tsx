@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Ellipsis } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
 import PlayIcon from '../../assets/svg/play.svg?react';
 import { Viewer } from '@volcengine/imagex-react';
+import { useUpdate } from '../../hooks';
 
 import style from './index.module.less';
 
@@ -28,6 +29,15 @@ const DramaCard: React.FC<IDramaCardProps> = ({
     latestEpisodeNumber === totalEpisodeNumber ? `全${totalEpisodeNumber}集` : `更新至${latestEpisodeNumber}集`;
   const handleClick = useCallback(() => navigate(`/playlet/theater/?id=${dramaId}`), [dramaId, navigate]);
 
+  const update = useUpdate();
+  const numRef = useRef('');
+
+  useEffect(() => {
+    numRef.current = (Math.random() * 50 + 10).toFixed(1);
+    update();
+    console.log('dram', numRef.current);
+  }, []);
+
   return (
     <div className={style.card} onClick={handleClick}>
       <div className={style.content}>
@@ -49,7 +59,7 @@ const DramaCard: React.FC<IDramaCardProps> = ({
           <div className={style.mask} />
           <div className={style.play_count}>
             <PlayIcon />
-            <span>29.3w</span>
+            <span>{`${numRef.current}w`}</span>
           </div>
         </div>
         <div className={style.foot}>

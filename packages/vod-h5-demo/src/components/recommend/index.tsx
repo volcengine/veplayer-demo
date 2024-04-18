@@ -73,6 +73,12 @@ const Recommend: React.FC<IRecommend> = ({
     }
   }, [current, isRecommend]);
 
+  useEffect(() => {
+    return () => {
+      toastRef.current && toastRef.current?.close();
+    };
+  }, []);
+
   console.log('recommend list:', list);
 
   return loading ? (

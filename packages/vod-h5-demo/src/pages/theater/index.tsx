@@ -57,6 +57,12 @@ function Theater() {
   }, [current]);
 
   useEffect(() => {
+    return () => {
+      toastRef.current && toastRef.current?.close();
+    };
+  }, []);
+
+  useEffect(() => {
     const scrollFn = () => {
       console.log('sss');
       window.scrollTo({ left: 0, top: 0 });

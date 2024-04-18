@@ -302,7 +302,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
             >
               {list.map((item: any, i: number) => {
                 return (
-                  <SwiperSlide key={item.id}>
+                  <SwiperSlide key={`${item.id}-${i}`}>
                     {({ isActive }) => (
                       <SliderItem
                         key={item.id}

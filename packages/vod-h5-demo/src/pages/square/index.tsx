@@ -11,7 +11,7 @@ import Recommend from '../../components/recommend';
 
 import style from './index.module.less';
 import { useEffect } from 'react';
-import { useUpdate } from '../theater/hooks';
+import { useUpdate } from '../../hooks';
 
 const TheaterKey = 'square';
 const RecommendKey = 'recommend';
@@ -96,8 +96,8 @@ function Square() {
         <SwiperSlide>
           <div>
             <Grid className={style.content} columns={3} gap={[8, 16]}>
-              {list.map(item => (
-                <Grid.Item>
+              {list.map((item, index) => (
+                <Grid.Item key={index}>
                   <DramaCard
                     dramaId={item.dramaId}
                     dramaTitle={item.dramaTitle}
