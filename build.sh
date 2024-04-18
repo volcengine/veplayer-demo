@@ -15,5 +15,3 @@ pnpm -v
 pnpm install
 cd packages/vod-h5-demo
 pnpm build
-
-mkdir output
