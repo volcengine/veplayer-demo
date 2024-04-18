@@ -37,6 +37,7 @@
 .recommend-active {
   background-color: transparent;
   color: #ffffff;
+
   :global {
     .adm-tabs-header {
       color: rgba(255, 255, 255, 0.6);
@@ -50,12 +51,15 @@
       --active-title-color: #fff;
     }
   }
-
 }
 
 .recommend-inactive {
   background-color: #fff;
   color: #000000;
+
+  .head {
+    background-color: #ffffff;
+  }
 
   :global {
     .adm-tabs-header {

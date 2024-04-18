@@ -66,21 +66,16 @@ function Square() {
     }, []
   )
 
-
-  const onTabClick =(key) => {
-    console.log('tttt',key)
-  }
-
   return (
     <div className={`${style.main} ${isRecommendActive ? style.recommendActive : style.recommendInactive}`}>
       <NavBar className={style.head} onBack={back}>
-        <Tabs activeKey={tabs[activeIndex].key}   onChange={(key) => {
+        <Tabs activeKey={tabs[activeIndex].key} onChange={(key) => {
           const index = tabs.findIndex((item) => item.key === key);
           setActiveIndex(index)
           swiperRef.current?.swiper.slideTo(index)
         }}>
           {tabs.map(item => (
-            <Tabs.Tab title={item.title} key={item.key} onClick={()=> onTabClick(item.key)} />
+            <Tabs.Tab title={item.title} key={item.key} />
           ))}
         </Tabs>
       </NavBar>
@@ -120,7 +115,7 @@ function Square() {
         </SwiperSlide>
         <SwiperSlide style={{height: '100vh'}}>
           <div className={style.recommend}>
-            <Recommend isRecommend isRecommendActive={isRecommendActive} isSliderMoving={isSliderMoving} />
+            <Recommend isRecommend={true} isRecommendActive={isRecommendActive} isSliderMoving={isSliderMoving} />
           </div>
         </SwiperSlide>
       </Swiper>

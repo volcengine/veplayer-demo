@@ -51,7 +51,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isTouching, isActive, data, in
           objectPosition="center"
           src={coverUrl}
           imageSizes={imageSizes}
-          loader={({ src, format, width }) => {
+          loader={({ src, format, width, extra }) => {
             const path = src.split('/');
             const finalPath = path.splice(1).join('/')
             return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`}

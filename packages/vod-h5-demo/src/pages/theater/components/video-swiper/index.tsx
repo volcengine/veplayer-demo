@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Swiper, SwiperSlide, SwiperClass } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import type { SwiperClass, SwiperRef } from 'swiper/react';
 import VePlayer, { Events } from '@volcengine/veplayer';
 import type { IPlayerConfig } from '@volcengine/veplayer';
 import type { IVideoDataWithModel } from '../../../../interface';
@@ -20,11 +21,17 @@ interface IVideoSwiperProps {
   isRecommend?: boolean;
   isRecommendActive?: boolean;
   isSliderMoving?: boolean;
+  startTime?: number;
   onChange: (v: number) => any;
 }
 
-const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecommendActive,isSliderMoving,  onChange }) => {
-  const refSwiper = useRef<SwiperClass>();
+const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list,
+                                                    isRecommend,
+                                                    isRecommendActive,
+                                                    isSliderMoving,
+                                                    startTime = 0,
+                                                    onChange }) => {
+  const swiperRef = useRef<SwiperRef>();
   const wrapRef = useRef<HTMLElement>(null);
   const sdkRef = useRef<VePlayer>();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,33 +43,25 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
+  console.log('swiper')
 
   const current: IVideoDataWithModel = list?.[activeIndex];
 
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
 
-  function pauseOrPlay() {
-    if (sdkRef.current?.player) {
-      const player = sdkRef.current.player;
-      if (player.paused) {
-        player.play();
-      } else {
-        player.pause();
-      }
-    }
-  }
-
   /**
    * 展示静音按钮
    */
   function showUnmute() {
     if (sdkRef.current?.player) {
-      const player = sdkRef.current.player;
-      if (player.muted || player.video.muted) {
-        setShowUnmuteBtn(true);
-      } else {
-        setShowUnmuteBtn(false);
+      const player = sdkRef.current?.player;
+      if(player) {
+        if (player.muted || player.video.muted) {
+          setShowUnmuteBtn(true);
+        } else {
+          setShowUnmuteBtn(false);
+        }
       }
     }
   }
@@ -75,22 +74,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
     }
   }
 
-  // useDoubleClick({
-  //   onSingleClick: e => {
-  //     console.log('se', e);
-  //     pauseOrPlay();
-  //   },
-  //   onDoubleClick: () => {
-  //     console.log('dbclick');
-  //   },
-  //   ref: wrapRef,
-  // });
-
   const onSlideChange = (swiper: SwiperClass) => {
     console.log('tttt', isTouching, swiper.activeIndex, activeIndex);
-    if (isFirstSlide && swiper.realIndex === 1) {
-      setFirstSlide(false);
-    }
     if (swiper.activeIndex !== activeIndex) {
       playNext(swiper.activeIndex);
     }
@@ -132,7 +117,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
         content: '看完了！'
       })
     } else {
-      setActiveIndex(activeIndex + 1);
+      console.log('qie xia yige ',)
+      swiperRef.current?.slideNext();
     }
   }
 
@@ -140,21 +126,21 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
     if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
       const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
+      console.log('playInfoList', playInfoList);
       const url = playInfoList?.[0]?.MainPlayUrl;
-      const options: IPlayerConfig = {
+      const options = {
         url,
         // el: containerRef.current,
         id: 'veplayer-container',
-        mobile: {
-          gradient: 'none',
-        },
+        startTime,
         autoplay: !isRecommend,
-        loop: true,
         enableDegradeMuteAutoplay: true,
         controls: {
           mode: 'bottom',
         },
         mobile: {
+          gradient: 'none',
+          darkness: false,
           disableGesture: isRecommend,
           isTouchingSeek: !isRecommend,
         },
@@ -176,7 +162,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
           'playbackrate',
           'sdkDefinitionPlugin',
         ],
-
         codec: 'h264',
         start: {
           disableAnimate: true,
@@ -213,7 +198,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
   useEffect(() => {
     setTimeout(() => {
       initPlayer();
-    }, 100);
+    }, 0);
   }, [current]);
 
   // 组件卸载时销毁播放器
@@ -233,6 +218,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
       insertParentNode?.insertBefore(playerContainer, null);
     }
   }, [activeIndex, onChange]);
+
 
   useEffect(() => {
     if(isTouching) {
@@ -257,50 +243,32 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
           sdkRef.current?.player?.play();
         }
       } else {
-        timerRef.current && clearTimeout(timerRef.current)
-          timerRef.current = null
           console.warn('>>>pause')
           sdkRef.current?.player?.pause()
-
       }
     }
   }, [isRecommend, isRecommendActive, isSliderMoving]);
 
-  const handleClick = (function () {
-    let times = 0;
-    const timeout = 300;
-    return () => {
-      times++;
-      if (times === 1) {
-        setTimeout(function () {
-          if (times === 1) {
-            // pauseOrPlay();
-          } else {
-            // playerRef.current?.likeRef.current.handleLike();
-          }
-          times = 0;
-        }, timeout);
-      }
-    };
-  })();
 
-  console.warn('>>>', isRecommend)
+  const onSelectClick = (index) => {
+    swiperRef.current?.slideTo(index);
+    setActiveIndex(index);
+    playNext(index)
+  }
 
   return (
     <>
       <div className={isRecommend ? style.recommendMain : style.main}>
         <div
           className={style.swiperContainer}
-          onClick={handleClick}
           ref={wrapRef as React.MutableRefObject<HTMLDivElement>}
         >
           {list?.length > 0 && (
             <Swiper
               className={style.mySwiper}
-              onSwiper={swiper => (refSwiper.current = swiper)}
               direction="vertical"
-              // preventClicksPropagation={false}
-              onSlideChange={onSlideChange}
+              onSwiper={(swiper) => swiperRef.current = swiper}
+              onActiveIndexChange={onSlideChange}
               onSliderFirstMove={() => {
                 if(activeIndex === 0 || activeIndex === list.length - 1) {
                   return
@@ -376,7 +344,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({ list, isRecommend, isRecomme
           </div>
           <div className={style.selectContent}>
             {list.map((_item, index) => (
-              <SelectBtn key={index} isActive={index === activeIndex} index={index} onClick={() => playNext(index)} />
+              <SelectBtn key={index} isActive={index === activeIndex} index={index} onClick={() => onSelectClick(index)} />
             ))}
           </div>
         </div>

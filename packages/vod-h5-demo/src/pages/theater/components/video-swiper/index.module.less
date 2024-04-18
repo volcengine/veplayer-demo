@@ -50,9 +50,20 @@
   //pointer-events: none;
   opacity: 1;
 
+  //:global {
+  //  xg-mask {
+  //    display: none;
+  //  }
+  //}
+
   :global {
-    xg-mask {
+    .xgplayer-unmute {
       display: none;
+    }
+
+    .xgplayer .xg-pos {
+      left: 18px;
+      right: 10px;
     }
   }
 }
@@ -103,11 +114,7 @@
   }
 }
 
-:global {
-  .xgplayer-unmute {
-    display: none;
-  }
-}
+
 
 .foot {
   position: relative;
@@ -120,7 +127,6 @@
     display: flex;
     align-items: center;
     height: 40px;
-    padding: 0 12px;
     margin: 0 12px;
     background: rgb(255 255 255 / 15%);
     border-radius: 8px;
@@ -223,9 +229,6 @@
     height: 76px;
     background: var(--ConstBG-ToastDefault, #393b44);
     border-radius: 12px;
-    //display: flex;
-    //align-items: center;
-    //justify-content: center;
   }
 
   @keyframes rotate {

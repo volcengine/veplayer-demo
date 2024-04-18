@@ -17,6 +17,7 @@ function Theater() {
   const [urlState] = useUrlState();
   const toastRef = useRef<ToastHandler>();
   const dramaId = urlState.id;
+  const startTime = urlState.start || 0;
   const [{ data, loading }] = useAxios(
     {
       url: API_PATH.GetDramaEpisodeWithVideoModel,
@@ -34,7 +35,7 @@ function Theater() {
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const list: IVideoDataWithModel[] = (data?.result || []).map(item => ({...item,videoModel: parseModel(item.videoModel)}))
-  const current: IVideoDataWithModel = list?.[activeIndex];
+  const current: IVideoDataWithModel | undefined = list?.[activeIndex];
   const episodeNumber = current?.episodeDetail?.episodeNumber;
 
   useEffect(() => {

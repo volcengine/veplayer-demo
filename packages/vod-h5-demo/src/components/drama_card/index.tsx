@@ -35,7 +35,9 @@ const DramaCard: React.FC<IDramaCardProps> = ({
           {/*<img src={coverUrl} alt="" />*/}
           <Viewer
             className={style.img}
-            layout="fill"
+            layout="responsive"
+            objectFit="cover"
+            objectPosition="center"
             placeholder="skeleton"
             src={coverUrl}
             imageSizes={imageSizes}
