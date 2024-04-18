@@ -24,7 +24,7 @@ export default defineConfig({
       : JSON.stringify('100.81.56.85:5173/video-api/'),
   },
   build: {
-    outDir: path.resolve(__dirname, 'dist'),
+    outDir: path.resolve(__dirname, 'output'),
   },
   server: {
     port: 5173,
