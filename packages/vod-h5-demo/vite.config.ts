@@ -23,6 +23,7 @@ export default defineConfig({
       ? JSON.stringify('https://volcengineapi-boe-stable.byted.org')
       : JSON.stringify('100.81.56.85:5173/video-api/'),
   },
+  base: isProd ? '//veplayer-h5.gf-boe.bytedance.net/veplayer-h5' : '',
   build: {
     outDir: path.resolve(__dirname, 'output'),
   },
