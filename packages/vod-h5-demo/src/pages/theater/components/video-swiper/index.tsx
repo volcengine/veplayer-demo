@@ -52,6 +52,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
 
+  console.log('list', list);
+
   /**
    * 展示静音按钮
    */
@@ -78,6 +80,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }
 
   const onSlideChange = (swiper: SwiperClass) => {
+    console.warn('activeIndexChange', swiper);
     if (swiper.realIndex !== activeIndex) {
       playNext(swiper.realIndex);
     }
@@ -109,6 +112,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           url,
         })
         .then(() => {
+          console.warn('planext success', index);
           sdkRef.current?.player.play();
         });
     }
@@ -188,6 +192,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       window.playerSdk = playerSdk;
       playerSdk.once(Events.COMPLETE, () => {
         const player = playerSdk.player;
+        player.on('urlchange', () => console.log('urlchange'));
         if (isRecommend) {
           // 通过插件实例调用
           player.getPlugin('progress').useHooks('dragstart', () => {

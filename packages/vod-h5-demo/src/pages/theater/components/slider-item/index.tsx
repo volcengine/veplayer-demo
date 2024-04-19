@@ -4,7 +4,7 @@ import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
 import FavActiveIcon from '../../../../assets/svg/fav-active.svg?react';
 import DIcon from '../../../../assets/svg/d.svg?react';
-import { IVideoData } from '../../../../interface';
+import { IVideoData, IVideoDataWithModel } from '../../../../interface';
 
 import style from './index.module.less';
 // import { Viewer } from '@volcengine/imagex-react';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface ISliderItemProps extends PropsWithChildren {
   isActive: boolean;
-  data: IVideoData;
+  data: IVideoDataWithModel;
   index: number;
   isRecommend?: boolean;
   getCurrentTime: () => number;
@@ -21,7 +21,7 @@ interface ISliderItemProps extends PropsWithChildren {
 // const imageSizes = [600, 750, 800, 960];
 
 const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecommend, getCurrentTime, children }) => {
-  const coverUrl = data.coverUrl;
+  const coverUrl = data?.videoModel?.PosterUrl ?? data?.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
   const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
