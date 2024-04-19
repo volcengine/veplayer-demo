@@ -81,9 +81,10 @@
     position: absolute;
     z-index: 2;
     right: 70px;
-    bottom: 10px;
+    bottom: 12px;
     left: calc(12px + env(safe-area-inset-left));
     left: calc(12px + constant(safe-area-inset-left));
+    text-align: justify;
 
     .title {
       margin-bottom: 5px;
@@ -105,14 +106,24 @@
       line-height: normal;
       color: #fff;
       user-select: none;
+
+      .split {
+        display: inline-block;
+        width: 1px;
+        height: 13px;
+        background-color: rgba(255, 255, 255, .5);
+        box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.30);
+        margin: 0 8px;
+        vertical-align: middle;
+      }
     }
 
     .info {
       position: relative;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       height: 48px;
-      width: fit-content;
       padding: 0 12px;
       line-height: 48px;
       background: rgb(41 41 41 / 34%);
@@ -133,9 +144,9 @@
         font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 
         .icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 4px;
+          width: 12px;
+          height: 12px;
+          margin-right: 7px;
         }
       }
 

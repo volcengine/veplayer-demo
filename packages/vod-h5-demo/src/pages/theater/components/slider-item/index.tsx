@@ -25,11 +25,12 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
   const episodeDesc = data.episodeDetail?.episodeDesc;
   const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
   const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
+  const episodeNumber = data.episodeDetail?.episodeNumber;
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const bottomText = `观看完整短剧·全${totalEpisodeNumber}集`;
+  const bottomText = `观看完整短剧 · 全${totalEpisodeNumber}集`;
 
   const favNumRef = useRef('');
   const likeNumRef = useRef('');
@@ -99,7 +100,17 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
       </div>
       <div className={style.bottom} onClick={e => e.stopPropagation()}>
         <div className={style.title}>{dramaTitle}</div>
-        <div className={style.des}>{episodeDesc}</div>
+        <div className={style.des}>
+          {isRecommend && episodeNumber ? (
+            <>
+              {`第${episodeNumber}集`}
+              <span className={style.split} />
+              {episodeDesc}
+            </>
+          ) : (
+            episodeDesc
+          )}
+        </div>
         {isRecommend && (
           <div className={style.info}>
             <div className={style.text}>
