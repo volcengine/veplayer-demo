@@ -32,7 +32,7 @@ export default defineConfig({
   },
   define: {
     __API_BASE_URL__: isOnline
-      ? JSON.stringify('https://vevod-demo-server.volcvod.com/api/general/v1/')
+      ? JSON.stringify('https://vevod-demo-server.volcvod.com')
       : isProd
         ? JSON.stringify('http://vod-sdk-playground-test.byted.org')
         : JSON.stringify('/proxy-api'),
