@@ -54,7 +54,7 @@ const DramaCard: React.FC<IDramaCardProps> = ({
               // const path = src.split('/');
               // const finalPath = path.splice(1).join('/');
               // return `${__IMAGEX_DOMAIN__}/${finalPath}~${__IMAGEX_TEMPLATE__}:${width}:q75.${format}`;
-              return extra.origin;
+              return extra.origin.replace(/^http:/, 'https:');
             }}
           ></Viewer>
           <div className={style.mask} />
