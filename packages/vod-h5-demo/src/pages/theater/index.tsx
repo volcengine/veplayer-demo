@@ -8,6 +8,7 @@ import useAxios from 'axios-hooks';
 import { API_PATH } from '../../api';
 import VideoSwiper from './components/video-swiper';
 import { parseModel } from '../../utils';
+import BackIcon from '../../assets/svg/back_v2.svg?react';
 
 import style from './index.module.less';
 import 'swiper/less';
@@ -78,7 +79,12 @@ function Theater() {
     <div className={style.loadingMask}></div>
   ) : (
     <div className={style.wrap}>
-      <NavBar className={style.head} left={episodeNumber ? `第${episodeNumber}集` : ''} onBack={back} />
+      <NavBar
+        backArrow={<BackIcon />}
+        className={style.head}
+        left={episodeNumber ? <span>{`第${episodeNumber}集`}</span> : ''}
+        onBack={back}
+      />
       <VideoSwiper startTime={startTime} list={list} onChange={setActiveIndex} />
     </div>
   );
