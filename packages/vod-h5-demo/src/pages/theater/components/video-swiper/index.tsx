@@ -320,6 +320,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
                         getCurrentTime={getCurrentTime}
                       >
                         <div className={style.veplayerContainer}>
+                          <div className="veplayer-cus-gradient-wrapper" />
                           <div ref={containerRef} id="veplayer-container"></div>
                         </div>
                       </SliderItem>
