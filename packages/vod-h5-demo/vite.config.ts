@@ -50,7 +50,7 @@ export default defineConfig({
         : JSON.stringify(''),
   },
   base: isOnline
-    ? '//demo.volcvideo.com/common/veplayer/h5'
+    ? '//veplayer-h5.gf.bytedance.net/common/veplayer/h5'
     : isProd
       ? '//veplayer-h5.gf-boe.bytedance.net/veplayer-h5'
       : '',
