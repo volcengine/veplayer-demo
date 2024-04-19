@@ -71,6 +71,7 @@ function Square() {
     <div className={`${style.main} ${isRecommendActive ? style.recommendActive : style.recommendInactive}`}>
       <NavBar className={style.head} onBack={back}>
         <Tabs
+          activeLineMode="fixed"
           activeKey={tabs[activeIndex].key}
           onChange={key => {
             const index = tabs.findIndex(item => item.key === key);
