@@ -41,7 +41,7 @@ function Square() {
     { manual: false },
   );
 
-  const list: IDramaInfo[] = [...(data?.result || []), ...(data?.result || [])];
+  const list: IDramaInfo[] = data?.result || [];
   const [activeIndex, setActiveIndex] = useState(0);
   const [isSliderMoving, setIsSliderMoving] = useState(false);
   const [isProgressDragging, setProgressDragging] = useState(false);
