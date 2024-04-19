@@ -2,8 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/home';
 import { featRoutes } from './page.tsx';
 
-// const isProd = process.env.NODE_ENV === 'production';
-
 const router = createBrowserRouter(
   [
     {
@@ -12,7 +10,7 @@ const router = createBrowserRouter(
     },
     ...featRoutes,
   ],
-  // { basename: isProd ? '/veplayer-h5' : '' },
+  { basename: __BASE__PATH__ },
 );
 
 function App() {

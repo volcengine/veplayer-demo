@@ -8,6 +8,8 @@ import basicSsl from '@vitejs/plugin-basic-ssl';
 
 const isProd = process.env.NODE_ENV === 'production';
 
+const isOnline = process.env.BUILD_TYPE === 'online';
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -29,15 +31,29 @@ export default defineConfig({
     extensions: ['.ts', '.tsx', '.js'],
   },
   define: {
-    __API_BASE_URL__: isProd
-      ? JSON.stringify('http://vod-sdk-playground-test.byted.org')
-      : JSON.stringify('/proxy-api'),
-    __AuthorId__: JSON.stringify('frank_drama_test_5'),
-    __PLAY_DOMAIN__: isProd
-      ? JSON.stringify('https://volcengineapi-boe-stable.byted.org')
-      : JSON.stringify('100.81.56.85:5173/video-api/'),
+    __API_BASE_URL__: isOnline
+      ? JSON.stringify('https://vevod-demo-server.volcvod.com/api/general/v1/')
+      : isProd
+        ? JSON.stringify('http://vod-sdk-playground-test.byted.org')
+        : JSON.stringify('/proxy-api'),
+    __AuthorId__: isOnline ? JSON.stringify('mini-drama-video') : JSON.stringify('frank_drama_test_5'),
+    __PLAY_DOMAIN__: isOnline
+      ? JSON.stringify('')
+      : isProd
+        ? JSON.stringify('https://volcengineapi-boe-stable.byted.org')
+        : JSON.stringify('100.81.56.85:5173/video-api/'),
+
+    __BASE__PATH__: isOnline
+      ? JSON.stringify('/common/veplayer/h5')
+      : isOnline
+        ? JSON.stringify('/veplayer-h5')
+        : JSON.stringify(''),
   },
-  base: isProd ? '//veplayer-h5.gf-boe.bytedance.net/veplayer-h5' : '',
+  base: isOnline
+    ? '//demo.volcvideo.com/common/veplayer/h5'
+    : isProd
+      ? '//veplayer-h5.gf-boe.bytedance.net/veplayer-h5'
+      : '',
   build: {
     outDir: path.resolve(__dirname, 'output'),
   },

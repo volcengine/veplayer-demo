@@ -4,7 +4,7 @@ import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
 import FavActiveIcon from '../../../../assets/svg/fav-active.svg?react';
 import DIcon from '../../../../assets/svg/d.svg?react';
-import { IVideoData, IVideoDataWithModel } from '../../../../interface';
+import { IVideoDataWithModel } from '../../../../interface';
 
 import style from './index.module.less';
 // import { Viewer } from '@volcengine/imagex-react';
