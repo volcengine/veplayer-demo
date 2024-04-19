@@ -163,7 +163,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           mode: 'bottom',
         },
         mobile: {
-          gradient: 'bottom',
+          gradient: 'none',
           darkness: false,
           disableGesture: isRecommend,
           isTouchingSeek: !isRecommend,
