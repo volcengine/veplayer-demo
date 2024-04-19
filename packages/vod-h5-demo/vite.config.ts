@@ -48,6 +48,10 @@ export default defineConfig({
       : isOnline
         ? JSON.stringify('/veplayer-h5')
         : JSON.stringify(''),
+    __IMAGEX_DOMAIN__: isOnline
+      ? JSON.stringify('//vod-demo-cover.volcimagex.cn')
+      : JSON.stringify('//imagex-vod-drama.byte-test.com'),
+    __IMAGEX_TEMPLATE__: isOnline ? JSON.stringify('tplv-6susrskwwa-resize') : JSON.stringify('tplv-j8hmcvvxia-resize'),
   },
   base: isOnline
     ? '//veplayer-h5.gf.bytedance.net/common/veplayer/h5'
