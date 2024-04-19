@@ -7,7 +7,7 @@ import DIcon from '../../../../assets/svg/d.svg?react';
 import { IVideoData } from '../../../../interface';
 
 import style from './index.module.less';
-import { Viewer } from '@volcengine/imagex-react';
+// import { Viewer } from '@volcengine/imagex-react';
 import { useNavigate } from 'react-router-dom';
 
 interface ISliderItemProps extends PropsWithChildren {
@@ -18,7 +18,7 @@ interface ISliderItemProps extends PropsWithChildren {
   getCurrentTime: () => number;
 }
 
-const imageSizes = [600, 750, 800, 960];
+// const imageSizes = [600, 750, 800, 960];
 
 const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecommend, getCurrentTime, children }) => {
   const coverUrl = data.coverUrl;
@@ -51,18 +51,24 @@ const SliderItem: React.FC<ISliderItemProps> = ({ isActive, data, index, isRecom
   return (
     <div className={style.wrapper}>
       <div className={`${style.poster} ${isActive ? style.posterHide : style.posterShow}`}>
-        <Viewer
-          layout="fill"
-          placeholder="skeleton"
-          objectFit="cover"
-          objectPosition="center"
+        {/*<Viewer*/}
+        {/*  layout="fill"*/}
+        {/*  placeholder="skeleton"*/}
+        {/*  objectFit="cover"*/}
+        {/*  objectPosition="center"*/}
+        {/*  src={coverUrl}*/}
+        {/*  imageSizes={imageSizes}*/}
+        {/*  loader={({ src, format, width }) => {*/}
+        {/*    const path = src.split('/');*/}
+        {/*    const finalPath = path.splice(1).join('/');*/}
+        {/*    return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`;*/}
+        {/*  }}*/}
+        {/*/>*/}
+
+        <img
           src={coverUrl}
-          imageSizes={imageSizes}
-          loader={({ src, format, width }) => {
-            const path = src.split('/');
-            const finalPath = path.splice(1).join('/');
-            return `//vod-demo-cover.volcimagex.cn/${finalPath}~tplv-j8hmcvvxia-resize:${width}:q75.${format}`;
-          }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+          alt="poster"
         />
       </div>
       <div id={`swiper-video-container-${index}`} className={style.videoContainer}>

@@ -295,6 +295,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
             <Swiper
               className={style.mySwiper}
               direction="vertical"
+              // slidesPerView={2}
+              // spaceBetween={30}
               onSwiper={swiper => (swiperRef.current = swiper)}
               onActiveIndexChange={onSlideChange}
               allowSlideNext={activeIndex !== list.length - 1}
