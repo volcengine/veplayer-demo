@@ -35,8 +35,7 @@ const DramaCard: React.FC<IDramaCardProps> = ({
   useEffect(() => {
     numRef.current = (Math.random() * 50 + 10).toFixed(1);
     update();
-    console.log('dram', numRef.current);
-  }, []);
+  }, [update]);
 
   return (
     <div className={style.card} onClick={handleClick}>

@@ -1,7 +1,7 @@
 import style from './index.module.less';
-import { featureList } from '../../page.tsx';
-import SceneCard from '../../components/scene_card';
-import BgImg from '../../assets/img/bg.png';
+import { featureList } from '@/page.tsx';
+import SceneCard from './scene_card';
+import BgImg from '@/assets/img/bg.png';
 
 function Home() {
   return (
@@ -14,7 +14,7 @@ function Home() {
             <div className={style.title_sub}>体验一站式视频解决方案</div>
           </div>
           {featureList.map(item => (
-            <SceneCard {...item} />
+            <SceneCard key={item.key} icon={item.icon} name={item.name} jump={item.jump} />
           ))}
         </div>
       </div>

@@ -4,7 +4,7 @@ import { NavBar, Toast } from 'antd-mobile';
 import useUrlState from '@ahooksjs/use-url-state';
 import useAxios from 'axios-hooks';
 import { API_PATH } from '@/api';
-import VideoSwiper from './components/video-swiper';
+import VideoSwiper from '@/components/video-swiper';
 import { parseModel } from '@/utils';
 import BackIcon from '@/assets/svg/back_v2.svg?react';
 

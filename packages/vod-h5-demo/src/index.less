@@ -2,32 +2,31 @@
   padding: 0;
   margin: 0;
   user-select: none;
+  font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 }
 
 html,
 body {
   margin: 0;
   background-color: #F4F5F7;
-  font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+}
+:root {
+  --pc-max-width: 750px;
 }
 
 #root {
   width: 100%;
   height: 100%;
-  .xgplayer-mobile .xgplayer-progress .xgplayer-progress-btn {
-    background-color: rgba(255, 255, 255, 0) !important;
-    box-shadow: none;
-  }
 }
 
 @media screen and (width >= 960px) {
   #root {
-    width: 820px;
+    width: var(--pc-max-width);
     margin: auto;
   }
 
   .adm-popup-body-position-bottom {
-    width: 820px;
-    margin-left: calc((100% - 820px) / 2);
+    width: var(--pc-max-width);
+    margin-left: calc((100% - var(--pc-max-width)) / 2);
   }
 }

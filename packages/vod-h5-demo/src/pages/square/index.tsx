@@ -4,8 +4,9 @@ import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, SwiperRef, SwiperClass } from 'swiper/react';
 import { API_PATH } from '@/api';
-import DramaCard from '@/components/drama_card';
-import Recommend from '@/components/recommend';
+import DramaCard from './components/drama_card';
+import SkeletonCard from './components/drama_card/skeleton_card.tsx';
+import Recommend from './components/recommend';
 import { hasScrollbar } from '@/utils';
 import { useUpdate } from '@/hooks';
 
@@ -28,7 +29,7 @@ const tabs = [
 ];
 
 function Square() {
-  const [{ data }] = useAxios(
+  const [{ data, loading }] = useAxios(
     {
       url: API_PATH.ListDrama,
       method: 'POST',
@@ -56,7 +57,7 @@ function Square() {
 
   useEffect(() => {
     update();
-  }, [showFoot]);
+  }, [showFoot, update, loading]);
 
   const isRecommendActive = activeIndex === 1;
 
@@ -97,17 +98,23 @@ function Square() {
         <SwiperSlide>
           <div>
             <Grid className={style.content} columns={3} gap={[8, 16]}>
-              {list.map((item, index) => (
-                <Grid.Item key={index}>
-                  <DramaCard
-                    dramaId={item.dramaId}
-                    dramaTitle={item.dramaTitle}
-                    coverUrl={item.coverUrl}
-                    totalEpisodeNumber={item.totalEpisodeNumber}
-                    latestEpisodeNumber={item.latestEpisodeNumber}
-                  />
-                </Grid.Item>
-              ))}
+              {loading
+                ? new Array(9).fill(1).map((item, index) => (
+                    <Grid.Item key={index}>
+                      <SkeletonCard />
+                    </Grid.Item>
+                  ))
+                : list.map((item, index) => (
+                    <Grid.Item key={index}>
+                      <DramaCard
+                        dramaId={item.dramaId}
+                        dramaTitle={item.dramaTitle}
+                        coverUrl={item.coverUrl}
+                        totalEpisodeNumber={item.totalEpisodeNumber}
+                        latestEpisodeNumber={item.latestEpisodeNumber}
+                      />
+                    </Grid.Item>
+                  ))}
             </Grid>
             {showFoot && <div className={style.foot}>已展示全部资源</div>}
           </div>

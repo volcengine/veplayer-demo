@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite --host",
     "dev:online": "BUILD_TYPE=online vite --host",
-    "dev:https": "USE_HTTTPS=1 vite --host",
+    "dev:https": "BUILD_TYPE=online USE_HTTTPS=1 vite --host",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

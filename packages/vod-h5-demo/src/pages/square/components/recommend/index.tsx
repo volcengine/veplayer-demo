@@ -5,7 +5,7 @@ import useUrlState from '@ahooksjs/use-url-state';
 import type { IVideoDataWithModel } from '@/typings';
 import useAxios from 'axios-hooks';
 import { API_PATH } from '@/api';
-import VideoSwiper from '@/pages/theater/components/video-swiper';
+import VideoSwiper from '@/components/video-swiper';
 import { parseModel } from '@/utils';
 
 import style from './index.module.less';

@@ -116,8 +116,8 @@ export default defineConfig({
         }),
         autoprefixer({
           // 自动添加前缀的浏览器
-          overrideBrowserslist: ['Android 4.1', 'iOS 7.1', 'Chrome > 31', 'ie >= 8', 'last 2 versions'],
-          grid: true,
+          overrideBrowserslist: ['Android > 4.1', 'iOS >= 10', 'Chrome > 49', 'last 2 versions'],
+          grid: 'autoplace',
         }),
       ],
     },

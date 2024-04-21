@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, CSSProperties } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
 import { Popup, Toast } from 'antd-mobile';
@@ -9,6 +9,7 @@ import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
+import { selectDef, os } from '@/utils';
 
 import type { IPlayerConfig } from '@volcengine/veplayer';
 import type { IVideoDataWithModel } from '@/typings';
@@ -91,33 +92,40 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
    * 播放器下一个视频
    * @param {number} index - 当前swiper的index
    */
-  const playNext = (index: number) => {
-    if (sdkRef.current && index !== activeIndex) {
-      const next = list?.[index];
-      const playInfoList = next?.videoModel?.PlayInfoList || [];
-      const url = playInfoList?.[0]?.MainPlayUrl;
-      const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
-      if (!url) {
-        Toast.show({
-          icon: 'fail',
-          content: '数据异常',
-        });
+  const playNext = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= list.length) {
         return;
       }
-      setActiveIndex(index);
-      sdkRef.current?.player?.pause();
-      sdkRef.current?.getPlugin('poster')?.update(poster);
-      sdkRef.current
-        ?.playNext({
-          autoplay: true,
-          url,
-        })
-        .then(() => {
-          console.warn('planext success', index);
-          sdkRef.current?.player.play();
-        });
-    }
-  };
+      if (sdkRef.current && index !== activeIndex) {
+        const next = list?.[index];
+        const playInfoList = next?.videoModel?.PlayInfoList || [];
+        const def = selectDef(playInfoList, '720p');
+        if (!def?.MainPlayUrl) {
+          Toast.show({
+            icon: 'fail',
+            content: '数据异常',
+          });
+          return;
+        }
+        const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
+        swiperRef.current?.slideTo(index);
+        setActiveIndex(index);
+        sdkRef.current?.player?.pause();
+        sdkRef.current?.getPlugin('poster')?.update(poster);
+        sdkRef.current
+          ?.playNext({
+            autoplay: true,
+            url: def.MainPlayUrl,
+          })
+          .then(() => {
+            console.warn('planext success', index);
+            sdkRef.current?.player.play();
+          });
+      }
+    },
+    [activeIndex, list],
+  );
 
   const onEnded = () => {
     if (activeIndex === list.length - 1) {
@@ -125,26 +133,32 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         content: '看完了！',
       });
     } else {
-      console.log('qie xia yige ');
       swiperRef.current?.slideNext();
     }
   };
 
-  const initPlayer = () => {
+  const playNextIndex = () => {
+    playNext(activeIndex + 1);
+  };
+
+  const initPlayer = useCallback(() => {
     if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
       const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
-      const url = playInfoList?.[0]?.MainPlayUrl;
+      const def = selectDef(playInfoList, '720p');
+      if (!def?.MainPlayUrl) {
+        return;
+      }
       const options = {
-        url,
         id: 'veplayer-container',
+        url: def.MainPlayUrl,
         startTime,
         autoplay: !isRecommend,
         enableDegradeMuteAutoplay: true,
         closeVideoClick: false,
         closeVideoDblclick: true,
         videoFillMode: 'fillWidth',
-        codec: 'h264',
+        codec: def.Codec,
         ignores: [
           'moreButtonPlugin',
           'enter',
@@ -153,6 +167,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           'play',
           'time',
           'pip',
+          'replay',
           'playbackrate',
           'sdkDefinitionPlugin',
         ],
@@ -173,7 +188,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           isNeedRefreshButton: false,
         },
         start: {
-          disableAnimate: true,
+          // disableAnimate: true,
           isShowPause: true,
         },
         poster: {
@@ -184,8 +199,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         vodLogOpts: {
           vtype: 'MP4',
           tag: 'normal',
-          codec_type: 'h264',
-          line_app_id: 5627721,
+          codec_type: def.Codec,
+          line_app_id: 597335,
         },
       };
 
@@ -220,7 +235,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
       sdkRef.current = playerSdk;
     }
-  };
+  }, [activeIndex, current, isRecommend, onEnded, onProgressDrag, onProgressDragend, playNext, startTime]);
 
   // 组件加载时初始化播放器
   useEffect(() => {
@@ -284,8 +299,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }, [isRecommend, isRecommendActive, isSliderMoving]);
 
   const onSelectClick = (index: number) => {
-    swiperRef.current?.slideTo(index);
-    setActiveIndex(index);
     playNext(index);
   };
 
@@ -293,16 +306,21 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     return sdkRef?.current?.player?.currentTime || 0;
   };
 
+  const mainStyle: CSSProperties =
+    os.isMobile && (os.isWeixin || os.isLark) && isRecommend
+      ? {
+          height: 'calc(100% - 20px - env(safe-area-inset-bottom))',
+        }
+      : {};
+
   return (
     <>
-      <div className={isRecommend ? style.recommendMain : style.main}>
+      <div className={isRecommend ? style.recommendMain : style.main} style={mainStyle}>
         <div className={style.swiperContainer} ref={wrapRef as React.MutableRefObject<HTMLDivElement>}>
           {list?.length > 0 && (
             <Swiper
               className={style.mySwiper}
               direction="vertical"
-              // slidesPerView={2}
-              // spaceBetween={30}
               onSwiper={swiper => (swiperRef.current = swiper)}
               onActiveIndexChange={onSlideChange}
               allowSlideNext={activeIndex !== list.length - 1}
@@ -317,6 +335,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
                         data={item}
                         index={i}
                         isActive={isActive}
+                        activeIndex={activeIndex}
                         isRecommend={isRecommend}
                         getCurrentTime={getCurrentTime}
                       >
@@ -369,17 +388,21 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
               <CloseIcon onClick={() => setSelectVisible(false)} />
             </div>
           </div>
+          {/*<Grid className={style.selectContent} columns={5} gap={12}>*/}
           <div className={style.selectContent}>
             {list.map((_item, index) => (
+              // <Grid.Item key={index}>
               <SelectBtn
                 key={index}
                 isActive={index === activeIndex}
                 index={index}
                 onClick={() => onSelectClick(index)}
               />
+              // </Grid.Item>
             ))}
           </div>
         </div>
+        {/*</Grid>*/}
       </Popup>
     </>
   );
