@@ -50,11 +50,12 @@ const DramaCard: React.FC<IDramaCardProps> = ({
             placeholder="skeleton"
             src={coverUrl}
             imageSizes={imageSizes}
-            loader={({ extra }) => {
-              // const path = src.split('/');
-              // const finalPath = path.splice(1).join('/');
+            loader={({ src, format, width, extra }) => {
+              const path = src.split('/');
+              const finalPath = path.splice(1).join('/');
+              console.log(finalPath, format, width);
               // return `${__IMAGEX_DOMAIN__}/${finalPath}~${__IMAGEX_TEMPLATE__}:${width}:q75.${format}`;
-              return extra.origin;
+              return extra.origin.replace(/^http:/, 'https:');
             }}
           ></Viewer>
           <div className={style.mask} />
