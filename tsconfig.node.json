@@ -7,7 +7,5 @@
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "include": [
-    "packages/vod-h5-demo/vite.config.ts"
-  ]
+  "include": ["vite.config.ts"]
 }

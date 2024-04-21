@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
-import VePlayer, { Events } from '@volcengine/veplayer';
-import type { IPlayerConfig } from '@volcengine/veplayer';
-import type { IVideoDataWithModel } from '../../../../interface';
 import { Popup, Toast } from 'antd-mobile';
+import VePlayer, { Events } from '@volcengine/veplayer';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
 import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
+
+import type { IPlayerConfig } from '@volcengine/veplayer';
+import type { IVideoDataWithModel } from '@/typings';
 
 import 'swiper/less';
 import style from './index.module.less';

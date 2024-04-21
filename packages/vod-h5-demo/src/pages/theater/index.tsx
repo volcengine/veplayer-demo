@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
-import { NavBar, Toast } from 'antd-mobile';
-import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
 import { useNavigate } from 'react-router-dom';
+import { NavBar, Toast } from 'antd-mobile';
 import useUrlState from '@ahooksjs/use-url-state';
-import type { IVideoDataWithModel } from '../../interface';
 import useAxios from 'axios-hooks';
-import { API_PATH } from '../../api';
+import { API_PATH } from '@/api';
 import VideoSwiper from './components/video-swiper';
-import { parseModel } from '../../utils';
-import BackIcon from '../../assets/svg/back_v2.svg?react';
+import { parseModel } from '@/utils';
+import BackIcon from '@/assets/svg/back_v2.svg?react';
+
+import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
+import type { IVideoDataWithModel } from '@/typings';
 
 import style from './index.module.less';
 import 'swiper/less';

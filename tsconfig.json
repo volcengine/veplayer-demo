@@ -1,37 +1,10 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "allowSyntheticDefaultImports": true
+    "baseUrl": ".",
+    "composite": true
   },
-  "typeRoots": [
-    "node_modules/@types",
-    "packages/**/src/@types"
-  ],
-  "paths": {
-    "@/*": [
-      "src/*"
-    ]
-  },
-  "include": [
-    "packages/vod-h5-demo/src"
-  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    { "path": "packages/vod-h5-demo" }
+  ]
 }

@@ -1,4 +1,4 @@
-import { IVideoModel } from '../interface';
+import { IVideoModel } from '../typings';
 
 function getOS() {
   if (typeof navigator === 'undefined') {

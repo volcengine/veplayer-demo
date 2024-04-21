@@ -2,7 +2,6 @@ import style from './index.module.less';
 import { featureList } from '../../page.tsx';
 import SceneCard from '../../components/scene_card';
 import BgImg from '../../assets/img/bg.png';
-// import FbgImg from '../../assets/img/fbg.png';
 
 function Home() {
   return (

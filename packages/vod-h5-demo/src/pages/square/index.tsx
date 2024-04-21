@@ -1,17 +1,17 @@
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useState, useRef, useEffect } from 'react';
 import { NavBar, Tabs, Grid } from 'antd-mobile';
 import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
-import { API_PATH } from '../../api';
 import { Swiper, SwiperSlide, SwiperRef, SwiperClass } from 'swiper/react';
-import DramaCard from '../../components/drama_card';
-import { IDramaInfo } from '../../interface';
-import { hasScrollbar } from '../../utils';
-import Recommend from '../../components/recommend';
+import { API_PATH } from '@/api';
+import DramaCard from '@/components/drama_card';
+import Recommend from '@/components/recommend';
+import { hasScrollbar } from '@/utils';
+import { useUpdate } from '@/hooks';
+
+import type { IDramaInfo } from '@/typings';
 
 import style from './index.module.less';
-import { useEffect } from 'react';
-import { useUpdate } from '../../hooks';
 
 const TheaterKey = 'square';
 const RecommendKey = 'recommend';

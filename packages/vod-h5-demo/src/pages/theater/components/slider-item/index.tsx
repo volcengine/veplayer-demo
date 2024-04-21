@@ -1,14 +1,15 @@
 import React, { PropsWithChildren, useState, MouseEvent, useRef, useEffect } from 'react';
-import LikeIcon from '../../../../assets/svg/like.svg?react';
-import LikeActiveIcon from '../../../../assets/svg/like-active.svg?react';
+import { useNavigate } from 'react-router-dom';
+import { Viewer } from '@volcengine/imagex-react';
+import LikeIcon from '@/assets/svg/like.svg?react';
+import LikeActiveIcon from '@/assets/svg/like-active.svg?react';
 import FavIcon from '@/assets/svg/fav.svg?react';
-import FavActiveIcon from '../../../../assets/svg/fav-active.svg?react';
-import DIcon from '../../../../assets/svg/d.svg?react';
-import { IVideoDataWithModel } from '../../../../interface';
+import FavActiveIcon from '@/assets/svg/fav-active.svg?react';
+import DIcon from '@/assets/svg/d.svg?react';
+
+import { IVideoDataWithModel } from '@/typings';
 
 import style from './index.module.less';
-import { Viewer } from '@volcengine/imagex-react';
-import { useNavigate } from 'react-router-dom';
 
 interface ISliderItemProps extends PropsWithChildren {
   isActive: boolean;

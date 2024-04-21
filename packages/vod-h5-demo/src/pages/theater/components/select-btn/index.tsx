@@ -1,7 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react';
-import flowAnim from '../../../../assets/lottie/flow.json';
-// import ActiveIcon from '@/assets/svg/active.svg?react';
+import flowAnim from '@/assets/lottie/flow.json';
 
 import style from './index.module.less';
 

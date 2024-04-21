@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Ellipsis } from 'antd-mobile';
 import { useNavigate } from 'react-router-dom';
-import PlayIcon from '../../assets/svg/play.svg?react';
+import PlayIcon from '@/assets/svg/play.svg?react';
 import { Viewer } from '@volcengine/imagex-react';
-import { useUpdate } from '../../hooks';
+import { useUpdate } from '@/hooks';
 
 import style from './index.module.less';
 

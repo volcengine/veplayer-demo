@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Toast } from 'antd-mobile';
 import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
 import useUrlState from '@ahooksjs/use-url-state';
-import type { IVideoDataWithModel } from '../../interface';
+import type { IVideoDataWithModel } from '@/typings';
 import useAxios from 'axios-hooks';
-import { API_PATH } from '../../api';
-import VideoSwiper from '../../pages/theater/components/video-swiper';
-import { parseModel } from '../../utils';
+import { API_PATH } from '@/api';
+import VideoSwiper from '@/pages/theater/components/video-swiper';
+import { parseModel } from '@/utils';
 
 import style from './index.module.less';
 import 'swiper/less';
