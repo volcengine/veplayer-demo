@@ -8,12 +8,12 @@
     position: fixed;
     top: 0;
     width: 100%;
-
     z-index: 999;
+    box-sizing: border-box;
 
-    @media screen and (width >= 960px) {
+    @media screen and (width >= 750px) {
       & {
-        width: 796px;
+        width: var(--pc-max-width);
       }
     }
   }
