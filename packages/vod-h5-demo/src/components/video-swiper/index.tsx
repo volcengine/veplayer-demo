@@ -92,54 +92,47 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
    * 播放器下一个视频
    * @param {number} index - 当前swiper的index
    */
-  const playNext = useCallback(
-    (index: number) => {
-      if (index < 0 || index >= list.length) {
+  const playNext = (index: number) => {
+    if (index < 0 || index >= list.length) {
+      return;
+    }
+    if (sdkRef.current && index !== activeIndex) {
+      const next = list?.[index];
+      const playInfoList = next?.videoModel?.PlayInfoList || [];
+      const def = selectDef(playInfoList, '720p');
+      if (!def?.MainPlayUrl) {
+        Toast.show({
+          icon: 'fail',
+          content: '数据异常',
+        });
         return;
       }
-      if (sdkRef.current && index !== activeIndex) {
-        const next = list?.[index];
-        const playInfoList = next?.videoModel?.PlayInfoList || [];
-        const def = selectDef(playInfoList, '720p');
-        if (!def?.MainPlayUrl) {
-          Toast.show({
-            icon: 'fail',
-            content: '数据异常',
-          });
-          return;
-        }
-        const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
-        swiperRef.current?.slideTo(index);
-        setActiveIndex(index);
-        sdkRef.current?.player?.pause();
-        sdkRef.current?.getPlugin('poster')?.update(poster);
-        sdkRef.current
-          ?.playNext({
-            autoplay: true,
-            url: def.MainPlayUrl,
-          })
-          .then(() => {
-            console.warn('planext success', index);
-            sdkRef.current?.player.play();
-          });
-      }
-    },
-    [activeIndex, list],
-  );
+      const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
+      swiperRef.current?.slideTo(index);
+      setActiveIndex(index);
+      sdkRef.current?.player?.pause();
+      sdkRef.current?.getPlugin('poster')?.update(poster);
+      sdkRef.current
+        ?.playNext({
+          autoplay: true,
+          url: def.MainPlayUrl,
+        })
+        .then(() => {
+          console.warn('planext success', index);
+          sdkRef.current?.player.play();
+        });
+    }
+  };
 
-  const onEnded = () => {
-    if (activeIndex === list.length - 1) {
+  function onEnded() {
+    if (swiperRef.current?.activeIndex === list.length - 1) {
       Toast.show({
         content: '看完了！',
       });
     } else {
       swiperRef.current?.slideNext();
     }
-  };
-
-  const playNextIndex = () => {
-    playNext(activeIndex + 1);
-  };
+  }
 
   const initPlayer = useCallback(() => {
     if (!sdkRef.current && current) {
@@ -235,7 +228,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
       sdkRef.current = playerSdk;
     }
-  }, [activeIndex, current, isRecommend, onEnded, onProgressDrag, onProgressDragend, playNext, startTime]);
+  }, [current, isRecommend, onProgressDrag, onProgressDragend, startTime]);
 
   // 组件加载时初始化播放器
   useEffect(() => {
