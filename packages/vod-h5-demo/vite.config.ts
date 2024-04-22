@@ -5,6 +5,7 @@ import postCssPxToRem from 'postcss-pxtorem';
 import autoprefixer from 'autoprefixer';
 import svgr from 'vite-plugin-svgr';
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import slardar from '@vcloud-lux/vite-plugin-slardar';
 
 // 环境说明
 // isOnline => 用于线上正式发布及线上小流量
@@ -29,6 +30,7 @@ export default defineConfig({
   plugins: [
     react(),
     svgr(),
+    slardar({ runtime: { name: '@veplayer/vod-h5-demo' } }),
     ...(useHttps
       ? [
           basicSsl({
