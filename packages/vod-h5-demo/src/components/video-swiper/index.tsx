@@ -42,7 +42,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const swiperRef = useRef<SwiperClass>();
   const wrapRef = useRef<HTMLElement>();
   const sdkRef = useRef<VePlayer>();
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
   // const [isTouching, setTouching] = useState<boolean>(false);
@@ -53,8 +52,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
-
-  console.log('list', list);
 
   /**
    * 展示静音按钮
@@ -118,7 +115,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           url: def.MainPlayUrl,
         })
         .then(() => {
-          console.warn('planext success', index);
           sdkRef.current?.player.play();
         });
     }
@@ -134,7 +130,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     }
   }
 
-  const initPlayer = useCallback(() => {
+  function initPlayer() {
     if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
       const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
@@ -181,7 +177,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           isNeedRefreshButton: false,
         },
         start: {
-          // disableAnimate: true,
+          disableAnimate: true,
           isShowPause: true,
         },
         poster: {
@@ -201,7 +197,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       window.playerSdk = playerSdk;
       playerSdk.once(Events.COMPLETE, () => {
         const player = playerSdk.player;
-        player.on('urlchange', () => console.log('urlchange'));
         if (isRecommend) {
           // 通过插件实例调用
           player.getPlugin('progress').useHooks('dragstart', () => {
@@ -228,7 +223,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
       sdkRef.current = playerSdk;
     }
-  }, [current, isRecommend, onProgressDrag, onProgressDragend, startTime]);
+  }
 
   // 组件加载时初始化播放器
   useEffect(() => {
@@ -268,24 +263,16 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
   useEffect(() => {
     if (isRecommend) {
-      console.log(
-        '>>> isSliderMoving:',
-        isSliderMoving,
-        'isRecommendActive:',
-        isRecommendActive,
-        'isRecommend: ',
-        isRecommend,
-      );
       if (isRecommendActive) {
         if (isSliderMoving) {
-          console.warn('>>>pause');
+          console.warn('>>> pause');
           sdkRef.current?.player?.pause();
         } else {
           console.warn('>>> play');
           sdkRef.current?.player?.play();
         }
       } else {
-        console.warn('>>>pause');
+        console.warn('>>> pause');
         sdkRef.current?.player?.pause();
       }
     }
@@ -332,10 +319,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
                         isRecommend={isRecommend}
                         getCurrentTime={getCurrentTime}
                       >
-                        <div className={style.veplayerContainer}>
-                          <div className="veplayer-cus-gradient-wrapper" />
-                          <div ref={containerRef} id="veplayer-container"></div>
-                        </div>
+                        {activeIndex === 0 && <div id="veplayer-container"></div>}
                       </SliderItem>
                     )}
                   </SwiperSlide>
@@ -381,21 +365,17 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
               <CloseIcon onClick={() => setSelectVisible(false)} />
             </div>
           </div>
-          {/*<Grid className={style.selectContent} columns={5} gap={12}>*/}
           <div className={style.selectContent}>
             {list.map((_item, index) => (
-              // <Grid.Item key={index}>
               <SelectBtn
                 key={index}
                 isActive={index === activeIndex}
                 index={index}
                 onClick={() => onSelectClick(index)}
               />
-              // </Grid.Item>
             ))}
           </div>
         </div>
-        {/*</Grid>*/}
       </Popup>
     </>
   );

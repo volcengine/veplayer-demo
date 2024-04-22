@@ -39,7 +39,7 @@ function Square() {
         pageSize: 50,
       },
     },
-    { manual: false },
+    { useCache: true },
   );
 
   const list: IDramaInfo[] = data?.result || [];

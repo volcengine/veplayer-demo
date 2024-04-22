@@ -42,7 +42,7 @@ const Recommend: React.FC<IRecommend> = ({
         pageSize: 50,
       },
     },
-    { manual: false },
+    { useCache: true },
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -78,8 +78,6 @@ const Recommend: React.FC<IRecommend> = ({
       toastRef.current && toastRef.current?.close();
     };
   }, []);
-
-  console.log('recommend list:', list);
 
   return loading ? (
     <div className={style.loadingMask}></div>

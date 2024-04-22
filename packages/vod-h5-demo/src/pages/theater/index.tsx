@@ -20,7 +20,6 @@ function Theater() {
   const toastRef = useRef<ToastHandler>();
   const dramaId = urlState.id;
   const startTime = urlState.startTime || 0;
-  console.log('theater', urlState, startTime);
   const [{ data, loading }] = useAxios(
     {
       url: API_PATH.GetDramaEpisodeWithVideoModel,
@@ -32,7 +31,7 @@ function Theater() {
         pageSize: 50,
       },
     },
-    { manual: false },
+    { useCache: true },
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -66,7 +65,6 @@ function Theater() {
 
   useEffect(() => {
     const scrollFn = () => {
-      console.log('sss');
       window.scrollTo({ left: 0, top: 0 });
     };
     window.addEventListener('scrollend', scrollFn);

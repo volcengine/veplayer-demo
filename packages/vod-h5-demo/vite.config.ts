@@ -24,8 +24,6 @@ const isOnline = process.env.BUILD_TYPE === 'online';
 // 是否使用https开发调试
 const useHttps = process.env.USE_HTTTPS === '1';
 
-console.log('path', path.resolve(__dirname, 'src'));
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [

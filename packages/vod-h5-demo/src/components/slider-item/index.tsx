@@ -93,6 +93,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({
             {/*/>*/}
           </div>
           <div id={`swiper-video-container-${index}`} className={style.videoContainer}>
+            <div className="veplayer-cus-gradient-wrapper" />
             {children}
           </div>
           <div className={style.right} onClick={e => e.stopPropagation()}>
