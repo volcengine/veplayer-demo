@@ -29,19 +29,20 @@ const Recommend: React.FC<IRecommend> = ({
 }) => {
   const [urlState] = useUrlState();
   const toastRef = useRef<ToastHandler>();
-  const dramaId = urlState.id;
   const startTime = urlState.startTime || 0;
-  const [{ data, loading }] = useAxios({
-    url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
-    method: 'POST',
-    data: {
-      authorId: __AuthorId__,
-      needSsl: true,
-      dramaId,
-      offset: 0,
-      pageSize: 50,
+  const [{ data, loading }] = useAxios(
+    {
+      url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
+      method: 'POST',
+      data: {
+        authorId: __AuthorId__,
+        needSsl: true,
+        offset: 0,
+        pageSize: 50,
+      },
     },
-  });
+    { useCache: true },
+  );
 
   const [activeIndex, setActiveIndex] = useState(0);
   // TODO EpisodeFeedStreamWithVideoModel

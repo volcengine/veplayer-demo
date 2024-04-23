@@ -2,8 +2,36 @@ import style from './index.module.less';
 import { featureList } from '@/page.tsx';
 import SceneCard from './scene_card';
 import BgImg from '@/assets/img/bg.png';
+import useAxios from 'axios-hooks';
+import { API_PATH } from '@/api';
 
 function Home() {
+  const [{ data: data1 }] = useAxios(
+    {
+      url: API_PATH.ListDrama,
+      method: 'POST',
+      data: {
+        authorId: __AuthorId__,
+        offset: 0,
+        pageSize: 50,
+      },
+    },
+    { useCache: true },
+  );
+  const [{ data: data2 }] = useAxios(
+    {
+      url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
+      method: 'POST',
+      data: {
+        authorId: __AuthorId__,
+        needSsl: true,
+        offset: 0,
+        pageSize: 50,
+      },
+    },
+    { useCache: true },
+  );
+
   return (
     <>
       <div className={style.main}>
