@@ -77,20 +77,12 @@ const SliderItem: React.FC<ISliderItemProps> = ({
               objectPosition="center"
               src={coverUrl}
               imageSizes={imageSizes}
-              loader={({ src, format, width, extra }) => {
+              loader={({ src, format, width }) => {
                 const path = src.split('/');
                 const finalPath = path.splice(1).join('/');
-                console.log(finalPath, format, width);
-                // return `${__IMAGEX_DOMAIN__}/${finalPath}~${__IMAGEX_TEMPLATE__}:${width}:q75.${format}`;
-                return extra.origin.replace(/^http:/, 'https:');
+                return `${__IMAGEX_DOMAIN__}/${finalPath}~${__IMAGEX_TEMPLATE__}:${width}:q75.${format}`;
               }}
             />
-
-            {/*<img*/}
-            {/*  src={coverUrl}*/}
-            {/*  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}*/}
-            {/*  alt="poster"*/}
-            {/*/>*/}
           </div>
           <div id={`swiper-video-container-${index}`} className={style.videoContainer}>
             <div className="veplayer-cus-gradient-wrapper" />

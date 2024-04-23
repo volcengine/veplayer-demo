@@ -44,7 +44,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const sdkRef = useRef<VePlayer>();
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  // const [isTouching, setTouching] = useState<boolean>(false);
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
@@ -242,24 +241,16 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }, []);
 
   useEffect(() => {
+    if (!sdkRef.current) {
+      return;
+    }
     onChange(activeIndex);
-    const playerContainer = sdkRef.current?.playerContainer;
+    const playerDom = sdkRef.current?.playerContainer;
     const insertParentNode = document.getElementById(`swiper-video-container-${activeIndex}`);
-    if (playerContainer) {
-      insertParentNode?.insertBefore(playerContainer, null);
+    if (insertParentNode && playerDom) {
+      insertParentNode?.insertBefore(playerDom, null);
     }
   }, [activeIndex, onChange]);
-
-  // useEffect(() => {
-  //   if (isTouching) {
-  //     sdkRef?.current?.player.pause();
-  //   } else {
-  //     if (!isSliderMoving) {
-  //       console.warn('>>>> swiper touch play');
-  //       sdkRef?.current?.player.play();
-  //     }
-  //   }
-  // }, [isTouching]);
 
   useEffect(() => {
     if (isRecommend) {
@@ -319,7 +310,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
                         isRecommend={isRecommend}
                         getCurrentTime={getCurrentTime}
                       >
-                        {activeIndex === 0 && <div id="veplayer-container"></div>}
+                        {activeIndex === 0 && <div id="veplayer-container" className="veplayer-container"></div>}
                       </SliderItem>
                     )}
                   </SwiperSlide>
