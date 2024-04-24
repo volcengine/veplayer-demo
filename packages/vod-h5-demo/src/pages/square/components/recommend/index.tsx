@@ -18,6 +18,8 @@ interface IRecommend {
   isSliderMoving: boolean;
   onProgressDrag: () => void;
   onProgressDragend: () => void;
+  recData: any;
+  recLoading: boolean;
 }
 
 const Recommend: React.FC<IRecommend> = ({
@@ -26,23 +28,14 @@ const Recommend: React.FC<IRecommend> = ({
   isSliderMoving,
   onProgressDrag,
   onProgressDragend,
+  recData,
+  recLoading,
 }) => {
   const [urlState] = useUrlState();
   const toastRef = useRef<ToastHandler>();
   const startTime = urlState.startTime || 0;
-  const [{ data, loading }] = useAxios(
-    {
-      url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
-      method: 'POST',
-      data: {
-        authorId: __AuthorId__,
-        needSsl: true,
-        offset: 0,
-        pageSize: 50,
-      },
-    },
-    { useCache: true },
-  );
+  const data = recData;
+  const loading = recLoading;
 
   const [activeIndex, setActiveIndex] = useState(0);
   // TODO EpisodeFeedStreamWithVideoModel

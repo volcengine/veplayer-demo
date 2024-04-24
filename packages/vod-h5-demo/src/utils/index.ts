@@ -1,4 +1,5 @@
 import { IPlayInfoListItem, IVideoModel } from '@/typings';
+export * from './preload';
 
 function getOS() {
   if (typeof navigator === 'undefined') {

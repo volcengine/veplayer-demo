@@ -45,7 +45,7 @@ function Theater() {
   }));
   const current: IVideoDataWithModel | undefined = list?.[activeIndex];
   const episodeNumber = current?.episodeDetail?.episodeNumber;
-
+  console.log('cus-> episodeNumber', current);
   useEffect(() => {
     if (current) {
       toastRef?.current?.close();
@@ -57,12 +57,6 @@ function Theater() {
       });
     }
   }, [current]);
-
-  useEffect(() => {
-    return () => {
-      toastRef.current && toastRef.current?.close();
-    };
-  }, []);
 
   useEffect(() => {
     const scrollFn = () => {
