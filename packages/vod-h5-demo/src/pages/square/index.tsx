@@ -7,7 +7,7 @@ import { API_PATH } from '@/api';
 import DramaCard from './components/drama_card';
 import SkeletonCard from './components/drama_card/skeleton_card.tsx';
 import Recommend from './components/recommend';
-import { getPreloadData, hasScrollbar, parseModel, selectDef } from '@/utils';
+import { getPreloadData, hasScrollbar, parseModel, selectDef, os } from '@/utils';
 import { useUpdate } from '@/hooks';
 
 import type { IDramaInfo } from '@/typings';
@@ -93,7 +93,7 @@ function Square() {
   }, [showFoot, update, loading]);
 
   useEffect(() => {
-    if (!recLoading && recData?.result) {
+    if (!recLoading && recData?.result && (os.isPc || os.isAndroid)) {
       // 预加载前9个视频第一集
       const list: IVideoDataWithModel[] = recData.result
         .map((item: any) => ({
@@ -114,7 +114,7 @@ function Square() {
         })
         .filter(item => !!item);
       const preloadPackData = getPreloadData(preloadList) || [];
-      window.preloader.addPreloadList(preloadPackData.slice(0, 9));
+      window.preloader?.addPreloadList(preloadPackData.slice(0, 9));
     }
   }, [recData, recLoading]);
 

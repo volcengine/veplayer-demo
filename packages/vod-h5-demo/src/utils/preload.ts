@@ -1,6 +1,6 @@
 import { IPlayInfoListItem, IVideoDataWithModel } from '@/typings';
 import { IPreloadData } from '@byted/xgplayer-vod-preload/es/index.interface';
-import { selectDef } from '@/utils/index.ts';
+import { selectDef, os } from '@/utils/index.ts';
 
 const getPreloadData = (
   list: Array<IPlayInfoListItem & { vid?: string; vodecType?: string; vtype?: string }>,
@@ -39,6 +39,9 @@ const getDefInfo = (list: IVideoDataWithModel[], index: number) => {
 };
 
 const addPreloadList = (list: any, index: number) => {
+  if (!os.isPc || !os.isAndroid) {
+    return;
+  }
   const laterDef = list?.[index + 1] ? getDefInfo(list, index + 1) : undefined;
   const preDef = list?.[index - 1] ? getDefInfo(list, index - 1) : undefined;
   const preloadList = [];
