@@ -1,15 +1,16 @@
-import React, { useState, useRef, useEffect, useCallback, CSSProperties } from 'react';
+import React, { useState, useRef, useEffect, CSSProperties } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
 import { Popup, Toast } from 'antd-mobile';
-import VePlayer, { Events } from '@volcengine/veplayer';
+import VePlayer, { Events, PlayerCore } from '@volcengine/veplayer';
+import MP4Plugin from '@byted/xgplayer-encrypt-mp4';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
 import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
-import { selectDef, os } from '@/utils';
+import { selectDef, os, addPreloadList } from '@/utils';
 
 import type { IPlayerConfig } from '@volcengine/veplayer';
 import type { IVideoDataWithModel } from '@/typings';
@@ -44,6 +45,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const sdkRef = useRef<VePlayer>();
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [playNextStatus, setPlayNextStatus] = useState<string>('');
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
@@ -83,6 +85,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       playNext(swiper.realIndex);
     }
   };
+  const getDefInfo = (list: IVideoDataWithModel[], index: number) => {
+    return selectDef(list?.[index]?.videoModel?.PlayInfoList ?? [], '720p');
+  };
 
   /**
    * 播放器下一个视频
@@ -93,9 +98,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       return;
     }
     if (sdkRef.current && index !== activeIndex) {
+      setPlayNextStatus('start');
       const next = list?.[index];
-      const playInfoList = next?.videoModel?.PlayInfoList || [];
-      const def = selectDef(playInfoList, '720p');
+      const def = getDefInfo(list, index);
       if (!def?.MainPlayUrl) {
         Toast.show({
           icon: 'fail',
@@ -108,13 +113,31 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       setActiveIndex(index);
       sdkRef.current?.player?.pause();
       sdkRef.current?.getPlugin('poster')?.update(poster);
+      attachStartIcon(sdkRef.current?.player);
       sdkRef.current
         ?.playNext({
           autoplay: true,
           url: def.MainPlayUrl,
+          vid: next.vid,
+          definition: {
+            list: [
+              {
+                url: def.MainPlayUrl,
+                definition: def.Definition,
+                codecType: def.Codec,
+                bitrate: def.Bitrate,
+                vtype: 'MP4',
+              },
+            ],
+          },
         })
         .then(() => {
+          console.warn('planext success', index);
           sdkRef.current?.player.play();
+          setTimeout(() => hideStartIcon(sdkRef.current?.player), 0);
+          setPlayNextStatus('end');
+          // 追加前后集预加载
+          addPreloadList(list, index);
         });
     }
   };
@@ -129,6 +152,32 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     }
   }
 
+  const getClass = (player: PlayerCore) => player.root?.getElementsByClassName('xgplayer-start')[0];
+
+  const hideStartIcon = (player?: PlayerCore) => {
+    if (!player?.root) {
+      return;
+    }
+    const startClassDom = getClass(player);
+    if (startClassDom) {
+      startClassDom.className = startClassDom.className
+        ?.split(' ')
+        .filter(item => item !== 'veplayer-h5-hide-start')
+        .join(' ');
+    }
+  };
+
+  const attachStartIcon = (player: PlayerCore) => {
+    if (!player?.root) {
+      return;
+    }
+    const startClassDom = getClass(player);
+    if (startClassDom) {
+      startClassDom.className = `${startClassDom.className} veplayer-h5-hide-start`;
+    }
+    // player.once(Events.AUTOPLAY_STARTED, () => hideStartIcon(player));
+  };
+
   function initPlayer() {
     if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
@@ -137,9 +186,19 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       if (!def?.MainPlayUrl) {
         return;
       }
-      const options = {
+      const options: IPlayerConfig = {
         id: 'veplayer-container',
-        url: def.MainPlayUrl,
+        // url: def.MainPlayUrl,
+        playList: [
+          {
+            url: def.MainPlayUrl,
+            definition: def.Definition,
+            codecType: def.Codec,
+            bitrate: def.Bitrate,
+            vtype: 'MP4',
+          },
+        ],
+        vid: current.vid,
         startTime,
         autoplay: !isRecommend,
         enableDegradeMuteAutoplay: true,
@@ -147,6 +206,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         closeVideoDblclick: true,
         videoFillMode: 'fillWidth',
         codec: def.Codec,
+        enableMp4MSE: true,
+        plugins: [MP4Plugin],
         ignores: [
           'moreButtonPlugin',
           'enter',
@@ -221,6 +282,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       playerSdk.on(Events.ENDED, onEnded);
 
       sdkRef.current = playerSdk;
+      addPreloadList(list, activeIndex);
     }
   }
 
@@ -229,7 +291,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     setTimeout(() => {
       initPlayer();
     }, 0);
-  }, [current]);
+  }, [current, activeIndex]);
 
   // 组件卸载时销毁播放器
   useEffect(() => {
@@ -268,7 +330,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       }
     }
   }, [isRecommend, isRecommendActive, isSliderMoving]);
-
   const onSelectClick = (index: number) => {
     playNext(index);
   };
@@ -305,6 +366,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
                         key={item.id}
                         data={item}
                         index={i}
+                        playNextStatus={playNextStatus}
                         isActive={isActive}
                         activeIndex={activeIndex}
                         isRecommend={isRecommend}

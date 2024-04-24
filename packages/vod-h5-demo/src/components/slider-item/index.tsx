@@ -18,6 +18,7 @@ interface ISliderItemProps extends PropsWithChildren {
   index: number;
   isRecommend?: boolean;
   getCurrentTime: () => number;
+  playNextStatus: string;
 }
 
 const imageSizes = [600, 750, 800, 960];
@@ -30,6 +31,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({
   isRecommend,
   getCurrentTime,
   children,
+  playNextStatus,
 }) => {
   const coverUrl = data?.videoModel?.PosterUrl ?? data?.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
@@ -64,17 +66,19 @@ const SliderItem: React.FC<ISliderItemProps> = ({
 
   // 距离当前两集加载，减少dom数目
   const shouldRenderContent = useMemo(() => Math.abs(activeIndex - index) <= 2, [activeIndex, index]);
-
   return (
     <div className={style.wrapper}>
       {shouldRenderContent && (
         <>
-          <div className={`${style.poster} ${isActive ? style.posterHide : style.posterShow}`}>
+          <div
+            className={`${style.poster} ${isActive && playNextStatus === 'end' ? style.posterHide : style.posterShow}`}
+          >
             <Viewer
-              layout="fill"
+              layout="raw"
               placeholder="skeleton"
               objectFit="cover"
               objectPosition="center"
+              loading="eager"
               src={coverUrl}
               imageSizes={imageSizes}
               loader={({ src, format, width }) => {

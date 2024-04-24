@@ -7,12 +7,13 @@ import { API_PATH } from '@/api';
 import DramaCard from './components/drama_card';
 import SkeletonCard from './components/drama_card/skeleton_card.tsx';
 import Recommend from './components/recommend';
-import { hasScrollbar } from '@/utils';
+import { getPreloadData, hasScrollbar, parseModel, selectDef } from '@/utils';
 import { useUpdate } from '@/hooks';
 
 import type { IDramaInfo } from '@/typings';
 
 import style from './index.module.less';
+import { IVideoDataWithModel } from '@/typings';
 
 const TheaterKey = 'square';
 const RecommendKey = 'recommend';
@@ -28,6 +29,24 @@ const tabs = [
   },
 ];
 
+function PreloadDramaId(props: { dramaId: string }) {
+  useAxios(
+    {
+      url: API_PATH.GetDramaEpisodeWithVideoModel,
+      method: 'POST',
+      data: {
+        authorId: __AuthorId__,
+        needSsl: true,
+        dramaId: props.dramaId,
+        offset: 0,
+        pageSize: 50,
+      },
+    },
+    { useCache: true },
+  );
+  return null;
+}
+
 function Square() {
   const [{ data, loading }] = useAxios(
     {
@@ -35,6 +54,20 @@ function Square() {
       method: 'POST',
       data: {
         authorId: __AuthorId__,
+        offset: 0,
+        pageSize: 50,
+      },
+    },
+    { useCache: true },
+  );
+
+  const [{ data: recData, loading: recLoading }] = useAxios(
+    {
+      url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
+      method: 'POST',
+      data: {
+        authorId: __AuthorId__,
+        needSsl: true,
         offset: 0,
         pageSize: 50,
       },
@@ -58,6 +91,32 @@ function Square() {
   useEffect(() => {
     update();
   }, [showFoot, update, loading]);
+
+  useEffect(() => {
+    if (!recLoading && recData?.result) {
+      // 预加载前9个视频第一集
+      const list: IVideoDataWithModel[] = recData.result
+        .map((item: any) => ({
+          ...item,
+          videoModel: parseModel(item.videoModel),
+        }))
+        .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl);
+      const preloadList: any = list
+        .map(item => {
+          const cur = selectDef(item.videoModel.PlayInfoList, '720p');
+          if (!item?.vid) {
+            return undefined;
+          }
+          return {
+            vid: item.vid as string,
+            ...cur,
+          };
+        })
+        .filter(item => !!item);
+      const preloadPackData = getPreloadData(preloadList) || [];
+      window.preloader.addPreloadList(preloadPackData.slice(0, 9));
+    }
+  }, [recData, recLoading]);
 
   const isRecommendActive = activeIndex === 1;
 
@@ -106,6 +165,7 @@ function Square() {
                   ))
                 : list.map((item, index) => (
                     <Grid.Item key={index}>
+                      {index < 9 ? <PreloadDramaId dramaId={item.dramaId} /> : null}
                       <DramaCard
                         dramaId={item.dramaId}
                         dramaTitle={item.dramaTitle}
@@ -123,6 +183,8 @@ function Square() {
           <div className={style.recommend}>
             <Recommend
               isRecommend={true}
+              recData={recData}
+              recLoading={recLoading}
               isRecommendActive={isRecommendActive}
               isSliderMoving={isSliderMoving}
               onProgressDrag={() => setProgressDragging(true)}
