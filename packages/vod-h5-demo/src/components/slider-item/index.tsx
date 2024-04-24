@@ -24,14 +24,12 @@ interface ISliderItemProps extends PropsWithChildren {
 const imageSizes = [600, 750, 800, 960];
 
 const SliderItem: React.FC<ISliderItemProps> = ({
-  isActive,
   activeIndex,
   data,
   index,
   isRecommend,
   getCurrentTime,
   children,
-  playNextStatus,
 }) => {
   const coverUrl = data?.videoModel?.PosterUrl ?? data?.coverUrl;
   const episodeDesc = data.episodeDetail?.episodeDesc;
@@ -70,9 +68,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({
     <div className={style.wrapper}>
       {shouldRenderContent && (
         <>
-          <div
-            className={`${style.poster} ${isActive && playNextStatus === 'end' ? style.posterHide : style.posterShow}`}
-          >
+          <div className={`${style.poster}`}>
             <Viewer
               layout="raw"
               placeholder="skeleton"
