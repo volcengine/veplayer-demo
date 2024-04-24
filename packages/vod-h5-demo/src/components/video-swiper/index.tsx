@@ -61,7 +61,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     if (sdkRef.current?.player) {
       const player = sdkRef.current?.player;
       if (player) {
-        if (player.muted || player.video.muted) {
+        // @ts-expect-error: expect
+        if (player.muted || player.video?.muted) {
           setShowUnmuteBtn(true);
         } else {
           setShowUnmuteBtn(false);
@@ -112,6 +113,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       swiperRef.current?.slideTo(index);
       setActiveIndex(index);
       sdkRef.current?.player?.pause();
+      // @ts-expect-error expected
       sdkRef.current?.getPlugin('poster')?.update(poster);
       attachStartIcon(sdkRef.current?.player);
       sdkRef.current

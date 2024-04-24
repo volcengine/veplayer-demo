@@ -34,10 +34,12 @@ function App() {
         waitingTimeOut: 5000,
         needAutoBitrate: true,
         startPreloadMinBuffer: 5,
+        startPreloadControl: true,
         maxBufferLength: 60,
         minBufferLength: 15,
         removeBufferLen: 60,
         preloadMaxCacheCount: 10,
+        startPreloadMinPosTime: 0,
         resumePlayWaterLevel: 2,
         onProcessMinLen: 0,
         needPreloadCheck: false,
@@ -65,6 +67,7 @@ function App() {
         noPreloadAddBufferLen: 0,
         loadRangeType: 'gop',
       },
+      // @ts-expect-error: expect
       loaders: [Mp4Preloader],
     });
     Mp4EncryptPlayer.registerPreloader(preloaderInst);
