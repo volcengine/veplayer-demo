@@ -39,7 +39,7 @@ const getDefInfo = (list: IVideoDataWithModel[], index: number) => {
 };
 
 const addPreloadList = (list: any, index: number) => {
-  if (!os.isPc || !os.isAndroid) {
+  if (!(os.isPc || os.isAndroid)) {
     return;
   }
   const laterDef = list?.[index + 1] ? getDefInfo(list, index + 1) : undefined;
