@@ -179,7 +179,7 @@ function Square() {
             {showFoot && <div className={style.foot}>已展示全部资源</div>}
           </div>
         </SwiperSlide>
-        <SwiperSlide style={{ height: '100vh' }}>
+        <SwiperSlide>
           <div className={style.recommend}>
             <Recommend
               isRecommend={true}

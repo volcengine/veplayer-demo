@@ -1,7 +1,7 @@
 .wrap {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #000;
   font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 
@@ -206,7 +206,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #000;
 
   .loading-btn {
@@ -215,9 +215,6 @@
     height: 76px;
     background: var(--ConstBG-ToastDefault, #393b44);
     border-radius: 12px;
-    //display: flex;
-    //align-items: center;
-    //justify-content: center;
   }
 
   @keyframes rotate {
