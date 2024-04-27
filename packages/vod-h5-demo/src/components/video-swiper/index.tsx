@@ -81,7 +81,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }
 
   const onSlideChange = (swiper: SwiperClass) => {
-    console.warn('activeIndexChange', swiper);
     if (swiper.realIndex !== activeIndex) {
       playNext(swiper.realIndex);
     }
@@ -110,7 +109,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         return;
       }
       const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
-      swiperRef.current?.slideTo(index);
+      swiperRef.current?.slideTo(index, 0);
       setActiveIndex(index);
       sdkRef.current?.player?.pause();
       // @ts-expect-error expected
