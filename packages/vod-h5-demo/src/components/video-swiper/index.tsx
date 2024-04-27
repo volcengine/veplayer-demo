@@ -235,6 +235,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           disableGesture: isRecommend,
           isTouchingSeek: !isRecommend,
         },
+        progress: {
+          onMoveStart: () => {
+            sdkRef.current?.player?.plugins?.progress.focus();
+          },
+          onMoveEnd: () => {
+            sdkRef.current?.player?.plugins?.progress.blur();
+          },
+        },
         sdkErrorPlugin: {
           isNeedRefreshButton: false,
         },
@@ -305,6 +313,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }, []);
 
   useEffect(() => {
+    swiperRef.current?.slideReset();
     if (!sdkRef.current) {
       return;
     }
@@ -340,16 +349,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     return sdkRef?.current?.player?.currentTime || 0;
   };
 
-  const mainStyle: CSSProperties =
-    os.isMobile && (os.isWeixin || os.isLark) && isRecommend
-      ? {
-          height: 'calc(100% - 20px - env(safe-area-inset-bottom))',
-        }
-      : {};
-
   return (
     <>
-      <div className={isRecommend ? style.recommendMain : style.main} style={mainStyle}>
+      <div className={isRecommend ? style.recommendMain : style.main}>
         <div className={style.swiperContainer} ref={wrapRef as React.MutableRefObject<HTMLDivElement>}>
           {list?.length > 0 && (
             <Swiper
