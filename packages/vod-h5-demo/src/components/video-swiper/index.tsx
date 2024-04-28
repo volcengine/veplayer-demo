@@ -312,7 +312,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }, []);
 
   useEffect(() => {
-    swiperRef.current?.slideReset();
     if (!sdkRef.current) {
       return;
     }
@@ -358,8 +357,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
               direction="vertical"
               onSwiper={swiper => (swiperRef.current = swiper)}
               onActiveIndexChange={onSlideChange}
-              allowSlideNext={activeIndex !== list.length - 1}
-              allowSlidePrev={activeIndex !== 0}
             >
               {list.map((item: any, i: number) => {
                 return (
