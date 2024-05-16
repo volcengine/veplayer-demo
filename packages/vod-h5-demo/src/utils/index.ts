@@ -78,7 +78,9 @@ export function getImageXURL(url: string) {
  * @param defaultDef 弱网下的默认清晰度
  */
 export function selectDef(list: IPlayInfoListItem[], defaultDef: string = '720p'): void | IPlayInfoListItem {
-  if (!list.length) return;
+  if (!list.length) {
+    return;
+  }
   const orderList = list.sort((a, b) => a.Bitrate - b.Bitrate);
   const lowestDef = orderList[0];
   const highestDef = orderList[orderList.length - 1];

@@ -6,7 +6,7 @@ import useAxios from 'axios-hooks';
 import { API_PATH } from '@/api';
 
 function Home() {
-  const [{ data: data1 }] = useAxios(
+  useAxios(
     {
       url: API_PATH.ListDrama,
       method: 'POST',
@@ -18,7 +18,7 @@ function Home() {
     },
     { useCache: true },
   );
-  const [{ data: data2 }] = useAxios(
+  useAxios(
     {
       url: API_PATH.GetEpisodeFeedStreamWithVideoModel,
       method: 'POST',

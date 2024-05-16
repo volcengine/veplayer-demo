@@ -3,8 +3,6 @@ import { Toast } from 'antd-mobile';
 import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
 import useUrlState from '@ahooksjs/use-url-state';
 import type { IVideoDataWithModel } from '@/typings';
-import useAxios from 'axios-hooks';
-import { API_PATH } from '@/api';
 import VideoSwiper from '@/components/video-swiper';
 import { parseModel } from '@/utils';
 
