@@ -8,7 +8,9 @@ const axios = Axios.create({
 configure({ axios });
 
 export const API_PATH = {
-  getEpisodeFeedStreamWithPlayAuthToken: '/api/drama/episode/v1/getEpisodeFeedStreamWithPlayAuthToken',
+  GetEpisodeFeedStreamWithPlayAuthToken: '/api/drama/episode/v1/getEpisodeFeedStreamWithPlayAuthToken',
   ListDrama: '/api/drama/v1/listDrama',
   GetDramaEpisodeWithPlayAuthToken: '/api/drama/episode/v1/getDramaEpisodeWithPlayAuthToken',
+  GetEpisodeFeedStreamWithVideoModel: '/api/drama/episode/v1/getEpisodeFeedStreamWithVideoModel',
+  GetDramaEpisodeWithVideoModel: '/api/drama/episode/v1/getDramaEpisodeWithVideoModel',
 };
