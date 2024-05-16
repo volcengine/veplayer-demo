@@ -1,4 +1,5 @@
 import { useCallback, useState, useRef, useEffect } from 'react';
+import VePlayer from '@/player';
 import { NavBar, Tabs, Grid } from 'antd-mobile';
 import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,8 @@ import SkeletonCard from './components/drama_card/skeleton_card.tsx';
 import Recommend from './components/recommend';
 import { getPreloadData, hasScrollbar, parseModel, selectDef, os } from '@/utils';
 import { useUpdate } from '@/hooks';
+import BackIconGray from '@/assets/svg/back_gray.svg?react';
+import BackIcon from '@/assets/svg/back_v3.svg?react';
 
 import type { IDramaInfo } from '@/typings';
 
@@ -114,7 +117,7 @@ function Square() {
         })
         .filter(item => !!item);
       const preloadPackData = getPreloadData(preloadList) || [];
-      window.preloader?.addPreloadList(preloadPackData.slice(0, 9));
+      VePlayer.preloader.addList(preloadPackData.slice(0, 9));
     }
   }, [recData, recLoading]);
 
@@ -129,7 +132,7 @@ function Square() {
 
   return (
     <div className={`${style.main} ${isRecommendActive ? style.recommendActive : style.recommendInactive}`}>
-      <NavBar className={style.head} onBack={back}>
+      <NavBar backArrow={isRecommendActive ? <BackIcon /> : <BackIconGray />} className={style.head} onBack={back}>
         <Tabs
           activeLineMode="fixed"
           activeKey={tabs[activeIndex].key}

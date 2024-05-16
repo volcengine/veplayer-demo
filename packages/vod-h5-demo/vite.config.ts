@@ -6,6 +6,8 @@ import autoprefixer from 'autoprefixer';
 import svgr from 'vite-plugin-svgr';
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import slardar from '@vcloud-lux/vite-plugin-slardar';
+import legacy from '@vitejs/plugin-legacy';
+import babel from '@rollup/plugin-babel';
 
 // 环境说明
 // isOnline => 用于线上正式发布及线上小流量
@@ -21,7 +23,6 @@ const isProd = process.env.NODE_ENV === 'production';
  * - private对应私有版本
  */
 const isOnline = process.env.BUILD_TYPE === 'online';
-
 // 是否使用https开发调试
 const useHttps = process.env.USE_HTTTPS === '1';
 
@@ -43,6 +44,26 @@ export default defineConfig({
           }),
         ]
       : []),
+    babel({
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              ie: '11',
+            },
+            corejs: 3,
+            useBuiltIns: 'usage',
+          },
+        ],
+      ],
+      extensions: ['.ts', '.js', '.jsx', '.tsx', '.es6', '.es', '.mjs'],
+      include: ['src/**'],
+    }),
+    legacy({
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime', 'abortcontroller-polyfill'], // 添加额外的 polyfill
+      renderLegacyChunks: true,
+    }),
   ],
   resolve: {
     alias: {
@@ -51,36 +72,52 @@ export default defineConfig({
     extensions: ['.ts', '.tsx', '.js', '.less'],
   },
   define: {
+    'process.env': {},
     __API_BASE_URL__: isOnline
       ? JSON.stringify('https://vevod-demo-server.volcvod.com')
       : isProd
-        ? JSON.stringify('http://vod-sdk-playground-test.byted.org')
+        ? JSON.stringify('https://vevod-demo-server.volcvod.com')
         : JSON.stringify('/proxy-api'),
-    __AuthorId__: isOnline ? JSON.stringify('mini-drama-video') : JSON.stringify('frank_drama_test_5'),
+    __AuthorId__: isOnline
+      ? JSON.stringify('mini-drama-video')
+      : isProd
+        ? JSON.stringify('mini-drama-video')
+        : JSON.stringify('frank_drama_test_5'),
     __PLAY_DOMAIN__: isOnline
       ? JSON.stringify('')
       : isProd
-        ? JSON.stringify('https://volcengineapi-boe-stable.byted.org')
+        ? JSON.stringify('')
         : JSON.stringify('http://localhost:5173/video-api/'),
 
     __BASE__PATH__: isOnline
       ? JSON.stringify('/common/veplayer/h5')
       : isProd
-        ? JSON.stringify('/common/veplayer-h5')
+        ? JSON.stringify('/veplayer-h5')
         : JSON.stringify(''),
     __IMAGEX_DOMAIN__: isOnline
       ? JSON.stringify('//imagex-vod-drama.byte-test.com')
-      : JSON.stringify('//vod-demo-cover.volcimagex.cn'),
-    __IMAGEX_TEMPLATE__: isOnline ? JSON.stringify('tplv-6susrskwwa-resize') : JSON.stringify('tplv-j8hmcvvxia-resize'),
+      : isProd
+        ? JSON.stringify('//imagex-vod-drama.byte-test.com')
+        : JSON.stringify('//vod-demo-cover.volcimagex.cn'),
+    __IMAGEX_TEMPLATE__: isOnline
+      ? JSON.stringify('tplv-6susrskwwa-resize')
+      : isProd
+        ? JSON.stringify('tplv-6susrskwwa-resize')
+        : JSON.stringify('tplv-j8hmcvvxia-resize'),
   },
   base: isOnline
     ? '//demo.volcvideo.com/common/veplayer/h5'
     : isProd
-      ? '//veplayer-h5.gf.bytedance.net/veplayer-h5'
+      ? '//veplayer-h5.gf-boe.bytedance.net/veplayer-h5'
       : '',
   build: {
     outDir: path.resolve(__dirname, 'output'),
     cssTarget: 'chrome61',
+    rollupOptions: {
+      output: {
+        generatedCode: 'es5',
+      },
+    },
   },
   server: {
     port: 5173,

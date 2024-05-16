@@ -11,7 +11,7 @@
     z-index: 999;
     box-sizing: border-box;
 
-    @media screen and (width >= 750px) {
+    @media screen and (min-width: 500px) {
       & {
         width: var(--pc-max-width);
       }
@@ -40,6 +40,16 @@
   }
 }
 
+:global {
+  .adm-nav-bar-back-arrow {
+    display: flex;
+    align-items: center;
+  }
+  .adm-nav-bar-title {
+    flex: 0 0 auto;
+  }
+}
+
 .recommend-active {
   background-color: transparent;
   color: #ffffff;
@@ -55,10 +65,17 @@
 
     .adm-tabs-tab {
       text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+      margin: 0 16px;
     }
 
     .adm-tabs-tab-active {
       --active-title-color: #fff;
+    }
+
+    .adm-tabs-tab-wrapper {
+      padding: 0;
+      justify-content: center;
+      display: flex;
     }
   }
 }
@@ -79,7 +96,7 @@
     }
 
     .adm-tabs-tab-wrapper {
-      padding: 0 0;
+      padding: 0;
       justify-content: center;
       display: flex;
     }
