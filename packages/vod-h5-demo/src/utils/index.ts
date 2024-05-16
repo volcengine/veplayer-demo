@@ -34,7 +34,7 @@ export const os = getOS();
 
 console.log('os', os);
 
-export function parseModel(videoModel: string): void | IVideoModel {
+export function parseModel(videoModel: string): undefined | IVideoModel {
   try {
     return JSON.parse(videoModel);
   } catch (err) {
@@ -77,7 +77,7 @@ export function getImageXURL(url: string) {
  * @param list 清晰度列表
  * @param defaultDef 弱网下的默认清晰度
  */
-export function selectDef(list: IPlayInfoListItem[], defaultDef: string = '720p'): void | IPlayInfoListItem {
+export function selectDef(list: IPlayInfoListItem[], defaultDef = '720p'): undefined | IPlayInfoListItem {
   if (!list.length) {
     return;
   }

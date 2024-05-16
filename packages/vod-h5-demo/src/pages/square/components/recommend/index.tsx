@@ -38,13 +38,12 @@ const Recommend: React.FC<IRecommend> = ({
   const [activeIndex, setActiveIndex] = useState(0);
   // TODO EpisodeFeedStreamWithVideoModel
   const list: IVideoDataWithModel[] = (data?.result || [])
-    .map(
-      (item: any) =>
-        ({
-          ...item,
-          videoModel: parseModel(item.videoModel),
-        }) as IVideoDataWithModel,
-    )
+    .map((item: any) => {
+      return {
+        ...item,
+        videoModel: parseModel(item.videoModel),
+      } as IVideoDataWithModel;
+    })
     .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl);
   const current: IVideoDataWithModel = list?.[activeIndex];
 
