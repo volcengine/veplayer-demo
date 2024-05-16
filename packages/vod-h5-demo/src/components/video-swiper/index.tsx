@@ -1,18 +1,16 @@
-import React, { useState, useRef, useEffect, CSSProperties } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
 import { Popup, Toast } from 'antd-mobile';
-import VePlayer, { Events, PlayerCore } from '@volcengine/veplayer';
-import MP4Plugin from '@byted/xgplayer-encrypt-mp4';
+import VePlayer, { Events, PlayerCore } from '@/player';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
 import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
-import { selectDef, os, addPreloadList } from '@/utils';
-
-import type { IPlayerConfig } from '@volcengine/veplayer';
+import { selectDef, addPreloadList } from '@/utils';
+import type { IPlayerConfig } from '@/player';
 import type { IVideoDataWithModel } from '@/typings';
 
 import 'swiper/less';
@@ -30,6 +28,7 @@ interface IVideoSwiperProps {
   onProgressDragend?: () => void;
 }
 
+const preventDefault = (e: TouchEvent) => e?.preventDefault?.();
 const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   list,
   isRecommend,
@@ -45,6 +44,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const sdkRef = useRef<VePlayer>();
 
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const swiperActiveRef = useRef<number>(0);
   const [playNextStatus, setPlayNextStatus] = useState<string>('');
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
@@ -81,7 +81,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   }
 
   const onSlideChange = (swiper: SwiperClass) => {
-    if (swiper.realIndex !== activeIndex) {
+    if (swiper.realIndex !== swiperActiveRef.current) {
       playNext(swiper.realIndex);
     }
   };
@@ -97,7 +97,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     if (index < 0 || index >= list.length) {
       return;
     }
-    if (sdkRef.current && index !== activeIndex) {
+    if (sdkRef.current && index !== swiperActiveRef.current) {
+      swiperActiveRef.current = index;
       setPlayNextStatus('start');
       const next = list?.[index];
       const def = getDefInfo(list, index);
@@ -208,7 +209,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         videoFillMode: 'fillWidth',
         codec: def.Codec,
         enableMp4MSE: true,
-        plugins: [MP4Plugin],
         ignores: [
           'moreButtonPlugin',
           'enter',
@@ -232,7 +232,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           gradient: 'none',
           darkness: false,
           disableGesture: isRecommend,
-          isTouchingSeek: !isRecommend,
+          isTouchingSeek: false,
+          gestureY: false,
         },
         progress: {
           onMoveStart: () => {
@@ -284,6 +285,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
             onProgressDragend && onProgressDragend();
             return true;
           });
+        } else {
+          // 通过插件实例调用
+          player.root?.addEventListener('touchmove', preventDefault);
         }
       });
       playerSdk.once(Events.PLAY, showUnmute);
@@ -307,6 +311,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     return () => {
       if (sdkRef.current) {
         sdkRef.current.destroy();
+        sdkRef.current?.player?.root?.removeEventListener('touchmove', preventDefault);
       }
     };
   }, []);

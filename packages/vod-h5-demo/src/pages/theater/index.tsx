@@ -6,7 +6,7 @@ import useAxios from 'axios-hooks';
 import { API_PATH } from '@/api';
 import VideoSwiper from '@/components/video-swiper';
 import { parseModel } from '@/utils';
-import BackIcon from '@/assets/svg/back_v2.svg?react';
+import BackIcon from '@/assets/svg/back_v3.svg?react';
 
 import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
 import type { IVideoDataWithModel } from '@/typings';

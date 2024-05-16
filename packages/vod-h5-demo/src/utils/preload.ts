@@ -1,6 +1,7 @@
 import { IPlayInfoListItem, IVideoDataWithModel } from '@/typings';
-import { IPreloadData } from '@byted/xgplayer-vod-preload/es/index.interface';
+import type { IPreloadData } from '@/player';
 import { selectDef, os } from '@/utils/index.ts';
+import VePlayer from '@/player';
 
 const getPreloadData = (
   list: Array<IPlayInfoListItem & { vid?: string; vodecType?: string; vtype?: string }>,
@@ -13,8 +14,7 @@ const getPreloadData = (
         data: {
           vid: cur.vid as string,
           codecType: cur?.vodecType ?? 'h264',
-          definition: cur.Definition,
-          mediaType: '',
+          vtype: cur?.vtype ?? 'MP4',
           payload: cur
             ? [
                 {
@@ -22,13 +22,10 @@ const getPreloadData = (
                   bitrate: cur.Bitrate,
                   duration: cur.Duration,
                   size: cur.Size,
-                  codec: cur.Codec,
                   definition: cur.Definition,
                 },
               ]
             : [],
-          vtype: cur?.vtype ?? 'MP4',
-          bizType: 0,
         },
       };
     });
@@ -55,7 +52,8 @@ const addPreloadList = (list: any, index: number) => {
       ...preDef,
       vid: list[index - 1]?.vid,
     });
-  window.preloader?.addPreloadList(getPreloadData(preloadList) as Array<IPreloadData>);
+  console.log('cus-> add preload list', getPreloadData(preloadList));
+  VePlayer.preloader.addList(getPreloadData(preloadList) as Array<IPreloadData>);
 };
 
 export { getPreloadData, addPreloadList };

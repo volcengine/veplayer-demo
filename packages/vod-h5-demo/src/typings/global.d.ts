@@ -1,4 +1,6 @@
-import VePlayer from '@volcengine/veplayer';
+// TODO @byted -> @volcengine
+// import VePlayer from '@volcengine/veplayer';
+import VePlayer from '@/player';
 import { PreloaderManager } from '@byted/xgplayer-vod-preload';
 
 declare global {
