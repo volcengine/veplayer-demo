@@ -27,10 +27,21 @@ function flexible(window: Window, document: Document) {
     docEl.style.fontSize = rem + 'px';
   }
 
+  function setVh() {
+    // 使用0.01倍的innerHeight 作为vh css变量
+    // 避免h5端浏览器底部有工具栏时，css本身的vh单位不能响应工具栏的存在，会造成底部内容被遮挡的问题
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
   setRemUnit();
+  setVh();
 
   // reset rem unit on page resize
-  window.addEventListener('resize', setRemUnit);
+  window.addEventListener('resize', () => {
+    setRemUnit();
+    setVh();
+  });
   window.addEventListener('pageshow', e => {
     if (e.persisted) {
       setRemUnit();

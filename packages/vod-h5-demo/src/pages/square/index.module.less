@@ -1,30 +1,121 @@
 .main {
   position: relative;
   width: 100%;
+  height: 100%;
   background-color: #fff;
 
   .head {
-    position: sticky;
+    position: fixed;
     top: 0;
+    width: 100%;
     z-index: 999;
-    background-color: #fff;
+    box-sizing: border-box;
+
+    @media screen and (min-width: 500px) {
+      & {
+        width: var(--pc-max-width);
+      }
+    }
   }
 
   .content {
-    padding: 16px;
+    padding: 60px 16px;
+  }
+
+  .foot {
+    color: rgba(22, 24, 35, 0.75);
+    text-align: center;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 36px 0 28px;
+  }
+
+  .recommend {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: calc(var(--vh, 1vh) * 100);
   }
 }
 
 :global {
-  .adm-tabs-header {
-    color: rgb(22 24 35 / 60%);
-    border-bottom: none;
-
-    --active-line-color: #161823;
-    --active-title-color: #161823;
+  .adm-nav-bar-back-arrow {
+    display: flex;
+    align-items: center;
   }
-
-  .adm-tabs-tab-active {
-    --active-title-color: #161823;
+  .adm-nav-bar-title {
+    flex: 0 0 auto;
   }
 }
+
+.recommend-active {
+  background-color: transparent;
+  color: #ffffff;
+
+  :global {
+    .adm-tabs-header {
+      color: rgba(255, 255, 255, 0.6);
+      border-bottom: none;
+
+      --active-line-color: #fff;
+      --active-title-color: #fff;
+    }
+
+    .adm-tabs-tab {
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+      margin: 0 16px;
+    }
+
+    .adm-tabs-tab-active {
+      --active-title-color: #fff;
+    }
+
+    .adm-tabs-tab-wrapper {
+      padding: 0;
+      justify-content: center;
+      display: flex;
+    }
+  }
+}
+
+.recommend-inactive {
+  background-color: #fff;
+  color: #000000;
+
+  .head {
+    background-color: #ffffff;
+  }
+
+  :global {
+    .adm-tabs {
+      --fixed-active-line-width: 22px;
+      --content-padding: 0;
+      font-weight: 500;
+    }
+
+    .adm-tabs-tab-wrapper {
+      padding: 0;
+      justify-content: center;
+      display: flex;
+    }
+
+    .adm-tabs-tab {
+      margin: 0 16px;
+    }
+
+    .adm-tabs-header {
+      color: rgb(22 24 35 / 60%);
+      border-bottom: none;
+      --active-line-color: #161823;
+      --active-title-color: #161823;
+    }
+
+    .adm-tabs-tab-active {
+      --active-title-color: #161823;
+    }
+  }
+}
+
+

@@ -1,20 +1,37 @@
 .wrap {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   background-color: #000;
+  font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 
   .head {
-    position: absolute;
+    position: fixed;
     z-index: 200;
     color: #fff;
+    font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+
+    span {
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  :global {
+    .adm-nav-bar-back-arrow {
+      display: flex;
+      align-items: center;
+    }
+    .adm-nav-bar-title {
+      flex: 0 0 auto;
+    }
   }
 
   .main {
     position: relative;
     z-index: 1;
     width: 100%;
-    height: calc(100% - 80px);
+    height: calc(100% - 180px - constant(safe-area-inset-bottom));
+    height: calc(100% - 180px - env(safe-area-inset-bottom));
 
     .swiper-container {
       position: relative;
@@ -22,6 +39,9 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
+      //position: fixed;
+      //inset: 0;
+      //z-index: 1;
 
       .my-swiper {
         width: 100%;
@@ -49,7 +69,6 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    pointer-events: none;
 
     .unmute-btn {
       box-sizing: border-box;
@@ -67,6 +86,7 @@
       .unmute-icon {
         width: 20px;
         height: 20px;
+        margin-right: 2px;
       }
 
       span {
@@ -79,14 +99,8 @@
       }
     }
 
-    .unmute-btn:hover {
-      color: #3370ff;
-      background-color: rgb(0 0 0 / 30%);
-      border: 0.5px #3370ff solid;
-    }
-
     .unmute-bt:active {
-      background-color: rgb(0 0 0 / 30%);
+      background-color: rgb(58 58 58 / 50%);
     }
   }
 
@@ -101,8 +115,8 @@
   position: absolute;
   right: calc(12px + env(safe-area-inset-right));
   right: calc(12px + constant(safe-area-inset-right));
-  bottom: calc(20px + constant(safe-area-inset-bottom));
-  bottom: calc(20px + env(safe-area-inset-bottom));
+  bottom: calc(-50px + constant(safe-area-inset-bottom));
+  bottom: calc(-50px + env(safe-area-inset-bottom));
   left: calc(12px + env(safe-area-inset-left));
   left: calc(12px + constant(safe-area-inset-left));
   z-index: 100;
@@ -186,5 +200,67 @@
     gap: 12px 12px;
     max-height: 360px;
     padding: 12px 4px;
+  }
+}
+
+.loading-mask {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: #000;
+
+  .loading-btn {
+    position: relative;
+    width: 97px;
+    height: 76px;
+    background: var(--ConstBG-ToastDefault, #393b44);
+    border-radius: 12px;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-container {
+    width: 60px;
+  }
+
+  .loading-icon {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    transform: translateX(-50%);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .loading-text {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    width: 60px;
+    height: 20px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: rgb(255 255 255 / 90%);
+    text-align: center;
+    transform: translateX(-50%);
   }
 }
