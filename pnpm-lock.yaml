@@ -65,9 +65,7 @@ importers:
       '@babel/plugin-transform-block-scoping': ^7.24.4
       '@babel/plugin-transform-runtime': ^7.24.3
       '@babel/preset-env': ^7.24.4
-      '@byted/veplayer': 0.0.0-feat-v1-8-6-preload-20240513040910
-      '@byted/xgplayer-encrypt-mp4': 3.0.16-rc.6
-      '@byted/xgplayer-vod-preload': 1.0.5-rc.1
+      '@byted/veplayer': 0.0.0-feat-v1-8-6-preload-20240517060356
       '@rollup/plugin-babel': ^6.0.4
       '@vcloud-lux/vite-plugin-slardar': 0.0.1-beta.6
       '@vitejs/plugin-basic-ssl': ^1.1.0
@@ -98,9 +96,7 @@ importers:
       xgplayer: 3.0.0-alpha.121
     dependencies:
       '@ahooksjs/use-url-state': 3.5.1
-      '@byted/veplayer': 0.0.0-feat-v1-8-6-preload-20240513040910
-      '@byted/xgplayer-encrypt-mp4': 3.0.16-rc.6_jizzygp5tvv5sytpnowjhg4efa
-      '@byted/xgplayer-vod-preload': 1.0.5-rc.1_jizzygp5tvv5sytpnowjhg4efa
+      '@byted/veplayer': 0.0.0-feat-v1-8-6-preload-20240517060356
       '@vitejs/plugin-basic-ssl': 1.1.0
       '@volcengine/imagex-react': 2.1.1
       '@volcengine/veplayer': 1.8.5
@@ -1389,99 +1385,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@byted/veplayer/0.0.0-feat-v1-8-6-preload-20240513040910:
-    resolution: {integrity: sha512-8qGSIkbOxo5XFJVx8BFmrJgW2V3GOhXU4VDoytiVR/dU/kWBGKZpOmHEXAofma0dZgLpu7C+KpQLE1yGjIihvg==}
-    dev: false
-
-  /@byted/xgplayer-encrypt-mp4/3.0.16-rc.6_jizzygp5tvv5sytpnowjhg4efa:
-    resolution: {integrity: sha512-LNeTnFZQq/2gdqDoYLglTCveZR5YmoTLP23K4hJrpm5bG+u8UZ1n+Tq9ajDLS87LTBEFqedKsP8QZfWhNaHtMg==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-      xgplayer: '>=3.0.0-alpha.95'
-    dependencies:
-      '@babel/runtime': 7.24.5
-      '@byted/xgplayer-encrypt-secretkey': 3.0.5
-      '@byted/xgplayer-vod-abr': 1.1.7_core-js@3.37.0
-      '@byted/xgplayer-vod-preload': 1.0.5-rc.1_jizzygp5tvv5sytpnowjhg4efa
-      '@byted/xgplayer-vod-shared': 0.0.4-rc.1_jizzygp5tvv5sytpnowjhg4efa
-      '@byted/xgplayer-vod-utils': 0.0.15-rc.2_core-js@3.37.0
-      '@byted/xgplayer-wasm-decryptor': 0.0.3_core-js@3.37.0
-      concat-typed-array: 1.0.2
-      core-js: 3.37.0
-      eventemitter3: 4.0.7
-      xgplayer: 3.0.0-alpha.121
-      xgplayer-mp4-loader: 3.0.9-alpha.17_core-js@3.37.0
-      xgplayer-streaming-shared: 3.0.9_core-js@3.37.0
-      xgplayer-transmuxer: 3.0.9-alpha.7_core-js@3.37.0
-    dev: false
-
-  /@byted/xgplayer-encrypt-secretkey/3.0.5:
-    resolution: {integrity: sha512-lZNhdZhGp9cJMq0x6LnXDOl7zku835q4kXrMen7QaFAuwznJyrdLL5/45Qd4NTm13vak1jRX3ZS3nwkwMYHnrw==}
-    dependencies:
-      eventemitter3: 4.0.7
-      sjcl-es: 2.0.0
-      spark-md5: 3.0.2
-    dev: false
-
-  /@byted/xgplayer-vod-abr/1.1.7_core-js@3.37.0:
-    resolution: {integrity: sha512-l3AKCcw6B1UQYe6rX5te8jTqsceBvv6vnbx2k6gFVhVYEPLiM5aay2YjYNvd+9TuQfYbHzZiiZQ3HgwZC1oJoA==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      '@babel/runtime': 7.24.5
-      '@byted/xgplayer-vod-utils': 0.0.13
-      core-js: 3.37.0
-    dev: false
-
-  /@byted/xgplayer-vod-preload/1.0.5-rc.1_jizzygp5tvv5sytpnowjhg4efa:
-    resolution: {integrity: sha512-C+5vvuFg78LHI8C5tRjNgqRfBjKu52rS38UI312v3KclXmxEq7r/MFjWwWXqiTGN/cCsKHaDqgWq3h/xwwwowA==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-      xgplayer: '>=3.0.0'
-    dependencies:
-      '@babel/runtime': 7.24.5
-      '@byted/xgplayer-vod-shared': 0.0.4-rc.1_jizzygp5tvv5sytpnowjhg4efa
-      '@byted/xgplayer-vod-utils': 0.0.15-rc.2_core-js@3.37.0
-      core-js: 3.37.0
-      eventemitter3: 4.0.7
-      xgplayer: 3.0.0-alpha.121
-    dev: false
-
-  /@byted/xgplayer-vod-shared/0.0.4-rc.1_jizzygp5tvv5sytpnowjhg4efa:
-    resolution: {integrity: sha512-baB9otWqV4RDIsun14U+GyIz8La5X+xPgmJzdOvR8yhR0uDoM/DGxUgfg6R0pRhURvGbJ83W1vhQZQkHkalF5g==}
-    peerDependencies:
-      xgplayer: '>=3.0.0-alpha.95'
-    dependencies:
-      xgplayer: 3.0.0-alpha.121
-      xgplayer-streaming-shared: 3.0.9_core-js@3.37.0
-    transitivePeerDependencies:
-      - core-js
-    dev: false
-
-  /@byted/xgplayer-vod-utils/0.0.13:
-    resolution: {integrity: sha512-0xIU3i/WtDr5jFGspKEy+9HRl6zw3Yq7HUF/eCzflgDN6Cxg1Dc9cvsiK5w6LkDfGhZ31WshHCtpD/XjYOfoPQ==}
-    dependencies:
-      '@babel/runtime': 7.24.5
-      core-js: 3.37.0
-    dev: false
-
-  /@byted/xgplayer-vod-utils/0.0.15-rc.2_core-js@3.37.0:
-    resolution: {integrity: sha512-C0MunEcYhmQygQEwrpkmNPWGdkeMUEniI8GOqv7CuNuEZ4QaZbxrvsLkGSqhCNJpWhnxCoac1CeihS/A+Qnx2Q==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      '@babel/runtime': 7.24.5
-      core-js: 3.37.0
-    dev: false
-
-  /@byted/xgplayer-wasm-decryptor/0.0.3_core-js@3.37.0:
-    resolution: {integrity: sha512-uCy8/jG52OSLFy+aYaL3GYEbQHXknPo8gvpD+b3IE28mFbtc6r82+9WODUC8QcenY+nb/DlQ4GUDrtUfF4ojZg==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      '@babel/runtime': 7.24.5
-      '@byted/xgplayer-vod-utils': 0.0.15-rc.2_core-js@3.37.0
-      core-js: 3.37.0
+  /@byted/veplayer/0.0.0-feat-v1-8-6-preload-20240517060356:
+    resolution: {integrity: sha512-PLUu6HNbEsv7vVvggIFKlTavl5yzCNZMAO4lALD47thVuO2Sf/Z1v9NPfc26pv3Rj7xXkQi99hpfVf4yoyGD/g==}
     dev: false
 
   /@csstools/css-parser-algorithms/2.6.3_yd6v5gcgquj6gckkguvqtxveja:
@@ -3092,12 +2997,6 @@ packages:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
     dev: true
 
-  /concat-typed-array/1.0.2:
-    resolution: {integrity: sha512-aC878bxeWSlrY6h60cCDwBUXpKwovZrB7+C4+VHNO1CIXW2gBLxbQ757jWtOXUscLGgYI8R84N6uy9fTJPe+0g==}
-    engines: {node: '>=0.10.0'}
-    deprecated: 'WARNING: This package has been renamed to typed-array-concat.'
-    dev: false
-
   /convert-source-map/2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
     dev: true
@@ -3161,10 +3060,6 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
-
-  /crypto-es/1.2.7:
-    resolution: {integrity: sha512-UUqiVJ2gUuZFmbFsKmud3uuLcNP2+Opt+5ysmljycFCyhA0+T16XJmo1ev/t5kMChMqWh7IEvURNCqsg+SjZGQ==}
-    dev: false
 
   /css-functions-list/3.2.2:
     resolution: {integrity: sha512-c+N0v6wbKVxTu5gOBBFkr9BEdBWaqqjQeiJ8QvSRIJOf+UxlJh930m8e6/WNeODIK0mYLFkoONrnj16i2EcvfQ==}
@@ -5351,11 +5246,6 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
-  /sjcl-es/2.0.0:
-    resolution: {integrity: sha512-P8O+4pAt95XqmTlvvPdbmBggjAgSE0LQnhSEYUKYKepN176b/8K9zcVrrqhuLu5EUQyeCYy/56J9FzxvzvMavg==}
-    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
-    dev: false
-
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
@@ -5405,10 +5295,6 @@ packages:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
     dev: true
-
-  /spark-md5/3.0.2:
-    resolution: {integrity: sha512-wcFzz9cDfbuqe0FZzfi2or1sgyIrsDwmPwfZC4hiNidPdPINjeUwNfv5kldczoEAcjl9Y1L3SM7Uz2PUEQzxQw==}
-    dev: false
 
   /split-on-first/1.1.0:
     resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}
@@ -6038,51 +5924,11 @@ packages:
       signal-exit: 4.1.0
     dev: true
 
-  /xgplayer-mp4-loader/3.0.9-alpha.17_core-js@3.37.0:
-    resolution: {integrity: sha512-1gKKmXp39Yi9p51HDQ2Mfwjq5jB8XHWTmMuSM2W6FAWJ+AFZA+xlMvH8WY5yzw3Okx+UAPKIxTpiXsbhZlArdQ==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      core-js: 3.37.0
-      eventemitter3: 4.0.7
-      xgplayer-streaming-shared: 3.0.11-alpha.10_core-js@3.37.0
-      xgplayer-transmuxer: 3.0.9-alpha.7_core-js@3.37.0
-    dev: false
-
-  /xgplayer-streaming-shared/3.0.11-alpha.10_core-js@3.37.0:
-    resolution: {integrity: sha512-qRd6ELCMRGyImxKBeI4tY66CxD54SPeL3oJB3zgboutoAM2ME5toCXp7eg6dEsGUQBc5mIk0HOW6yUVEw3x9Sw==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      core-js: 3.37.0
-      eventemitter3: 4.0.7
-    dev: false
-
-  /xgplayer-streaming-shared/3.0.9_core-js@3.37.0:
-    resolution: {integrity: sha512-+TTH7ryj/J/BnkxpepnTb6HMd314gn+IB9k7+ML2ENRclF0+B6LIFdApgP3pA9eHiiVmNC1Yc2hO+1S+j61/Tw==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      core-js: 3.37.0
-      eventemitter3: 4.0.7
-    dev: false
-
   /xgplayer-subtitles/1.0.22:
     resolution: {integrity: sha512-+m1fo+FFynL+2ymO4UQBUSnJAz3WuIthpJFCrKBjd+ukcLRoy3vTcsylXEOo5AZN1xT28fpHmxvZQKEIEYA+6w==}
     dependencies:
       eventemitter3: 4.0.7
       generate-source-map: 0.0.5
-    dev: false
-
-  /xgplayer-transmuxer/3.0.9-alpha.7_core-js@3.37.0:
-    resolution: {integrity: sha512-PdLXk+yHCDKMF0s4YxEN49yAIO6cxPKBQxGUnD1x9L8TFlMtD5Hx0/tgVc0GowpniXk/UfACRXieIC/OTuewuA==}
-    peerDependencies:
-      core-js: '>=3.12.1'
-    dependencies:
-      '@babel/runtime': 7.24.5
-      concat-typed-array: 1.0.2
-      core-js: 3.37.0
-      crypto-es: 1.2.7
     dev: false
 
   /xgplayer/3.0.0-alpha.121:
