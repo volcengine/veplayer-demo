@@ -18,9 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "@ahooksjs/use-url-state": "^3.5.1",
-    "@byted/veplayer": "0.0.0-feat-v1-8-6-preload-20240513040910",
-    "@byted/xgplayer-encrypt-mp4": "3.0.16-rc.6",
-    "@byted/xgplayer-vod-preload": "1.0.5-rc.1",
+    "@byted/veplayer": "0.0.0-feat-v1-8-6-preload-20240517060356",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@volcengine/imagex-react": "^2.1.1",
     "@volcengine/veplayer": "^1.8.5",
