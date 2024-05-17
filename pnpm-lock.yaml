@@ -65,14 +65,13 @@ importers:
       '@babel/plugin-transform-block-scoping': ^7.24.4
       '@babel/plugin-transform-runtime': ^7.24.3
       '@babel/preset-env': ^7.24.4
-      '@byted/veplayer': 0.0.0-feat-v1-8-6-preload-20240517060356
       '@rollup/plugin-babel': ^6.0.4
       '@vcloud-lux/vite-plugin-slardar': 0.0.1-beta.6
       '@vitejs/plugin-basic-ssl': ^1.1.0
       '@vitejs/plugin-legacy': ^5.3.2
       '@vitejs/plugin-vue': ^5.0.4
       '@volcengine/imagex-react': ^2.1.1
-      '@volcengine/veplayer': ^1.8.5
+      '@volcengine/veplayer': 1.8.7-rc.0
       abortcontroller-polyfill: ^1.7.5
       antd-mobile: ^5.35.0
       autoprefixer: ^10.4.19
@@ -96,10 +95,9 @@ importers:
       xgplayer: 3.0.0-alpha.121
     dependencies:
       '@ahooksjs/use-url-state': 3.5.1
-      '@byted/veplayer': 0.0.0-feat-v1-8-6-preload-20240517060356
       '@vitejs/plugin-basic-ssl': 1.1.0
       '@volcengine/imagex-react': 2.1.1
-      '@volcengine/veplayer': 1.8.5
+      '@volcengine/veplayer': 1.8.7-rc.0
       abortcontroller-polyfill: 1.7.5
       antd-mobile: 5.36.0
       axios: 1.6.8
@@ -1385,10 +1383,6 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@byted/veplayer/0.0.0-feat-v1-8-6-preload-20240517060356:
-    resolution: {integrity: sha512-PLUu6HNbEsv7vVvggIFKlTavl5yzCNZMAO4lALD47thVuO2Sf/Z1v9NPfc26pv3Rj7xXkQi99hpfVf4yoyGD/g==}
-    dev: false
-
   /@csstools/css-parser-algorithms/2.6.3_yd6v5gcgquj6gckkguvqtxveja:
     resolution: {integrity: sha512-xI/tL2zxzEbESvnSxwFgwvy5HS00oCXxL4MLs6HUiDcYfwowsoQaABKxUElp1ARITrINzBnsECOc1q0eg2GOrA==}
     engines: {node: ^14 || ^16 || >=18}
@@ -2514,8 +2508,8 @@ packages:
       react-dom: '>=16.10.2'
     dev: false
 
-  /@volcengine/veplayer/1.8.5:
-    resolution: {integrity: sha512-AcUY1DZpaD/Rc71fccer02991a6RPDTPjtO/VssogpVGW1MTjb9IE5bGqmKfoI9g89MO70C1d/bc30eD8LXs4w==}
+  /@volcengine/veplayer/1.8.7-rc.0:
+    resolution: {integrity: sha512-GGoGyOgEbvpz3Julk/Db7/yP9WW4fZrsU/WNJPBi7tLq4mJjQG/PhjcFilEIulPjDXq2bpuXk75hnufgS3pFow==}
     dev: false
 
   /abortcontroller-polyfill/1.7.5:
