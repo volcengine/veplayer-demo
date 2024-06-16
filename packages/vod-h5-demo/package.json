@@ -21,6 +21,7 @@
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@volcengine/imagex-react": "^2.1.1",
     "@volcengine/veplayer": "1.8.6-rc.19",
+    "@byted/veplayer": "0.0.0-feat-v1-86-abr-preload-20240614141531",
     "abortcontroller-polyfill": "^1.7.5",
     "antd-mobile": "^5.35.0",
     "axios": "^1.6.8",

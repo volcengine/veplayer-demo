@@ -9,7 +9,7 @@ import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
-import { selectDef, addPreloadList } from '@/utils';
+import { selectDef, formatPreloadStreamList } from '@/utils';
 import type { IPlayerConfig } from '@/player';
 import type { IVideoDataWithModel } from '@/typings';
 
@@ -101,8 +101,8 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       swiperActiveRef.current = index;
       setPlayNextStatus('start');
       const next = list?.[index];
-      const def = getDefInfo(list, index);
-      if (!def?.MainPlayUrl) {
+      const nextInfo = formatPreloadStreamList([list?.[index]])[0];
+      if (!nextInfo?.url) {
         Toast.show({
           icon: 'fail',
           content: '数据异常',
@@ -119,27 +119,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       sdkRef.current
         ?.playNext({
           autoplay: true,
-          url: def.MainPlayUrl,
-          vid: next.vid,
-          definition: {
-            list: [
-              {
-                url: def.MainPlayUrl,
-                definition: def.Definition,
-                codecType: def.Codec,
-                bitrate: def.Bitrate,
-                vtype: 'MP4',
-              },
-            ],
-          },
+          vid: nextInfo.vid,
+          playList: [{ ...nextInfo }],
         })
         .then(() => {
           console.warn('planext success', index);
           sdkRef.current?.player.play();
           setTimeout(() => hideStartIcon(sdkRef.current?.player), 0);
           setPlayNextStatus('end');
-          // 追加前后集预加载
-          addPreloadList(list, index);
         });
     }
   };
@@ -263,6 +250,13 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         },
       };
 
+      VePlayer.setPreloadScene(1, {
+        prevCount: 1,
+        nextCount: 2,
+      });
+
+      VePlayer.setPreloadList(formatPreloadStreamList(list));
+
       const playerSdk = new VePlayer(options as IPlayerConfig);
       window.playerSdk = playerSdk;
       playerSdk.once(Events.COMPLETE, () => {
@@ -295,7 +289,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       playerSdk.on(Events.ENDED, onEnded);
 
       sdkRef.current = playerSdk;
-      addPreloadList(list, activeIndex);
     }
   }
 

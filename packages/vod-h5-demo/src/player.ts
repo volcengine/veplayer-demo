@@ -1,4 +1,4 @@
-import VePlayer, { Events } from '@volcengine/veplayer';
-import type { PlayerCore, IPlayerConfig, IPreloadDataPayload, IPreloadData } from '@volcengine/veplayer';
+import VePlayer, { Events } from '@byted/veplayer';
+import type { PlayerCore, IPlayerConfig } from '@byted/veplayer';
 
-export { VePlayer as default, Events, PlayerCore, IPlayerConfig, IPreloadDataPayload, IPreloadData };
+export { VePlayer as default, Events, PlayerCore, IPlayerConfig };

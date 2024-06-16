@@ -1,5 +1,4 @@
 import { useCallback, useState, useRef, useEffect } from 'react';
-import VePlayer from '@/player';
 import { NavBar, Tabs, Grid } from 'antd-mobile';
 import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { API_PATH } from '@/api';
 import DramaCard from './components/drama_card';
 import SkeletonCard from './components/drama_card/skeleton_card.tsx';
 import Recommend from './components/recommend';
-import { getPreloadData, hasScrollbar, parseModel, selectDef, os } from '@/utils';
+import { hasScrollbar } from '@/utils';
 import { useUpdate } from '@/hooks';
 import BackIconGray from '@/assets/svg/back_gray.svg?react';
 import BackIcon from '@/assets/svg/back_v3.svg?react';
@@ -16,7 +15,6 @@ import BackIcon from '@/assets/svg/back_v3.svg?react';
 import type { IDramaInfo } from '@/typings';
 
 import style from './index.module.less';
-import { IVideoDataWithModel } from '@/typings';
 
 const TheaterKey = 'square';
 const RecommendKey = 'recommend';
@@ -94,32 +92,6 @@ function Square() {
   useEffect(() => {
     update();
   }, [showFoot, update, loading]);
-
-  useEffect(() => {
-    if (!recLoading && recData?.result && (os.isPc || os.isAndroid)) {
-      // 预加载前9个视频第一集
-      const list: IVideoDataWithModel[] = recData.result
-        .map((item: any) => ({
-          ...item,
-          videoModel: parseModel(item.videoModel),
-        }))
-        .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl);
-      const preloadList: any = list
-        .map(item => {
-          const cur = selectDef(item.videoModel.PlayInfoList, '720p');
-          if (!item?.vid) {
-            return undefined;
-          }
-          return {
-            vid: item.vid as string,
-            ...cur,
-          };
-        })
-        .filter(item => !!item);
-      const preloadPackData = getPreloadData(preloadList) || [];
-      VePlayer.preloader.addList(preloadPackData.slice(0, 9));
-    }
-  }, [recData, recLoading]);
 
   const isRecommendActive = activeIndex === 1;
 

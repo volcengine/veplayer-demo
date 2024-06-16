@@ -65,6 +65,7 @@ importers:
       '@babel/plugin-transform-block-scoping': ^7.24.4
       '@babel/plugin-transform-runtime': ^7.24.3
       '@babel/preset-env': ^7.24.4
+      '@byted/veplayer': 0.0.0-feat-v1-86-abr-preload-20240614141531
       '@rollup/plugin-babel': ^6.0.4
       '@vcloud-lux/vite-plugin-slardar': 0.0.1-beta.6
       '@vitejs/plugin-basic-ssl': ^1.1.0
@@ -95,6 +96,7 @@ importers:
       xgplayer: 3.0.0-alpha.121
     dependencies:
       '@ahooksjs/use-url-state': 3.5.1
+      '@byted/veplayer': 0.0.0-feat-v1-86-abr-preload-20240614141531
       '@vitejs/plugin-basic-ssl': 1.1.0
       '@volcengine/imagex-react': 2.1.1
       '@volcengine/veplayer': 1.8.6-rc.19
@@ -1382,6 +1384,10 @@ packages:
       '@babel/helper-validator-identifier': 7.24.5
       to-fast-properties: 2.0.0
     dev: true
+
+  /@byted/veplayer/0.0.0-feat-v1-86-abr-preload-20240614141531:
+    resolution: {integrity: sha512-TNTezd39OAAMuw5UWSyglDd1kJr5i2MSZ1dm9LBjWD9YnMOWa7xgwpFZTYfW7Ztw+LZZbOXq1PQ5gsS78NslsQ==}
+    dev: false
 
   /@csstools/css-parser-algorithms/2.6.3_yd6v5gcgquj6gckkguvqtxveja:
     resolution: {integrity: sha512-xI/tL2zxzEbESvnSxwFgwvy5HS00oCXxL4MLs6HUiDcYfwowsoQaABKxUElp1ARITrINzBnsECOc1q0eg2GOrA==}

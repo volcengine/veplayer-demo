@@ -19,11 +19,11 @@ const router = createBrowserRouter(
 function App() {
   useEffect(() => {
     if (os.isAndroid || os.isPc) {
-      VePlayer.preloader.register({
-        enableMp4: true,
-        enableDebugger: true,
-        preloadTime: 5,
-        preloadMaxCacheCount: 15,
+      VePlayer.prepare({
+        appId: 597335,
+        strategies: {
+          preload: true,
+        },
       });
     }
   }, []);
