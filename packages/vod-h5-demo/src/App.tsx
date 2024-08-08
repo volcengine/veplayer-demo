@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/home';
 import { featRoutes } from './page.tsx';
-import VePlayer from '@/player';
+import VePlayer, { mp4Encrypt } from '@/player';
 import { os } from './utils/index';
 
 const router = createBrowserRouter(
@@ -23,6 +23,7 @@ function App() {
         appId: 597335,
         strategies: {
           preload: true,
+          adaptRange: true,
         },
       });
     }

@@ -45,7 +45,6 @@ function Theater() {
   }));
   const current: IVideoDataWithModel | undefined = list?.[activeIndex];
   const episodeNumber = current?.episodeDetail?.episodeNumber;
-  console.log('cus-> episodeNumber', current);
   useEffect(() => {
     if (current) {
       toastRef?.current?.close();

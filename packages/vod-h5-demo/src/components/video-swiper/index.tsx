@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
 import { Popup, Toast } from 'antd-mobile';
-import VePlayer, { Events, PlayerCore } from '@/player';
+import VePlayer, { Events, mp4Encrypt, PlayerCore } from '@/player';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
 import SelectIcon from '@/assets/svg/select.svg?react';
 import UpArrowIcon from '@/assets/svg/ic_arrow_packup.svg?react';
 import CloseIcon from '@/assets/svg/close.svg?react';
 import UnmuteIcon from '@/assets/svg/unmute.svg?react';
-import { selectDef, formatPreloadStreamList } from '@/utils';
+import { selectDef, formatPreloadStreamList, os } from '@/utils';
 import type { IPlayerConfig } from '@/player';
 import type { IVideoDataWithModel } from '@/typings';
 
@@ -123,7 +123,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           playList: [{ ...nextInfo }],
         })
         .then(() => {
-          console.warn('planext success', index);
           sdkRef.current?.player.play();
           setTimeout(() => hideStartIcon(sdkRef.current?.player), 0);
           setPlayNextStatus('end');
@@ -222,6 +221,11 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           isTouchingSeek: false,
           gestureY: false,
         },
+        adaptRange: {
+          enable: true,
+          minCacheDuration: 15,
+          maxCacheDuration: 40,
+        },
         progress: {
           onMoveStart: () => {
             sdkRef.current?.player?.plugins?.progress.focus();
@@ -249,13 +253,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           line_app_id: 597335,
         },
       };
-
-      VePlayer.setPreloadScene(1, {
-        prevCount: 1,
-        nextCount: 2,
-      });
-
-      VePlayer.setPreloadList(formatPreloadStreamList(list));
 
       const playerSdk = new VePlayer(options as IPlayerConfig);
       window.playerSdk = playerSdk;
@@ -298,6 +295,24 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       initPlayer();
     }, 0);
   }, [current, activeIndex]);
+
+  useEffect(() => {
+    // 预加载只支持PC、Android
+    if (!(os.isPc || os.isAndroid)) {
+      return;
+    }
+    // 预加载开启场景：推荐页且处于激活状态； 进入短剧详情页
+    if ((isRecommend && isRecommendActive) || !isRecommend) {
+      VePlayer.setPreloadScene(1, {
+        prevCount: 1,
+        nextCount: 2,
+      });
+
+      // 待预加载列表设置
+      VePlayer.setPreloadList(formatPreloadStreamList(list));
+      console.log(`Page ${isRecommend ? 'Recommend' : 'Detail'} resetPreloadList and setPreloadScene=1`);
+    }
+  }, [isRecommend, isRecommendActive, list]);
 
   // 组件卸载时销毁播放器
   useEffect(() => {

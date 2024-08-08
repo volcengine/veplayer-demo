@@ -1,4 +1,5 @@
 import { useCallback, useState, useRef, useEffect } from 'react';
+import VePlayer from '@/player';
 import { NavBar, Tabs, Grid } from 'antd-mobile';
 import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
@@ -7,12 +8,12 @@ import { API_PATH } from '@/api';
 import DramaCard from './components/drama_card';
 import SkeletonCard from './components/drama_card/skeleton_card.tsx';
 import Recommend from './components/recommend';
-import { hasScrollbar } from '@/utils';
+import { formatPreloadStreamList, hasScrollbar, os, parseModel } from '@/utils';
 import { useUpdate } from '@/hooks';
 import BackIconGray from '@/assets/svg/back_gray.svg?react';
 import BackIcon from '@/assets/svg/back_v3.svg?react';
 
-import type { IDramaInfo } from '@/typings';
+import type { IDramaInfo, IVideoDataWithModel } from '@/typings';
 
 import style from './index.module.less';
 
@@ -80,6 +81,7 @@ function Square() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isSliderMoving, setIsSliderMoving] = useState(false);
   const [isProgressDragging, setProgressDragging] = useState(false);
+  const [preloadOnce, setPreloadOnce] = useState(false);
 
   const swiperRef = useRef<SwiperRef>(null);
 
@@ -92,6 +94,24 @@ function Square() {
   useEffect(() => {
     update();
   }, [showFoot, update, loading]);
+
+  useEffect(() => {
+    // PC&Android开启预加载
+    if (!recLoading && recData?.result && (os.isPc || os.isAndroid) && !preloadOnce && activeIndex === 0) {
+      // 预加载前6个视频第一集
+      const list: IVideoDataWithModel[] = recData.result
+        .map((item: any) => ({
+          ...item,
+          videoModel: parseModel(item.videoModel),
+        }))
+        .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl);
+      VePlayer.preloader?.clearPreloadList(); // 切换模式前清空预加载列表
+      VePlayer.setPreloadScene(0); // 更新为手动模式，注意：手动模式下直接全量加载所有待预加载资源
+      VePlayer.setPreloadList(formatPreloadStreamList(list.slice(0, 6))); // 设置手动模式待预加载列表
+      setPreloadOnce(true);
+      console.log(`Page Square resetPreloadList and setPreloadScene=0`);
+    }
+  }, [recData, recLoading, preloadOnce, activeIndex]);
 
   const isRecommendActive = activeIndex === 1;
 

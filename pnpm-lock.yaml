@@ -65,14 +65,14 @@ importers:
       '@babel/plugin-transform-block-scoping': ^7.24.4
       '@babel/plugin-transform-runtime': ^7.24.3
       '@babel/preset-env': ^7.24.4
-      '@byted/veplayer': 0.0.0-feat-v1-86-abr-preload-20240614141531
+      '@byted/veplayer': 1.9.4-rc.0
       '@rollup/plugin-babel': ^6.0.4
       '@vcloud-lux/vite-plugin-slardar': 0.0.1-beta.6
       '@vitejs/plugin-basic-ssl': ^1.1.0
       '@vitejs/plugin-legacy': ^5.3.2
       '@vitejs/plugin-vue': ^5.0.4
       '@volcengine/imagex-react': ^2.1.1
-      '@volcengine/veplayer': 1.8.6-rc.19
+      '@volcengine/veplayer': 1.9.2
       abortcontroller-polyfill: ^1.7.5
       antd-mobile: ^5.35.0
       autoprefixer: ^10.4.19
@@ -96,10 +96,10 @@ importers:
       xgplayer: 3.0.0-alpha.121
     dependencies:
       '@ahooksjs/use-url-state': 3.5.1
-      '@byted/veplayer': 0.0.0-feat-v1-86-abr-preload-20240614141531
+      '@byted/veplayer': 1.9.4-rc.0
       '@vitejs/plugin-basic-ssl': 1.1.0
       '@volcengine/imagex-react': 2.1.1
-      '@volcengine/veplayer': 1.8.6-rc.19
+      '@volcengine/veplayer': 1.9.2
       abortcontroller-polyfill: 1.7.5
       antd-mobile: 5.36.0
       axios: 1.6.8
@@ -1385,8 +1385,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@byted/veplayer/0.0.0-feat-v1-86-abr-preload-20240614141531:
-    resolution: {integrity: sha512-TNTezd39OAAMuw5UWSyglDd1kJr5i2MSZ1dm9LBjWD9YnMOWa7xgwpFZTYfW7Ztw+LZZbOXq1PQ5gsS78NslsQ==}
+  /@byted/veplayer/1.9.4-rc.0:
+    resolution: {integrity: sha512-rw7OeA+QDvv6xQejFstrb8L2zDq2tmpcphVhgaCB1Po/wbynRXrv390sQv70+y3NsnPq/wcbcNU170mf+wiTvQ==}
     dev: false
 
   /@csstools/css-parser-algorithms/2.6.3_yd6v5gcgquj6gckkguvqtxveja:
@@ -2501,8 +2501,8 @@ packages:
       react-dom: '>=16.10.2'
     dev: false
 
-  /@volcengine/veplayer/1.8.6-rc.19:
-    resolution: {integrity: sha512-bB4CHySMoIbPOwgyKJOJ3i7HLsR2YmYSP742YpLKGeqQ7p7b9J1oPSvz5WOsplVLMy2wUb1qjjmuhz+e3b/Img==}
+  /@volcengine/veplayer/1.9.2:
+    resolution: {integrity: sha512-6D6OsQpUwTo39lbqUp5QpqoxHa55EETRiNZjNzE7D0RNvtDXSMhRMlvcwJK6K8lDm/nTV/XxBn5+E0nUUV087g==}
     dev: false
 
   /abortcontroller-polyfill/1.7.5:
