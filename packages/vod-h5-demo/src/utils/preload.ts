@@ -3,7 +3,7 @@ import { selectDef, os } from '@/utils/index.ts';
 
 const formatPreloadStreamList = (list: Array<IVideoDataWithModel>): any => {
   return list
-    ?.map((item, index) => {
+    ?.map(item => {
       const target = selectDef(item.videoModel?.PlayInfoList ?? []);
       if (!target) {
         return undefined;

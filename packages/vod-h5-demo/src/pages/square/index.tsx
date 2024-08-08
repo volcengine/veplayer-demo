@@ -109,7 +109,7 @@ function Square() {
       VePlayer.setPreloadScene(0); // 更新为手动模式，注意：手动模式下直接全量加载所有待预加载资源
       VePlayer.setPreloadList(formatPreloadStreamList(list.slice(0, 6))); // 设置手动模式待预加载列表
       setPreloadOnce(true);
-      console.log(`Page Square resetPreloadList and setPreloadScene=0`);
+      console.log('Page Square resetPreloadList and setPreloadScene=0');
     }
   }, [recData, recLoading, preloadOnce, activeIndex]);
 

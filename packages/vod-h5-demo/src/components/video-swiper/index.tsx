@@ -120,7 +120,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         ?.playNext({
           autoplay: true,
           vid: nextInfo.vid,
-          playList: [{ ...nextInfo }],
+          playList: [nextInfo],
         })
         .then(() => {
           sdkRef.current?.player.play();
@@ -195,6 +195,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         videoFillMode: 'fillWidth',
         codec: def.Codec,
         enableMp4MSE: true,
+        plugins: [mp4Encrypt],
         ignores: [
           'moreButtonPlugin',
           'enter',

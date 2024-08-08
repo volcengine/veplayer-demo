@@ -25,6 +25,7 @@ function App() {
           preload: true,
           adaptRange: true,
         },
+        plugins: [mp4Encrypt],
       });
     }
   }, []);
