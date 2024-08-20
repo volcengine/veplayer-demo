@@ -20,7 +20,7 @@
     "@ahooksjs/use-url-state": "^3.5.1",
     "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@volcengine/imagex-react": "^2.1.1",
-    "@volcengine/veplayer": "1.9.4-rc.1",
+    "@volcengine/veplayer": "1.9.4-rc.4",
     "abortcontroller-polyfill": "^1.7.5",
     "antd-mobile": "^5.35.0",
     "axios": "^1.6.8",
