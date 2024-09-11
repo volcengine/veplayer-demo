@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/home';
 import { featRoutes } from './page.tsx';
-import VePlayer, { mp4Encrypt } from '@/player';
+import VePlayer from '@/player';
 import { os } from '@/utils';
 
 const router = createBrowserRouter(
