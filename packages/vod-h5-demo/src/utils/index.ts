@@ -32,8 +32,6 @@ function getOS() {
 
 export const os = getOS();
 
-console.log('os', os);
-
 export function parseModel(videoModel: string): undefined | IVideoModel {
   try {
     return JSON.parse(videoModel);
@@ -65,11 +63,6 @@ export function isWifi() {
   } catch (e) {
     return false;
   }
-}
-
-export function getImageXURL(url: string) {
-  // TODO getImageXURL 方法实现
-  console.log(url);
 }
 
 /**

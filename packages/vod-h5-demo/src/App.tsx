@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/home';
 import { featRoutes } from './page.tsx';
 import VePlayer, { mp4Encrypt } from '@/player';
-import { os } from './utils/index';
+import { os } from '@/utils';
 
 const router = createBrowserRouter(
   [

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
 import { Popup, Toast } from 'antd-mobile';
@@ -54,10 +54,12 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
 
+  const getClass = useCallback((player: PlayerCore) => player.root?.getElementsByClassName('xgplayer-start')[0], []);
+
   /**
    * 展示静音按钮
    */
-  function showUnmute() {
+  const showUnmute = useCallback(() => {
     if (sdkRef.current?.player) {
       const player = sdkRef.current?.player;
       if (player) {
@@ -69,68 +71,100 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         }
       }
     }
-  }
+  }, []);
 
-  function onUnmuteClick() {
+  const onUnmuteClick = useCallback(() => {
     if (sdkRef.current?.player) {
       const player = sdkRef.current?.player;
       player.muted = false;
       player.play();
       setShowUnmuteBtn(false);
     }
-  }
+  }, []);
 
-  const onSlideChange = (swiper: SwiperClass) => {
-    if (swiper.realIndex !== swiperActiveRef.current) {
-      playNext(swiper.realIndex);
-    }
-  };
-  const getDefInfo = (list: IVideoDataWithModel[], index: number) => {
-    return selectDef(list?.[index]?.videoModel?.PlayInfoList ?? [], '720p');
-  };
+  const hideStartIcon = useCallback(
+    (player?: PlayerCore) => {
+      if (!player?.root) {
+        return;
+      }
+      const startClassDom = getClass(player);
+      if (startClassDom) {
+        startClassDom.className = startClassDom.className
+          ?.split(' ')
+          .filter(item => item !== 'veplayer-h5-hide-start')
+          .join(' ');
+      }
+    },
+    [getClass],
+  );
+
+  const attachStartIcon = useCallback(
+    (player: PlayerCore) => {
+      if (!player?.root) {
+        return;
+      }
+      const startClassDom = getClass(player);
+      if (startClassDom) {
+        startClassDom.className = `${startClassDom.className} veplayer-h5-hide-start`;
+      }
+    },
+    [getClass],
+  );
 
   /**
    * 播放器下一个视频
    * @param {number} index - 当前swiper的index
    */
-  const playNext = (index: number) => {
-    if (index < 0 || index >= list.length) {
-      return;
-    }
-    if (sdkRef.current && index !== swiperActiveRef.current) {
-      swiperActiveRef.current = index;
-      setPlayNextStatus('start');
-      const next = list?.[index];
-      const nextInfo = formatPreloadStreamList([list?.[index]])[0];
-      if (!nextInfo?.url) {
-        Toast.show({
-          icon: 'fail',
-          content: '数据异常',
-        });
+  const playNext = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= list.length) {
         return;
       }
-      const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
-      swiperRef.current?.slideTo(index, 0);
-      setActiveIndex(index);
-      sdkRef.current?.player?.pause();
-      // @ts-expect-error expected
-      sdkRef.current?.getPlugin('poster')?.update(poster);
-      attachStartIcon(sdkRef.current?.player);
-      sdkRef.current
-        ?.playNext({
-          autoplay: true,
-          vid: nextInfo.vid,
-          playList: [nextInfo],
-        })
-        .then(() => {
-          sdkRef.current?.player.play();
-          setTimeout(() => hideStartIcon(sdkRef.current?.player), 0);
-          setPlayNextStatus('end');
-        });
-    }
-  };
+      if (sdkRef.current && index !== swiperActiveRef.current) {
+        swiperActiveRef.current = index;
+        setPlayNextStatus('start');
+        const next = list?.[index];
+        const nextInfo = formatPreloadStreamList([list?.[index]])[0];
+        if (!nextInfo?.url) {
+          Toast.show({
+            icon: 'fail',
+            content: '数据异常',
+          });
+          return;
+        }
+        const poster = next?.videoModel?.PosterUrl ?? next.coverUrl;
+        swiperRef.current?.slideTo(index, 0);
+        setActiveIndex(index);
+        sdkRef.current?.player?.pause();
+        // @ts-expect-error expected
+        sdkRef.current?.getPlugin('poster')?.update(poster);
+        attachStartIcon(sdkRef.current?.player);
+        sdkRef.current
+          ?.playNext({
+            autoplay: true,
+            vid: nextInfo.vid,
+            playList: [nextInfo],
+          })
+          .then(() => {
+            sdkRef.current?.player.play();
+            setTimeout(() => hideStartIcon(sdkRef.current?.player), 0);
+            setPlayNextStatus('end');
+          });
+      }
+    },
+    [attachStartIcon, hideStartIcon, list],
+  );
 
-  function onEnded() {
+  const onSlideChange = useCallback(
+    (swiper: SwiperClass) => {
+      if (swiper.realIndex !== swiperActiveRef.current) {
+        playNext(swiper.realIndex);
+      }
+    },
+    [playNext],
+  );
+
+  const onEnded = useCallback(() => {
     if (swiperRef.current?.activeIndex === list.length - 1) {
       Toast.show({
         content: '看完了！',
@@ -138,35 +172,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     } else {
       swiperRef.current?.slideNext();
     }
-  }
+  }, [list.length]);
 
-  const getClass = (player: PlayerCore) => player.root?.getElementsByClassName('xgplayer-start')[0];
-
-  const hideStartIcon = (player?: PlayerCore) => {
-    if (!player?.root) {
-      return;
-    }
-    const startClassDom = getClass(player);
-    if (startClassDom) {
-      startClassDom.className = startClassDom.className
-        ?.split(' ')
-        .filter(item => item !== 'veplayer-h5-hide-start')
-        .join(' ');
-    }
-  };
-
-  const attachStartIcon = (player: PlayerCore) => {
-    if (!player?.root) {
-      return;
-    }
-    const startClassDom = getClass(player);
-    if (startClassDom) {
-      startClassDom.className = `${startClassDom.className} veplayer-h5-hide-start`;
-    }
-    // player.once(Events.AUTOPLAY_STARTED, () => hideStartIcon(player));
-  };
-
-  function initPlayer() {
+  const initPlayer = useCallback(() => {
     if (!sdkRef.current && current) {
       const playInfoList = current?.videoModel?.PlayInfoList || [];
       const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
@@ -176,7 +184,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       }
       const options: IPlayerConfig = {
         id: 'veplayer-container',
-        // url: def.MainPlayUrl,
         playList: [
           {
             url: def.MainPlayUrl,
@@ -288,14 +295,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
       sdkRef.current = playerSdk;
     }
-  }
+  }, [current, isRecommend, onEnded, onProgressDrag, onProgressDragend, showUnmute, startTime]);
 
   // 组件加载时初始化播放器
   useEffect(() => {
     setTimeout(() => {
       initPlayer();
     }, 0);
-  }, [current, activeIndex]);
+  }, [current, activeIndex, initPlayer]);
 
   useEffect(() => {
     // 预加载只支持PC、Android
@@ -311,7 +318,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
       // 待预加载列表设置
       VePlayer.setPreloadList(formatPreloadStreamList(list));
-      console.log(`Page ${isRecommend ? 'Recommend' : 'Detail'} resetPreloadList and setPreloadScene=1`);
     }
   }, [isRecommend, isRecommendActive, list]);
 
@@ -341,25 +347,26 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     if (isRecommend) {
       if (isRecommendActive) {
         if (isSliderMoving) {
-          console.warn('>>> pause');
           sdkRef.current?.player?.pause();
         } else {
-          console.warn('>>> play');
           sdkRef.current?.player?.play();
         }
       } else {
-        console.warn('>>> pause');
         sdkRef.current?.player?.pause();
       }
     }
   }, [isRecommend, isRecommendActive, isSliderMoving]);
-  const onSelectClick = (index: number) => {
-    playNext(index);
-  };
 
-  const getCurrentTime = () => {
+  const onSelectClick = useCallback(
+    (index: number) => {
+      playNext(index);
+    },
+    [playNext],
+  );
+
+  const getCurrentTime = useCallback(() => {
     return sdkRef?.current?.player?.currentTime || 0;
-  };
+  }, []);
 
   return (
     <>

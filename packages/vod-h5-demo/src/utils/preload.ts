@@ -1,5 +1,5 @@
 import { IVideoDataWithModel } from '@/typings';
-import { selectDef, os } from '@/utils/index.ts';
+import { selectDef } from './index';
 
 const formatPreloadStreamList = (list: Array<IVideoDataWithModel>): any => {
   return list

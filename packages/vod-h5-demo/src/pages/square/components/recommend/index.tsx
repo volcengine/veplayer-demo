@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Toast } from 'antd-mobile';
 import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
 import useUrlState from '@ahooksjs/use-url-state';
@@ -36,17 +36,20 @@ const Recommend: React.FC<IRecommend> = ({
   const loading = recLoading;
 
   const [activeIndex, setActiveIndex] = useState(0);
-  // TODO EpisodeFeedStreamWithVideoModel
-  const list: IVideoDataWithModel[] = (data?.result || [])
-    .map((item: any) => {
-      const model: IVideoDataWithModel = {
-        ...item,
-        videoModel: parseModel(item.videoModel),
-      };
-      return model;
-    })
-    .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl);
-  const current: IVideoDataWithModel = list?.[activeIndex];
+  const list: IVideoDataWithModel[] = useMemo(
+    () =>
+      (data?.result || [])
+        .map((item: any) => {
+          const model: IVideoDataWithModel = {
+            ...item,
+            videoModel: parseModel(item.videoModel),
+          };
+          return model;
+        })
+        .filter((item: IVideoDataWithModel) => item?.videoModel?.PlayInfoList?.[0]?.MainPlayUrl),
+    [data?.result],
+  );
+  const current: IVideoDataWithModel = useMemo(() => list?.[activeIndex], [activeIndex, list]);
 
   useEffect(() => {
     if (isRecommend) {

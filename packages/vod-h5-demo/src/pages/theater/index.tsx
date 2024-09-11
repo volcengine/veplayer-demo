@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NavBar, Toast } from 'antd-mobile';
 import useUrlState from '@ahooksjs/use-url-state';
@@ -14,6 +14,10 @@ import type { IVideoDataWithModel } from '@/typings';
 import style from './index.module.less';
 import 'swiper/less';
 import '@volcengine/veplayer/index.min.css';
+
+type ResultType = {
+  videoModel: string;
+} & Omit<IVideoDataWithModel, 'videoModel'>;
 
 function Theater() {
   const [urlState] = useUrlState();
@@ -37,14 +41,16 @@ function Theater() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const list: IVideoDataWithModel[] = (data?.result || []).map(item => ({
-    ...item,
-    videoModel: parseModel(item.videoModel),
-  }));
-  const current: IVideoDataWithModel | undefined = list?.[activeIndex];
-  const episodeNumber = current?.episodeDetail?.episodeNumber;
+  const list: IVideoDataWithModel[] = useMemo(
+    () =>
+      ((data?.result || []) as ResultType[]).map(item => ({
+        ...item,
+        videoModel: parseModel(item.videoModel),
+      })),
+    [data?.result],
+  );
+  const current: IVideoDataWithModel | undefined = useMemo(() => list?.[activeIndex], [activeIndex, list]);
+  const episodeNumber = useMemo(() => current?.episodeDetail?.episodeNumber, [current?.episodeDetail?.episodeNumber]);
   useEffect(() => {
     if (current) {
       toastRef?.current?.close();

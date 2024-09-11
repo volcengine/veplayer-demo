@@ -1,9 +1,9 @@
-import style from './index.module.less';
-import { featureList } from '@/page.tsx';
-import SceneCard from './scene_card';
-import BgImg from '@/assets/img/bg.png';
 import useAxios from 'axios-hooks';
 import { API_PATH } from '@/api';
+import { featureList } from '@/page.tsx';
+import BgImg from '@/assets/img/bg.png';
+import SceneCard from './scene_card';
+import style from './index.module.less';
 
 function Home() {
   useAxios(
