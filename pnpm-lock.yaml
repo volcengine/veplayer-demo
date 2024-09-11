@@ -71,7 +71,7 @@ importers:
       '@vitejs/plugin-legacy': ^5.3.2
       '@vitejs/plugin-vue': ^5.0.4
       '@volcengine/imagex-react': ^2.1.1
-      '@volcengine/veplayer': 1.9.4-rc.4
+      '@volcengine/veplayer': 1.9.4-rc.6
       abortcontroller-polyfill: ^1.7.5
       antd-mobile: ^5.35.0
       autoprefixer: ^10.4.19
@@ -97,7 +97,7 @@ importers:
       '@ahooksjs/use-url-state': 3.5.1
       '@vitejs/plugin-basic-ssl': 1.1.0
       '@volcengine/imagex-react': 2.1.1
-      '@volcengine/veplayer': 1.9.4-rc.4
+      '@volcengine/veplayer': 1.9.4-rc.6
       abortcontroller-polyfill: 1.7.5
       antd-mobile: 5.36.0
       axios: 1.6.8
@@ -2495,8 +2495,8 @@ packages:
       react-dom: '>=16.10.2'
     dev: false
 
-  /@volcengine/veplayer/1.9.4-rc.4:
-    resolution: {integrity: sha512-kLOjB8J+vfZhyXeTDW3Tz3jKER+ftdpO7ZdrcfUbdaAXHzeHLA9S6Hgby8uhmYCboctwW+FdLV7N+Nx8Fq13mg==}
+  /@volcengine/veplayer/1.9.4-rc.6:
+    resolution: {integrity: sha512-lzbCry6pEauruFiLgkGN7YTqLPgVjQs58wDtZLr56JCmsKeR68/BqirDGfIoD1Vpdy5/N9uUJQu/v5aS16P50g==}
     dev: false
 
   /abortcontroller-polyfill/1.7.5:
