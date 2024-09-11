@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { SwiperClass } from 'swiper/react';
 import { Popup, Toast } from 'antd-mobile';
-import VePlayer, { Events, mp4Encrypt, PlayerCore } from '@/player';
+import VePlayer, { Events, PlayerCore } from '@/player';
 import SliderItem from '../slider-item';
 import SelectBtn from '../select-btn';
 import SelectIcon from '@/assets/svg/select.svg?react';
