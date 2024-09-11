@@ -54,7 +54,10 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const dramaInfo = current?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
 
-  const getClass = useCallback((player: PlayerCore) => player.root?.getElementsByClassName('xgplayer-start')[0], []);
+  const getClass: (player: PlayerCore) => HTMLDivElement = useCallback(
+    (player: PlayerCore) => player.root?.getElementsByClassName('xgplayer-start')[0],
+    [],
+  );
 
   /**
    * 展示静音按钮
@@ -63,7 +66,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     if (sdkRef.current?.player) {
       const player = sdkRef.current?.player;
       if (player) {
-        // @ts-expect-error: expect
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         if (player.muted || player.video?.muted) {
           setShowUnmuteBtn(true);
         } else {
@@ -136,7 +139,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         swiperRef.current?.slideTo(index, 0);
         setActiveIndex(index);
         sdkRef.current?.player?.pause();
-        // @ts-expect-error expected
         sdkRef.current?.getPlugin('poster')?.update(poster);
         attachStartIcon(sdkRef.current?.player);
         sdkRef.current
@@ -202,7 +204,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         videoFillMode: 'fillWidth',
         codec: def.Codec,
         enableMp4MSE: true,
-        plugins: [mp4Encrypt],
         ignores: [
           'moreButtonPlugin',
           'enter',
