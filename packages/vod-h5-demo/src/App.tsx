@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/home';
 import { featRoutes } from './page.tsx';
 import VePlayer from '@/player';
-import { os } from '@/utils';
 
 const router = createBrowserRouter(
   [
@@ -18,15 +17,13 @@ const router = createBrowserRouter(
 
 function App() {
   useEffect(() => {
-    if (os.isAndroid || os.isPc) {
-      VePlayer.prepare({
-        appId: 597335,
-        strategies: {
-          preload: true,
-          adaptRange: true,
-        },
-      });
-    }
+    VePlayer.prepare({
+      appId: 597335,
+      strategies: {
+        preload: true,
+        adaptRange: true,
+      },
+    });
   }, []);
   return <RouterProvider router={router} />;
 }
