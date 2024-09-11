@@ -9,7 +9,7 @@ import { parseModel } from '@/utils';
 import BackIcon from '@/assets/svg/back_v3.svg?react';
 
 import type { ToastHandler } from 'antd-mobile/es/components/toast/methods';
-import type { IVideoDataWithModel } from '@/typings';
+import type { IVideoDataWithModel, IVideoModel } from '@/typings';
 
 import style from './index.module.less';
 import 'swiper/less';
@@ -45,7 +45,7 @@ function Theater() {
     () =>
       ((data?.result || []) as ResultType[]).map(item => ({
         ...item,
-        videoModel: parseModel(item.videoModel),
+        videoModel: parseModel(item.videoModel) as IVideoModel,
       })),
     [data?.result],
   );
