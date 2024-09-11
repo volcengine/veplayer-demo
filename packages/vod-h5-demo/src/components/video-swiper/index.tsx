@@ -204,7 +204,6 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
         videoFillMode: 'fillWidth',
         codec: def.Codec,
         enableMp4MSE: true,
-        plugins: [mp4Encrypt],
         ignores: [
           'moreButtonPlugin',
           'enter',
