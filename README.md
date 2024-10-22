@@ -11,5 +11,6 @@ pnpm install
 
 ## 运行demo
 ```
-pnpm run dev
+cd packages/vod-h5-demo
+pnpm dev
 ```
