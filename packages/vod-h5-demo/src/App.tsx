@@ -4,16 +4,13 @@ import Home from './pages/home';
 import { featRoutes } from './page.tsx';
 import VePlayer from '@/player';
 
-const router = createBrowserRouter(
-  [
-    {
-      path: '/',
-      element: <Home />,
-    },
-    ...featRoutes,
-  ],
-  { basename: __BASE__PATH__ },
-);
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+  },
+  ...featRoutes,
+]);
 
 function App() {
   useEffect(() => {
