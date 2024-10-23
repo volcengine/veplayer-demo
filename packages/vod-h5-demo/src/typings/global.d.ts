@@ -1,5 +1,3 @@
-// TODO @byted -> @volcengine
-// import VePlayer from '@volcengine/veplayer';
 import VePlayer from '@/player';
 
 declare global {
