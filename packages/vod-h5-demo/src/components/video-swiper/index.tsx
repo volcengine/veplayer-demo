@@ -18,7 +18,7 @@ import style from './index.module.less';
 import '@volcengine/veplayer/index.min.css';
 
 interface IVideoSwiperProps {
-  list: IVideoDataWithModel[];
+  videoDataList: IVideoDataWithModel[];
   isRecommend?: boolean;
   isRecommendActive?: boolean;
   isSliderMoving?: boolean;
@@ -29,8 +29,12 @@ interface IVideoSwiperProps {
 }
 
 const preventDefault = (e: TouchEvent) => e?.preventDefault?.();
+
+const getClass: (player: PlayerCore) => HTMLDivElement = (player: PlayerCore) =>
+  player.root?.getElementsByClassName('xgplayer-start')[0];
+
 const VideoSwiper: React.FC<IVideoSwiperProps> = ({
-  list,
+  videoDataList,
   isRecommend,
   isRecommendActive,
   isSliderMoving,
@@ -49,15 +53,10 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const [showUnmuteBtn, setShowUnmuteBtn] = useState<boolean>(false);
   const [selectVisible, setSelectVisible] = useState<boolean>(false);
 
-  const current: IVideoDataWithModel = list?.[activeIndex];
+  const currentVideoData: IVideoDataWithModel = videoDataList?.[activeIndex];
 
-  const dramaInfo = current?.episodeDetail?.dramaInfo;
+  const dramaInfo = currentVideoData?.episodeDetail?.dramaInfo;
   const { dramaTitle, totalEpisodeNumber } = dramaInfo || {};
-
-  const getClass: (player: PlayerCore) => HTMLDivElement = useCallback(
-    (player: PlayerCore) => player.root?.getElementsByClassName('xgplayer-start')[0],
-    [],
-  );
 
   /**
    * 展示静音按钮
@@ -65,14 +64,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   const showUnmute = useCallback(() => {
     if (sdkRef.current?.player) {
       const player = sdkRef.current?.player;
-      if (player) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        if (player.muted || player.video?.muted) {
-          setShowUnmuteBtn(true);
-        } else {
-          setShowUnmuteBtn(false);
-        }
-      }
+      setShowUnmuteBtn(player.muted || player.media?.muted);
     }
   }, []);
 
@@ -85,34 +77,28 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     }
   }, []);
 
-  const hideStartIcon = useCallback(
-    (player?: PlayerCore) => {
-      if (!player?.root) {
-        return;
-      }
-      const startClassDom = getClass(player);
-      if (startClassDom) {
-        startClassDom.className = startClassDom.className
-          ?.split(' ')
-          .filter(item => item !== 'veplayer-h5-hide-start')
-          .join(' ');
-      }
-    },
-    [getClass],
-  );
+  const hideStartIcon = useCallback((player?: PlayerCore) => {
+    if (!player?.root) {
+      return;
+    }
+    const startClassDom = getClass(player);
+    if (startClassDom) {
+      startClassDom.className = startClassDom.className
+        ?.split(' ')
+        .filter(item => item !== 'veplayer-h5-hide-start')
+        .join(' ');
+    }
+  }, []);
 
-  const attachStartIcon = useCallback(
-    (player: PlayerCore) => {
-      if (!player?.root) {
-        return;
-      }
-      const startClassDom = getClass(player);
-      if (startClassDom) {
-        startClassDom.className = `${startClassDom.className} veplayer-h5-hide-start`;
-      }
-    },
-    [getClass],
-  );
+  const attachStartIcon = useCallback((player: PlayerCore) => {
+    if (!player?.root) {
+      return;
+    }
+    const startClassDom = getClass(player);
+    if (startClassDom) {
+      startClassDom.className = `${startClassDom.className} veplayer-h5-hide-start`;
+    }
+  }, []);
 
   /**
    * 播放器下一个视频
@@ -120,14 +106,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
    */
   const playNext = useCallback(
     (index: number) => {
-      if (index < 0 || index >= list.length) {
+      if (index < 0 || index >= videoDataList.length) {
         return;
       }
       if (sdkRef.current && index !== swiperActiveRef.current) {
         swiperActiveRef.current = index;
         setPlayNextStatus('start');
-        const next = list?.[index];
-        const nextInfo = formatPreloadStreamList([list?.[index]])[0];
+        const next = videoDataList?.[index];
+        const nextInfo = formatPreloadStreamList([videoDataList?.[index]])[0];
         if (!nextInfo?.url) {
           Toast.show({
             icon: 'fail',
@@ -147,14 +133,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
             vid: nextInfo.vid,
             playList: [nextInfo],
           })
+          .then(() => sdkRef.current?.player.play())
           .then(() => {
-            sdkRef.current?.player.play();
             setTimeout(() => hideStartIcon(sdkRef.current?.player), 0);
             setPlayNextStatus('end');
           });
       }
     },
-    [attachStartIcon, hideStartIcon, list],
+    [attachStartIcon, hideStartIcon, videoDataList],
   );
 
   const onSlideChange = useCallback(
@@ -167,24 +153,24 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
   );
 
   const onEnded = useCallback(() => {
-    if (swiperRef.current?.activeIndex === list.length - 1) {
+    if (swiperRef.current?.activeIndex === videoDataList.length - 1) {
       Toast.show({
         content: '看完了！',
       });
     } else {
       swiperRef.current?.slideNext();
     }
-  }, [list.length]);
+  }, [videoDataList.length]);
 
   const initPlayer = useCallback(() => {
-    if (!sdkRef.current && current) {
-      const playInfoList = current?.videoModel?.PlayInfoList || [];
-      const poster = current?.videoModel?.PosterUrl ?? current.coverUrl;
+    if (!sdkRef.current && currentVideoData) {
+      const playInfoList = currentVideoData?.videoModel?.PlayInfoList || [];
+      const poster = currentVideoData?.videoModel?.PosterUrl ?? currentVideoData.coverUrl;
       const def = selectDef(playInfoList, '720p');
       if (!def?.MainPlayUrl) {
         return;
       }
-      const options: IPlayerConfig = {
+      const options = {
         id: 'veplayer-container',
         playList: [
           {
@@ -195,7 +181,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
             vtype: 'MP4',
           },
         ],
-        vid: current.vid,
+        vid: currentVideoData.vid,
         startTime,
         autoplay: !isRecommend,
         enableDegradeMuteAutoplay: true,
@@ -259,7 +245,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           vtype: 'MP4',
           tag: 'normal',
           codec_type: def.Codec,
-          line_app_id: 597335,
+          line_app_id: 597335, // 从视频点播控制台-点播SDK-应用管理 获取，如果没有应用则创建
         },
       };
 
@@ -296,14 +282,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
 
       sdkRef.current = playerSdk;
     }
-  }, [current, isRecommend, onEnded, onProgressDrag, onProgressDragend, showUnmute, startTime]);
+  }, [currentVideoData, isRecommend, onEnded, onProgressDrag, onProgressDragend, showUnmute, startTime]);
 
   // 组件加载时初始化播放器
   useEffect(() => {
     setTimeout(() => {
       initPlayer();
-    }, 0);
-  }, [current, activeIndex, initPlayer]);
+    });
+  }, [currentVideoData, activeIndex, initPlayer]);
 
   useEffect(() => {
     // 预加载只支持PC、Android
@@ -318,9 +304,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
       });
 
       // 待预加载列表设置
-      VePlayer.setPreloadList(formatPreloadStreamList(list));
+      VePlayer.setPreloadList(formatPreloadStreamList(videoDataList));
     }
-  }, [isRecommend, isRecommendActive, list]);
+  }, [isRecommend, isRecommendActive, videoDataList]);
 
   // 组件卸载时销毁播放器
   useEffect(() => {
@@ -373,14 +359,14 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
     <>
       <div className={isRecommend ? style.recommendMain : style.main}>
         <div className={style.swiperContainer} ref={wrapRef as React.MutableRefObject<HTMLDivElement>}>
-          {list?.length > 0 && (
+          {videoDataList?.length > 0 && (
             <Swiper
               className={style.mySwiper}
               direction="vertical"
               onSwiper={swiper => (swiperRef.current = swiper)}
               onActiveIndexChange={onSlideChange}
             >
-              {list.map((item: any, i: number) => {
+              {videoDataList.map((item: any, i: number) => {
                 return (
                   <SwiperSlide key={`${item.id}-${i}`}>
                     {({ isActive }) => (
@@ -415,7 +401,9 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
           <div className={style.foot} onClick={() => setSelectVisible(!selectVisible)}>
             <div className={style.footContent}>
               <SelectIcon className={style.selectIcon} />
-              <div className={style.selectText}>{list?.length ? `选集（${list?.length}集）` : ''}</div>
+              <div className={style.selectText}>
+                {videoDataList?.length ? `选集（${videoDataList?.length}集）` : ''}
+              </div>
               <UpArrowIcon className={style.selectArrow} />
             </div>
           </div>
@@ -441,7 +429,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
             </div>
           </div>
           <div className={style.selectContent}>
-            {list.map((_item, index) => (
+            {videoDataList.map((_item, index) => (
               <SelectBtn
                 key={index}
                 isActive={index === activeIndex}

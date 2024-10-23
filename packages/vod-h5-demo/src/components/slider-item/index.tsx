@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, MouseEvent, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { PropsWithChildren, useState, MouseEvent, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Viewer } from '@volcengine/imagex-react';
 import LikeIcon from '@/assets/svg/like.svg?react';
@@ -23,6 +23,8 @@ interface ISliderItemProps extends PropsWithChildren {
 
 const imageSizes = [600, 750, 800, 960];
 
+const mockFavLikeData = () => (Math.random() * 50 + 50).toFixed(1);
+
 const SliderItem: React.FC<ISliderItemProps> = ({
   activeIndex,
   data,
@@ -32,23 +34,18 @@ const SliderItem: React.FC<ISliderItemProps> = ({
   children,
 }) => {
   const coverUrl = data?.videoModel?.PosterUrl ?? data?.coverUrl;
-  const episodeDesc = data.episodeDetail?.episodeDesc;
-  const dramaTitle = data.episodeDetail?.dramaInfo?.dramaTitle;
-  const totalEpisodeNumber = data.episodeDetail?.dramaInfo?.totalEpisodeNumber;
-  const episodeNumber = data.episodeDetail?.episodeNumber;
+  const episodeDesc = data?.episodeDetail?.episodeDesc;
+  const dramaTitle = data?.episodeDetail?.dramaInfo?.dramaTitle;
+  const totalEpisodeNumber = data?.episodeDetail?.dramaInfo?.totalEpisodeNumber;
+  const episodeNumber = data?.episodeDetail?.episodeNumber;
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isFav, setIsFav] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const bottomText = `观看完整短剧 · 全${totalEpisodeNumber}集`;
 
-  const favNumRef = useRef('');
-  const likeNumRef = useRef('');
-
-  useEffect(() => {
-    favNumRef.current = (Math.random() * 50 + 50).toFixed(1);
-    likeNumRef.current = (Math.random() * 50 + 10).toFixed(1);
-  }, []);
+  const favNum = mockFavLikeData();
+  const likeNum = mockFavLikeData();
 
   const onBottomBtnClick = useCallback(
     (e: MouseEvent) => {
@@ -98,7 +95,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({
               }}
             >
               {isLike ? <LikeActiveIcon className={style.icon} /> : <LikeIcon className={style.icon} />}
-              <div className={style.num}>{`${likeNumRef.current}w`}</div>
+              <div className={style.num}>{`${likeNum}w`}</div>
             </div>
             <div
               className={style.btnItem}
@@ -108,7 +105,7 @@ const SliderItem: React.FC<ISliderItemProps> = ({
               }}
             >
               {isFav ? <FavActiveIcon className={style.icon} /> : <FavIcon className={style.icon} />}
-              <div className={style.num}>{`${favNumRef.current}w`}</div>
+              <div className={style.num}>{`${favNum}w`}</div>
             </div>
           </div>
           <div className={style.bottom} onClick={e => e.stopPropagation()}>

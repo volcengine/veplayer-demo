@@ -84,7 +84,7 @@ function Theater() {
         left={episodeNumber ? <span>{`第${episodeNumber}集`}</span> : ''}
         onBack={back}
       />
-      <VideoSwiper startTime={startTime} list={list} onChange={setActiveIndex} />
+      <VideoSwiper startTime={startTime} videoDataList={list} onChange={setActiveIndex} />
     </div>
   );
 }

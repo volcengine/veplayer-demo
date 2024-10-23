@@ -13,6 +13,7 @@ export default defineConfig({
     react(),
     svgr(),
     babel({
+      babelHelpers: 'bundled',
       presets: [
         [
           '@babel/preset-env',

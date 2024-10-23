@@ -1,7 +1,7 @@
 import { IVideoDataWithModel } from '@/typings';
 import { selectDef } from './index';
 
-const formatPreloadStreamList = (list: Array<IVideoDataWithModel>): any => {
+export const formatPreloadStreamList = (list: Array<IVideoDataWithModel>): any => {
   return list
     ?.map(item => {
       const target = selectDef(item.videoModel?.PlayInfoList ?? []);
@@ -21,5 +21,3 @@ const formatPreloadStreamList = (list: Array<IVideoDataWithModel>): any => {
     })
     .filter(i => i?.vid);
 };
-
-export { formatPreloadStreamList };
