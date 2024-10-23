@@ -8,7 +8,7 @@ import { API_PATH } from '@/api';
 import DramaCard from './components/drama-card';
 import SkeletonCard from '@/pages/square/components/drama-card/skeleton-card.tsx';
 import Recommend from './components/recommend';
-import { formatPreloadStreamList, hasScrollbar, os, parseModel, canSupportPreload } from '@/utils';
+import { formatPreloadStreamList, hasScrollbar, parseModel, canSupportPreload } from '@/utils';
 import BackIconGray from '@/assets/svg/back_gray.svg?react';
 import BackIcon from '@/assets/svg/back_v3.svg?react';
 
@@ -105,7 +105,7 @@ function Square() {
     if (!recLoading && recData?.result && canSupportPreload && !preloadOnceRef.current && activeIndex === 0) {
       // 预加载前6个视频第一集
       const list: IVideoDataWithModel[] = recData.result
-        .map((item: any) => ({
+        .map((item: Omit<IVideoDataWithModel, 'videoModel'>) => ({
           ...item,
           videoModel: parseModel(item.videoModel),
         }))

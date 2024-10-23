@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState, MouseEvent, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { PropsWithChildren, useState, MouseEvent, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Viewer } from '@volcengine/imagex-react';
 import LikeIcon from '@/assets/svg/like.svg?react';
