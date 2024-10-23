@@ -68,7 +68,7 @@ const Recommend: React.FC<IRecommend> = ({
 
   useEffect(() => {
     return () => {
-      toastRef.current && toastRef.current?.close();
+      toastRef.current?.close();
     };
   }, []);
 
@@ -80,7 +80,7 @@ const Recommend: React.FC<IRecommend> = ({
         startTime={startTime}
         isRecommendActive={isRecommendActive}
         isRecommend={isRecommend}
-        list={list}
+        videoDataList={list}
         isSliderMoving={isSliderMoving}
         onChange={setActiveIndex}
         onProgressDrag={onProgressDrag}

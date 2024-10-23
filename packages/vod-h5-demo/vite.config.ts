@@ -45,6 +45,7 @@ export default defineConfig({
         ]
       : []),
     babel({
+      babelHelpers: 'bundled',
       presets: [
         [
           '@babel/preset-env',

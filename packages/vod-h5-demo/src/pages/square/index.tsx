@@ -5,11 +5,10 @@ import useAxios from 'axios-hooks';
 import { useNavigate } from 'react-router-dom';
 import { Swiper, SwiperSlide, SwiperRef, SwiperClass } from 'swiper/react';
 import { API_PATH } from '@/api';
-import DramaCard from './components/drama_card';
-import SkeletonCard from './components/drama_card/skeleton_card.tsx';
+import DramaCard from './components/drama-card';
+import SkeletonCard from '@/pages/square/components/drama-card/skeleton-card.tsx';
 import Recommend from './components/recommend';
-import { formatPreloadStreamList, hasScrollbar, os, parseModel } from '@/utils';
-import { useUpdate } from '@/hooks';
+import { formatPreloadStreamList, hasScrollbar, os, parseModel, canSupportPreload } from '@/utils';
 import BackIconGray from '@/assets/svg/back_gray.svg?react';
 import BackIcon from '@/assets/svg/back_v3.svg?react';
 
@@ -87,17 +86,23 @@ function Square() {
 
   const navigate = useNavigate();
   const back = () => navigate('/');
-  const update = useUpdate();
-
-  const showFoot = hasScrollbar();
+  const [showFoot, setShowFoot] = useState(false);
 
   useEffect(() => {
-    update();
-  }, [showFoot, update, loading]);
+    if (loading) {
+      setShowFoot(false);
+    } else {
+      if (list?.length) {
+        setShowFoot(hasScrollbar());
+      } else {
+        setShowFoot(false);
+      }
+    }
+  }, [list, loading]);
 
   useEffect(() => {
     // PC&Android开启预加载
-    if (!recLoading && recData?.result && (os.isPc || os.isAndroid) && !preloadOnceRef.current && activeIndex === 0) {
+    if (!recLoading && recData?.result && canSupportPreload && !preloadOnceRef.current && activeIndex === 0) {
       // 预加载前6个视频第一集
       const list: IVideoDataWithModel[] = recData.result
         .map((item: any) => ({
@@ -123,7 +128,7 @@ function Square() {
 
   return (
     <div className={`${style.main} ${isRecommendActive ? style.recommendActive : style.recommendInactive}`}>
-      <NavBar backArrow={isRecommendActive ? <BackIcon /> : <BackIconGray />} className={style.head} onBack={back}>
+      <NavBar backIcon={isRecommendActive ? <BackIcon /> : <BackIconGray />} className={style.head} onBack={back}>
         <Tabs
           activeLineMode="fixed"
           activeKey={tabs[activeIndex].key}

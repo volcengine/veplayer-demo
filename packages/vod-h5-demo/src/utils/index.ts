@@ -1,7 +1,18 @@
 import { IPlayInfoListItem, IVideoModel } from '@/typings';
 export * from './preload';
 
-function getOS() {
+function getOS(): {
+  isTablet?: boolean;
+  isPhone?: boolean;
+  isIpad?: boolean;
+  isIos?: boolean;
+  isAndroid?: boolean;
+  isPc?: boolean;
+  isMobile?: boolean;
+  isFireFox?: boolean;
+  isWeixin?: boolean;
+  isLark?: boolean;
+} {
   if (typeof navigator === 'undefined') {
     return {};
   }
@@ -99,3 +110,5 @@ export function selectDef(list: IPlayInfoListItem[], defaultDef = '720p'): undef
 export function hasScrollbar() {
   return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
 }
+
+export const canSupportPreload = os.isPc || os.isAndroid;
