@@ -14,3 +14,6 @@ pnpm install
 cd packages/vod-h5-demo
 pnpm dev
 ```
+
+## 查看demo
+浏览器打开 http://localhost:5173/ 查看demo
