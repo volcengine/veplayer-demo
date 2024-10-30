@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "composite": true
+  },
+  "references": [
+    { "path": "packages/vod-h5-demo" }
+  ]
+}

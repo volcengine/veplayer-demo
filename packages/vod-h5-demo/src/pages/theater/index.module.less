@@ -1,0 +1,288 @@
+/*
+ * Copyright 2024 Beijing Volcano Engine Technology Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.wrap {
+  position: relative;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: #000;
+  font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+
+  .head {
+    position: fixed;
+    z-index: 200;
+    color: #fff;
+    font-family: "PingFang SC", PingFang SC, Helvetica Neue, Helvetica, STHeiTi, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+
+    span {
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  :global {
+    .adm-nav-bar-back-arrow {
+      display: flex;
+      align-items: center;
+    }
+    .adm-nav-bar-title {
+      flex: 0 0 auto;
+    }
+  }
+
+  .main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: calc(100% - 180px - constant(safe-area-inset-bottom));
+    height: calc(100% - 180px - env(safe-area-inset-bottom));
+
+    .swiper-container {
+      position: relative;
+      z-index: 4;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      //position: fixed;
+      //inset: 0;
+      //z-index: 1;
+
+      .my-swiper {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .veplayer-container {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 1;
+    }
+  }
+
+  .unmute {
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    .unmute-btn {
+      box-sizing: border-box;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 48px;
+      padding: 13.5px 10px;
+      background: rgb(58 58 58 / 50%);
+      backdrop-filter: blur(5px);
+      border-radius: 25px;
+
+      .unmute-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 2px;
+      }
+
+      span {
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        color: var(--Text-ConstTextInverse, #fff);
+        text-align: center;
+      }
+    }
+
+    .unmute-bt:active {
+      background-color: rgb(58 58 58 / 50%);
+    }
+  }
+
+  :global {
+    .xgplayer-unmute {
+      display: none;
+    }
+  }
+}
+
+.foot {
+  position: absolute;
+  right: calc(12px + env(safe-area-inset-right));
+  right: calc(12px + constant(safe-area-inset-right));
+  bottom: calc(-50px + constant(safe-area-inset-bottom));
+  bottom: calc(-50px + env(safe-area-inset-bottom));
+  left: calc(12px + env(safe-area-inset-left));
+  left: calc(12px + constant(safe-area-inset-left));
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  margin: 0 12px;
+  background: rgb(255 255 255 / 15%);
+  border-radius: 8px;
+  box-shadow: 0 4px 18px 0 rgb(0 0 0 / 15%);
+
+  .select-text {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: rgb(255 255 255 / 90%);
+  }
+
+  .select-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.select-popup {
+  padding: 16px;
+
+  .select-head {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f1f2;
+
+    .select-title {
+      margin-bottom: 8px;
+      font-size: 17px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      color: #161823;
+    }
+
+    .select-des {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 18px;
+      color: rgb(22 24 35 / 50%);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background-color: rgb(22 24 35 / 5%);
+      border-radius: 28px;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .select-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 48px);
+    gap: 12px 12px;
+    max-height: 360px;
+    padding: 12px 4px;
+  }
+}
+
+.loading-mask {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: #000;
+
+  .loading-btn {
+    position: relative;
+    width: 97px;
+    height: 76px;
+    background: var(--ConstBG-ToastDefault, #393b44);
+    border-radius: 12px;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading-container {
+    width: 60px;
+  }
+
+  .loading-icon {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    transform: translateX(-50%);
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .loading-text {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    width: 60px;
+    height: 20px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: rgb(255 255 255 / 90%);
+    text-align: center;
+    transform: translateX(-50%);
+  }
+}

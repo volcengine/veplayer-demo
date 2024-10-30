@@ -1,0 +1,122 @@
+/*
+ * Copyright 2024 Beijing Volcano Engine Technology Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.card {
+  position: relative;
+  width: 100%;
+  padding-top: 187%;
+  cursor: pointer;
+
+  :global {
+    .adm-skeleton.adm-skeleton-paragraph-line {
+      --height: 18px;
+      --border-radius: 8px;
+      --width: 65%;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+    .adm-skeleton.adm-skeleton-paragraph-line:last-child {
+      width: 35%;
+      height: 16px;
+    }
+  }
+
+  .content {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+
+    .main {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 48px);
+      border-radius: 8px;
+      //background: transparent;
+      //background-size: 100% 100%;
+
+
+      .img {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 8px;
+      }
+
+      .mask {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.50) 100%);
+      }
+
+      .play_count {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        display: flex;
+
+        span {
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          color: rgb(255 255 255 / 90%);
+          text-shadow: 0 1px 1px rgb(0 0 0 / 15%);
+        }
+      }
+    }
+
+    .foot-skelet {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 48px;
+    }
+
+    .foot {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      .title {
+        margin-top: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 21px;
+        color: rgba(22, 24, 35, 1);
+      }
+
+      .des {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        color: rgb(22 24 35 / 50%);
+      }
+    }
+  }
+}

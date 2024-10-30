@@ -1,0 +1,268 @@
+/*
+ * Copyright 2024 Beijing Volcano Engine Technology Co., Ltd.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+.main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .swiper-container {
+    height: calc(var(--vh, 1vh) * 100 - 60px - constant(safe-area-inset-bottom));
+    height: calc(var(--vh, 1vh) * 100 - 60px - env(safe-area-inset-bottom));
+  }
+}
+
+.recommend-main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .swiper-container {
+    height: calc(var(--vh, 1vh) * 100 - 10px - constant(safe-area-inset-bottom));
+    height: calc(var(--vh, 1vh) * 100 - 10px - env(safe-area-inset-bottom));
+  }
+}
+
+.swiper-container {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .my-swiper {
+    width: 100%;
+    height: 100%;
+  }
+
+  :global {
+    .xgplayer-unmute {
+      display: none !important;
+    }
+
+    .xgplayer {
+      background-color: transparent;
+
+      .xg-pos {
+        left: calc(18px + constant(safe-area-inset-left));
+        left: calc(18px + env(safe-area-inset-left));
+        right: calc(18px + constant(safe-area-inset-right));
+        right: calc(18px + env(safe-area-inset-right));
+      }
+    }
+
+    .xgplayer .xgplayer-poster {
+      background-size: 100% auto;
+      background-color: transparent !important;
+    }
+
+    .xgplayer .xgplayer-start {
+      transform: translate3d(0, 0, 0);
+      translate: -50% -50%;
+    }
+
+    .xgplayer .xgplayer-controls{
+      transform: translate3d(0, 0, 0);
+    }
+
+    .xgplayer-mobile .xgplayer-progress .xgplayer-progress-btn {
+      background-color: rgba(255, 255, 255, 0) !important;
+      box-shadow: none;
+    }
+
+    .swiper-slide {
+      overflow: hidden;
+    }
+
+    // 进度条位于底部的时候
+    .xgplayer.xgplayer-mobile .xgplayer-progress-bottom  {
+      &.active {
+        .xgplayer-progress-outer {
+          height: 6px;
+          margin-bottom: 3px;
+          transition: height .3s ease, margin-bottom .3s ease;
+        }
+        .xgplayer-progress-btn {
+          transform: translate(-50%, -50%) scale(1);
+        }
+        .inner-focus-point {
+          &:before, &:after{
+            width: 6px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.unmute {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  .unmute-btn {
+    box-sizing: border-box;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 48px;
+    padding: 13.5px 10px;
+    pointer-events: visible;
+    background: rgb(58 58 58 / 50%);
+    backdrop-filter: blur(5px);
+    border-radius: 25px;
+
+    .unmute-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
+    }
+
+    span {
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      color: #fff;
+      text-align: center;
+    }
+  }
+
+  .unmute-bt:active {
+    background-color: rgb(58 58 58 / 50%);
+  }
+}
+
+.foot {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+  z-index: 100;
+
+  .foot-content {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background: rgb(255 255 255 / 15%);
+    border-radius: 8px;
+    box-shadow: 0 4px 18px 0 rgb(0 0 0 / 15%);
+    padding: 0 16px;
+    position: absolute;
+    top: 0;
+    left: 12px;
+    right: 12px;
+    bottom: 0;
+  }
+
+  .select-text {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    color: rgb(255 255 255 / 90%);
+  }
+
+  .select-icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+  }
+
+  .select-arrow {
+    position: absolute;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.select-popup {
+  padding: 16px;
+
+  .select-head {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f1f2;
+
+    .select-title {
+      margin-bottom: 8px;
+      font-size: 17px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+      color: #161823;
+    }
+
+    .select-des {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 18px;
+      color: rgb(22 24 35 / 50%);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background-color: rgb(22 24 35 / 5%);
+      border-radius: 28px;
+      cursor: pointer;
+
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .select-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 46px);
+    gap: 12px 12px;
+    max-height: 360px;
+    overflow-y: scroll;
+    padding: 12px 0;
+  }
+}
+
+.loading-mask {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+  background-color: #000;
+}
