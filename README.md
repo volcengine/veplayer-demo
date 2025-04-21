@@ -23,6 +23,9 @@ pnpm dev
 - [集成SDK](https://www.volcengine.com/docs/4/67077)
 - [发布历史](https://www.volcengine.com/docs/4/128917)
 
+## vue 工程
+请参考`packages/vod-h5-vue-demo`目录下的工程，功能完全相同
+
 ## Contribution
 暂不接受代码贡献
 
