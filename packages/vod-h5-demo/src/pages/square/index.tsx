@@ -157,6 +157,7 @@ function Square() {
         onTransitionEnd={() => {
           setIsSliderMoving(false);
         }}
+        touchStartPreventDefault={false}
       >
         <SwiperSlide>
           <div>
