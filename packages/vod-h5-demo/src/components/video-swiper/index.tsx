@@ -370,6 +370,7 @@ const VideoSwiper: React.FC<IVideoSwiperProps> = ({
               direction="vertical"
               onSwiper={swiper => (swiperRef.current = swiper)}
               onActiveIndexChange={onSlideChange}
+              touchStartPreventDefault={false}
             >
               {videoDataList.map((item: any, i: number) => {
                 return (
