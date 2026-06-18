@@ -32,6 +32,10 @@ pnpm dev
 ## Issue
 有任何问题可以提交 github issue，我们会定期 check 解决。
 
+## Security and privacy
+This project takes security seriously.
+For vulnerability reporting and supported versions, see [SECURITY.md](SECURITY.md)
+
 ## License
 ```text
 MIT License
